@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyProductMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyProduct">
+    <id column="PRO_ID" jdbcType="VARCHAR" property="proId" />
+    <result column="PRO_TYPE_ID" jdbcType="VARCHAR" property="proTypeId" />
+    <result column="ST_ID" jdbcType="VARCHAR" property="stId" />
+    <result column="BAND_ID" jdbcType="VARCHAR" property="bandId" />
+    <result column="PRO_CODE" jdbcType="VARCHAR" property="proCode" />
+    <result column="PRO_NAME" jdbcType="VARCHAR" property="proName" />
+    <result column="PRO_GUIGE" jdbcType="VARCHAR" property="proGuige" />
+    <result column="PRO_WEIGHT" jdbcType="DECIMAL" property="proWeight" />
+    <result column="PRO_CAILIAO" jdbcType="VARCHAR" property="proCailiao" />
+    <result column="PRO_FACTORY_PRICE" jdbcType="DECIMAL" property="proFactoryPrice" />
+    <result column="PRO_PRICE" jdbcType="DECIMAL" property="proPrice" />
+    <result column="PRO_PRICE0" jdbcType="DECIMAL" property="proPrice0" />
+    <result column="PRO_PRICE1" jdbcType="DECIMAL" property="proPrice1" />
+    <result column="PRO_PRICE2" jdbcType="DECIMAL" property="proPrice2" />
+    <result column="PRO_FUJIAN" jdbcType="VARCHAR" property="proFujian" />
+    <result column="PRO_LAW" jdbcType="VARCHAR" property="proLaw" />
+    <result column="PRO_REMARK" jdbcType="VARCHAR" property="proRemark" />
+    <result column="PRO_ATTR_01" jdbcType="VARCHAR" property="proAttr01" />
+    <result column="PRO_ATTR_02" jdbcType="VARCHAR" property="proAttr02" />
+    <result column="PRO_ATTR_03" jdbcType="VARCHAR" property="proAttr03" />
+    <result column="PRO_ATTR_04" jdbcType="VARCHAR" property="proAttr04" />
+    <result column="PRO_ATTR_05" jdbcType="VARCHAR" property="proAttr05" />
+    <result column="PRO_ATTR_06" jdbcType="VARCHAR" property="proAttr06" />
+    <result column="PRO_ATTR_07" jdbcType="VARCHAR" property="proAttr07" />
+    <result column="PRO_ATTR_08" jdbcType="VARCHAR" property="proAttr08" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PRO_ID, PRO_TYPE_ID, ST_ID, BAND_ID, PRO_CODE, PRO_NAME, PRO_GUIGE, PRO_WEIGHT, PRO_CAILIAO, 
+    PRO_FACTORY_PRICE, PRO_PRICE, PRO_PRICE0, PRO_PRICE1, PRO_PRICE2, PRO_FUJIAN, PRO_LAW, 
+    PRO_REMARK, PRO_ATTR_01, PRO_ATTR_02, PRO_ATTR_03, PRO_ATTR_04, PRO_ATTR_05, PRO_ATTR_06, 
+    PRO_ATTR_07, PRO_ATTR_08, ISVA, OPTIME, OPER, SORT
+  </sql>
+  
+  <!-- 根据产品ID得到修改产品的信息 -->
+  <select id="findProductAndBandByProId" parameterType="java.lang.String" resultType="map">
+    SELECT pr.ST_ID,pr.PRO_ID,pr.PRO_ATTR_01,pr.PRO_TYPE_ID,pt.PRO_TYPE_NAME,pr.BAND_ID,
+pr.PRO_CODE,pr.PRO_NAME,pr.PRO_WEIGHT,pr.PRO_FACTORY_PRICE,pr.PRO_FUJIAN,pr.PRO_LAW,pr.PRO_REMARK
+FROM ehy_product pr,EHY_PRO_TYPE pt WHERE
+ pr.PRO_TYPE_ID=pt.PRO_TYPE_ID AND
+	pr.PRO_ID=#{proId,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="findAll" resultMap="BaseResultMap">
+   	SELECT ep.PRO_ID,ep.PRO_NAME,ep.PRO_CODE,ep.ST_ID,ep.ISVA,ep.PRO_FACTORY_PRICE,ep.PRO_PRICE,ep.PRO_PRICE0,ep.PRO_PRICE1 
+	FROM ehy_station es,ehy_product ep,ehy_pro_type pt,ehy_product_band ps WHERE 
+	es.ST_ID=ep.ST_ID AND ep.PRO_TYPE_ID=pt.PRO_TYPE_ID AND ep.BAND_ID=ps.BAND_ID 
+	AND pt.isva=1 AND es.isva=1 AND ps.isva=1 
+   	<if test="priductData!= null and priductData!=''">
+   	 and (ep.PRO_CODE LIKE '%${priductData}%'
+	 OR ep.PRO_NAME LIKE '%${priductData}%'
+	 OR ps.NAME LIKE '%${priductData}%')
+     </if>
+     <if test="proTypeList!=null and proTypeList.size>0">
+     	and pt.PRO_TYPE_ID in 
+     	 <foreach
+			item="item"
+			index="index"
+			collection="proTypeList"
+			open="("
+			separator=","
+			close=")">
+            #{item.proTypeId} 
+        </foreach>
+     </if>
+     <if test="stId!= null and stId!=''">
+       and ep.ST_ID=#{stId}
+     </if>
+     <if test="isva!= null">
+       and ep.isva=#{isva}
+     </if>
+     <if test="proFactoryPriceMix!= null and proFactoryPriceMax!= null">
+       and ep.PRO_FACTORY_PRICE  BETWEEN '${proFactoryPriceMix}' AND '${proFactoryPriceMax}'
+     </if>
+     <if test="proFactoryPriceMix== null and proFactoryPriceMax!= null">
+       and ep.PRO_FACTORY_PRICE &lt;= ${proFactoryPriceMax}
+     </if>
+     <if test="proFactoryPriceMix!= null and proFactoryPriceMax== null">
+       and ep.PRO_FACTORY_PRICE &gt;= ${proFactoryPriceMix}
+     </if>
+     <if test="proPriceMix!= null and proPriceMax!= null">
+       and ep.PRO_PRICE  BETWEEN '${proPriceMix}' AND '${proPriceMax}'
+     </if>
+     <if test="proPriceMix== null and proPriceMax!= null">
+       and ep.PRO_PRICE &lt;= ${proPriceMax}
+     </if>
+     <if test="proPriceMix!= null and proPriceMax== null">
+       and ep.PRO_PRICE &gt;= ${proPriceMix}
+     </if>
+     <if test="proPrice0Mix!= null and proPrice0Max!= null">
+       and ep.PRO_PRICE0  BETWEEN '${proPrice0Mix}' AND '${proPrice0Max}'
+     </if>
+     <if test="proPrice0Mix== null and proPrice0Max!= null">
+       and ep.PRO_PRICE0 &lt;= ${proPrice0Max}
+     </if>
+     <if test="proPrice0Mix!= null and proPriceMax== null">
+       and ep.PRO_PRICE0 &gt;= ${proPrice0Mix}
+     </if>
+     <if test="proPrice1Mix!= null and proPrice1Max!= null">
+       and ep.PRO_PRICE1  BETWEEN '${proPrice1Mix}' AND '${proPrice1Max}'
+     </if>
+     <if test="proPrice1Mix== null and proPrice1Max!= null">
+       and ep.PRO_PRICE1 &lt;= ${proPrice1Max}
+     </if>
+     <if test="proPrice1Mix!= null and proPrice1Max== null">
+       and ep.PRO_PRICE1 &gt;= ${proPrice1Mix}
+     </if>
+    limit #{firstRows},#{limit}
+  </select>
+  
+  <select id="findAllSize" resultType="int">
+    SELECT count(*)
+	FROM ehy_station es,ehy_product ep,ehy_pro_type pt,ehy_product_band ps WHERE 
+	es.ST_ID=ep.ST_ID AND ep.PRO_TYPE_ID=pt.PRO_TYPE_ID AND ep.BAND_ID=ps.BAND_ID 
+	AND pt.isva=1 AND es.isva=1 AND ps.isva=1 
+   	<if test="priductData!= null and priductData!=''">
+   	 and (ep.PRO_CODE LIKE '%${priductData}%'
+	 OR ep.PRO_NAME LIKE '%${priductData}%'
+	 OR ps.NAME LIKE '%${priductData}%')
+     </if>
+     <if test="proTypeList!=null and proTypeList.size>0">
+     	and pt.PRO_TYPE_ID in 
+     	 <foreach
+			item="item"
+			index="index"
+			collection="proTypeList"
+			open="("
+			separator=","
+			close=")">
+            #{item.proTypeId} 
+        </foreach>
+     </if>
+     <if test="stId!= null and stId!=''">
+       and ep.ST_ID=#{stId}
+     </if>
+     <if test="isva!= null">
+       and ep.isva=#{isva}
+     </if>
+     <if test="proFactoryPriceMix!= null and proFactoryPriceMax!= null">
+       and ep.PRO_FACTORY_PRICE  BETWEEN '${proFactoryPriceMix}' AND '${proFactoryPriceMax}'
+     </if>
+     <if test="proFactoryPriceMix== null and proFactoryPriceMax!= null">
+       and ep.PRO_FACTORY_PRICE &lt;= ${proFactoryPriceMax}
+     </if>
+     <if test="proFactoryPriceMix!= null and proFactoryPriceMax== null">
+       and ep.PRO_FACTORY_PRICE &gt;= ${proFactoryPriceMix}
+     </if>
+     <if test="proPriceMix!= null and proPriceMax!= null">
+       and ep.PRO_PRICE  BETWEEN '${proPriceMix}' AND '${proPriceMax}'
+     </if>
+     <if test="proPriceMix== null and proPriceMax!= null">
+       and ep.PRO_PRICE &lt;= ${proPriceMax}
+     </if>
+     <if test="proPriceMix!= null and proPriceMax== null">
+       and ep.PRO_PRICE &gt;= ${proPriceMix};
+     </if>
+     <if test="proPrice0Mix!= null and proPrice0Max!= null">
+       and ep.PRO_PRICE0  BETWEEN '${proPrice0Mix}' AND '${proPrice0Max}'
+     </if>
+     <if test="proPrice0Mix== null and proPrice0Max!= null">
+       and ep.PRO_PRICE0 &lt;= ${proPrice0Max}
+     </if>
+     <if test="proPrice0Mix!= null and proPriceMax== null">
+       and ep.PRO_PRICE0 &gt;= ${proPrice0Mix}
+     </if>
+     <if test="proPrice1Mix!= null and proPrice1Max!= null">
+       and ep.PRO_PRICE1  BETWEEN '${proPrice1Mix}' AND '${proPrice1Max}'
+     </if>
+     <if test="proPrice1Mix== null and proPrice1Max!= null">
+       and ep.PRO_PRICE1 &lt;= ${proPrice1Max}
+     </if>
+     <if test="proPrice1Mix!= null and proPrice1Max== null">
+       and ep.PRO_PRICE1 &gt;= ${proPrice1Mix}
+     </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_product
+    where PRO_ID = #{proId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_product
+    where PRO_ID = #{proId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyProduct">
+    insert into ehy_product (PRO_ID, PRO_TYPE_ID, ST_ID, 
+      BAND_ID, PRO_CODE, PRO_NAME, 
+      PRO_GUIGE, PRO_WEIGHT, PRO_CAILIAO, 
+      PRO_FACTORY_PRICE, PRO_PRICE, PRO_PRICE0, 
+      PRO_PRICE1, PRO_PRICE2, PRO_FUJIAN, 
+      PRO_LAW, PRO_REMARK, PRO_ATTR_01, 
+      PRO_ATTR_02, PRO_ATTR_03, PRO_ATTR_04, 
+      PRO_ATTR_05, PRO_ATTR_06, PRO_ATTR_07, 
+      PRO_ATTR_08, ISVA, OPTIME, 
+      OPER, SORT)
+    values (#{proId,jdbcType=VARCHAR}, #{proTypeId,jdbcType=VARCHAR}, #{stId,jdbcType=VARCHAR}, 
+      #{bandId,jdbcType=VARCHAR}, #{proCode,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, 
+      #{proGuige,jdbcType=VARCHAR}, #{proWeight,jdbcType=DECIMAL}, #{proCailiao,jdbcType=VARCHAR}, 
+      #{proFactoryPrice,jdbcType=DECIMAL}, #{proPrice,jdbcType=DECIMAL}, #{proPrice0,jdbcType=DECIMAL}, 
+      #{proPrice1,jdbcType=DECIMAL}, #{proPrice2,jdbcType=DECIMAL}, #{proFujian,jdbcType=VARCHAR}, 
+      #{proLaw,jdbcType=VARCHAR}, #{proRemark,jdbcType=VARCHAR}, #{proAttr01,jdbcType=VARCHAR}, 
+      #{proAttr02,jdbcType=VARCHAR}, #{proAttr03,jdbcType=VARCHAR}, #{proAttr04,jdbcType=VARCHAR}, 
+      #{proAttr05,jdbcType=VARCHAR}, #{proAttr06,jdbcType=VARCHAR}, #{proAttr07,jdbcType=VARCHAR}, 
+      #{proAttr08,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyProduct">
+    insert into ehy_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="proId != null">
+        PRO_ID,
+      </if>
+      <if test="proTypeId != null">
+        PRO_TYPE_ID,
+      </if>
+      <if test="stId != null">
+        ST_ID,
+      </if>
+      <if test="bandId != null">
+        BAND_ID,
+      </if>
+      <if test="proCode != null">
+        PRO_CODE,
+      </if>
+      <if test="proName != null">
+        PRO_NAME,
+      </if>
+      <if test="proGuige != null">
+        PRO_GUIGE,
+      </if>
+      <if test="proWeight != null">
+        PRO_WEIGHT,
+      </if>
+      <if test="proCailiao != null">
+        PRO_CAILIAO,
+      </if>
+      <if test="proFactoryPrice != null">
+        PRO_FACTORY_PRICE,
+      </if>
+      <if test="proPrice != null">
+        PRO_PRICE,
+      </if>
+      <if test="proPrice0 != null">
+        PRO_PRICE0,
+      </if>
+      <if test="proPrice1 != null">
+        PRO_PRICE1,
+      </if>
+      <if test="proPrice2 != null">
+        PRO_PRICE2,
+      </if>
+      <if test="proFujian != null">
+        PRO_FUJIAN,
+      </if>
+      <if test="proLaw != null">
+        PRO_LAW,
+      </if>
+      <if test="proRemark != null">
+        PRO_REMARK,
+      </if>
+      <if test="proAttr01 != null">
+        PRO_ATTR_01,
+      </if>
+      <if test="proAttr02 != null">
+        PRO_ATTR_02,
+      </if>
+      <if test="proAttr03 != null">
+        PRO_ATTR_03,
+      </if>
+      <if test="proAttr04 != null">
+        PRO_ATTR_04,
+      </if>
+      <if test="proAttr05 != null">
+        PRO_ATTR_05,
+      </if>
+      <if test="proAttr06 != null">
+        PRO_ATTR_06,
+      </if>
+      <if test="proAttr07 != null">
+        PRO_ATTR_07,
+      </if>
+      <if test="proAttr08 != null">
+        PRO_ATTR_08,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="proId != null">
+        #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="proTypeId != null">
+        #{proTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="stId != null">
+        #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="bandId != null">
+        #{bandId,jdbcType=VARCHAR},
+      </if>
+      <if test="proCode != null">
+        #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proGuige != null">
+        #{proGuige,jdbcType=VARCHAR},
+      </if>
+      <if test="proWeight != null">
+        #{proWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="proCailiao != null">
+        #{proCailiao,jdbcType=VARCHAR},
+      </if>
+      <if test="proFactoryPrice != null">
+        #{proFactoryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proPrice != null">
+        #{proPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proPrice0 != null">
+        #{proPrice0,jdbcType=DECIMAL},
+      </if>
+      <if test="proPrice1 != null">
+        #{proPrice1,jdbcType=DECIMAL},
+      </if>
+      <if test="proPrice2 != null">
+        #{proPrice2,jdbcType=DECIMAL},
+      </if>
+      <if test="proFujian != null">
+        #{proFujian,jdbcType=VARCHAR},
+      </if>
+      <if test="proLaw != null">
+        #{proLaw,jdbcType=VARCHAR},
+      </if>
+      <if test="proRemark != null">
+        #{proRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr01 != null">
+        #{proAttr01,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr02 != null">
+        #{proAttr02,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr03 != null">
+        #{proAttr03,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr04 != null">
+        #{proAttr04,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr05 != null">
+        #{proAttr05,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr06 != null">
+        #{proAttr06,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr07 != null">
+        #{proAttr07,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr08 != null">
+        #{proAttr08,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="findByIdProduct" resultMap="BaseResultMap" parameterType="String">
+  	select * from ehy_product where PRO_ID = #{proId}
+  </select>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyProduct">
+    update ehy_product
+    <set>
+      <if test="proTypeId != null">
+        PRO_TYPE_ID = #{proTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="stId != null">
+        ST_ID = #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="bandId != null">
+        BAND_ID = #{bandId,jdbcType=VARCHAR},
+      </if>
+      <if test="proCode != null">
+        PRO_CODE = #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        PRO_NAME = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proGuige != null">
+        PRO_GUIGE = #{proGuige,jdbcType=VARCHAR},
+      </if>
+      <if test="proWeight != null">
+        PRO_WEIGHT = #{proWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="proCailiao != null">
+        PRO_CAILIAO = #{proCailiao,jdbcType=VARCHAR},
+      </if>
+      <if test="proFactoryPrice != null">
+        PRO_FACTORY_PRICE = #{proFactoryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proPrice != null">
+        PRO_PRICE = #{proPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proPrice0 != null">
+        PRO_PRICE0 = #{proPrice0,jdbcType=DECIMAL},
+      </if>
+      <if test="proPrice1 != null">
+        PRO_PRICE1 = #{proPrice1,jdbcType=DECIMAL},
+      </if>
+      <if test="proPrice2 != null">
+        PRO_PRICE2 = #{proPrice2,jdbcType=DECIMAL},
+      </if>
+      <if test="proFujian != null">
+        PRO_FUJIAN = #{proFujian,jdbcType=VARCHAR},
+      </if>
+      <if test="proLaw != null">
+        PRO_LAW = #{proLaw,jdbcType=VARCHAR},
+      </if>
+      <if test="proRemark != null">
+        PRO_REMARK = #{proRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr01 != null">
+        PRO_ATTR_01 = #{proAttr01,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr02 != null">
+        PRO_ATTR_02 = #{proAttr02,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr03 != null">
+        PRO_ATTR_03 = #{proAttr03,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr04 != null">
+        PRO_ATTR_04 = #{proAttr04,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr05 != null">
+        PRO_ATTR_05 = #{proAttr05,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr06 != null">
+        PRO_ATTR_06 = #{proAttr06,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr07 != null">
+        PRO_ATTR_07 = #{proAttr07,jdbcType=VARCHAR},
+      </if>
+      <if test="proAttr08 != null">
+        PRO_ATTR_08 = #{proAttr08,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PRO_ID = #{proId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyProduct">
+    update ehy_product
+    set PRO_TYPE_ID = #{proTypeId,jdbcType=VARCHAR},
+      ST_ID = #{stId,jdbcType=VARCHAR},
+      BAND_ID = #{bandId,jdbcType=VARCHAR},
+      PRO_CODE = #{proCode,jdbcType=VARCHAR},
+      PRO_NAME = #{proName,jdbcType=VARCHAR},
+      PRO_GUIGE = #{proGuige,jdbcType=VARCHAR},
+      PRO_WEIGHT = #{proWeight,jdbcType=DECIMAL},
+      PRO_CAILIAO = #{proCailiao,jdbcType=VARCHAR},
+      PRO_FACTORY_PRICE = #{proFactoryPrice,jdbcType=DECIMAL},
+      PRO_PRICE = #{proPrice,jdbcType=DECIMAL},
+      PRO_PRICE0 = #{proPrice0,jdbcType=DECIMAL},
+      PRO_PRICE1 = #{proPrice1,jdbcType=DECIMAL},
+      PRO_PRICE2 = #{proPrice2,jdbcType=DECIMAL},
+      PRO_FUJIAN = #{proFujian,jdbcType=VARCHAR},
+      PRO_LAW = #{proLaw,jdbcType=VARCHAR},
+      PRO_REMARK = #{proRemark,jdbcType=VARCHAR},
+      PRO_ATTR_01 = #{proAttr01,jdbcType=VARCHAR},
+      PRO_ATTR_02 = #{proAttr02,jdbcType=VARCHAR},
+      PRO_ATTR_03 = #{proAttr03,jdbcType=VARCHAR},
+      PRO_ATTR_04 = #{proAttr04,jdbcType=VARCHAR},
+      PRO_ATTR_05 = #{proAttr05,jdbcType=VARCHAR},
+      PRO_ATTR_06 = #{proAttr06,jdbcType=VARCHAR},
+      PRO_ATTR_07 = #{proAttr07,jdbcType=VARCHAR},
+      PRO_ATTR_08 = #{proAttr08,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER}
+    where PRO_ID = #{proId,jdbcType=VARCHAR}
+  </update>
+</mapper>

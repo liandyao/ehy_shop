@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyProductBandMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyProductBand">
+    <id column="BAND_ID" jdbcType="VARCHAR" property="bandId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="LOGO" jdbcType="VARCHAR" property="logo" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    BAND_ID, NAME, LOGO, TYPE, SORT, OPER, OPTIME, ISVA
+  </sql>
+  
+  <!-- 查询所有商品品牌(不分页) -->
+  <select id="findAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_product_band
+  </select>
+  
+  <!-- 分页查询品牌、搜索查询 -->
+  <select id="findProductBandList" resultMap="BaseResultMap" parameterType="map">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_product_band 
+    where 
+    
+    <if test="keyWord!=''">
+    	(name like #{keyWord}
+    	or type like #{keyWord}) and 
+    </if> 
+    isva = 1 
+    ORDER BY optime DESC 
+    limit #{pages.firstRows},#{pages.maxResult}
+  </select>
+  
+  <!-- 得到行数 -->
+  <select id="selectCountProband" resultType="int">
+  	select count(*)
+  	from ehy_product_band
+   	where 
+    isva = 1 
+    <if test="keyWord!=''">
+    	and (name like #{keyWord}
+    	or type like #{keyWord})
+    </if> 
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_product_band
+    where BAND_ID = #{bandId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_product_band
+    where BAND_ID = #{bandId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyProductBand">
+    insert into ehy_product_band (BAND_ID, NAME, LOGO, 
+      TYPE, SORT, OPER, OPTIME, 
+      ISVA)
+    values (#{bandId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{oper,jdbcType=VARCHAR}, #{optime,jdbcType=TIMESTAMP}, 
+      #{isva,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyProductBand">
+    <selectKey keyProperty="bandId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
+    insert into ehy_product_band
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bandId != null">
+        BAND_ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="logo != null">
+        LOGO,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bandId != null">
+        #{bandId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null">
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyProductBand">
+    update ehy_product_band
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null">
+        LOGO = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+    </set>
+    where BAND_ID = #{bandId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyProductBand">
+    update ehy_product_band
+    set NAME = #{name,jdbcType=VARCHAR},
+      LOGO = #{logo,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER},
+      OPER = #{oper,jdbcType=VARCHAR},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      ISVA = #{isva,jdbcType=INTEGER}
+    where BAND_ID = #{bandId,jdbcType=VARCHAR}
+  </update>
+</mapper>

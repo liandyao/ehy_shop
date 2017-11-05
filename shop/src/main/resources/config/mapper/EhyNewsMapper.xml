@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyNewsMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyNews">
+    <id column="NEWS_ID" jdbcType="VARCHAR" property="newsId" />
+    <result column="NEWS_TITLE" jdbcType="VARCHAR" property="newsTitle" />
+    <result column="NEWS_TYPE" jdbcType="VARCHAR" property="newsType" />
+    <result column="NEWS_CONTENT" jdbcType="VARCHAR" property="newsContent" />
+    <result column="NEWS_TIME" jdbcType="VARCHAR" property="newsTime" />
+    <result column="STATION" jdbcType="VARCHAR" property="station" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    NEWS_ID, NEWS_TITLE, NEWS_TYPE, NEWS_CONTENT, NEWS_TIME, STATION, ISVA, OPTIME, OPER, 
+    SORT
+  </sql>
+  
+  <!-- 查询所有 -->
+  <select id="findAll" parameterType="map" resultType="map">
+  	SELECT news.NEWS_ID newsId,news.STATION station,news.NEWS_TITLE newsTitle,news.NEWS_TYPE newsType,news.NEWS_CONTENT newsContent,news.SORT sort,st.ST_NAME stName
+  	FROM ehy_news news,EHY_STATION st 
+   <where>
+   	news.STATION=st.ST_ID
+  		<if test="stName != null">
+  			and st.ST_NAME like CONCAT('%',#{stName},'%' )
+  		</if>
+  		<if test="newsTitle !=null">
+  			and news.NEWS_TITLE like CONCAT('%',#{newsTitle},'%' )
+  		</if>
+  		<if test="newsType !=null">
+  			and news.NEWS_TYPE like CONCAT('%',#{newsType},'%' )
+  		</if>
+  		and news.ISVA=1
+  		ORDER BY IFNULL(LENGTH(TRIM(news.sort)),0) ASC,news.optime DESC 
+  	</where> 
+  	 limit #{page},#{limit}
+  </select>
+  
+   <!-- 总行数 -->
+  <select id="findRowCount" parameterType="map" resultType="int">
+  	SELECT COUNT(*) FROM ehy_news news,EHY_STATION st 
+  	<where>
+   	news.STATION=st.ST_ID
+  		<if test="stName != null">
+  			and st.ST_NAME like CONCAT('%',#{stName},'%' )
+  		</if>
+  		<if test="newsTitle !=null">
+  			and news.NEWS_TITLE like CONCAT('%',#{newsTitle},'%' )
+  		</if>
+  		<if test="newsType !=null">
+  			and news.NEWS_TYPE like CONCAT('%',#{newsType},'%' )
+  		</if>
+  		and news.ISVA=1
+  		ORDER BY IFNULL(LENGTH(TRIM(news.sort)),0) ASC,news.optime DESC 
+  	</where> 
+  </select>
+  
+   <!-- 增加 -->
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyNews">
+  
+  <selectKey keyProperty="newsId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	  </selectKey>
+ 
+  
+    insert into ehy_news (NEWS_ID, NEWS_TITLE, NEWS_TYPE, 
+      NEWS_CONTENT, NEWS_TIME, STATION, 
+      ISVA, OPTIME, OPER, 
+      SORT)
+    values (#{newsId,jdbcType=VARCHAR}, #{newsTitle,jdbcType=VARCHAR}, #{newsType,jdbcType=VARCHAR}, 
+      #{newsContent,jdbcType=VARCHAR}, #{newsTime,jdbcType=VARCHAR}, #{station,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER})
+  </insert>
+ 
+ <!-- 删除或修改 --> 
+ <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyNews">
+    update ehy_news
+    <set>
+      <if test="newsTitle != null">
+        NEWS_TITLE = #{newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newsType != null">
+        NEWS_TYPE = #{newsType,jdbcType=VARCHAR},
+      </if>
+      <if test="newsContent != null">
+        NEWS_CONTENT = #{newsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="newsTime != null">
+        NEWS_TIME = #{newsTime,jdbcType=VARCHAR},
+      </if>
+      <if test="station != null">
+        STATION = #{station,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where NEWS_ID = #{newsId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据ID查询 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_news
+    where NEWS_ID = #{newsId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据站点标识码查询公告 -->
+  <select id="shownews" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_news
+    where STATION = #{station,jdbcType=VARCHAR}
+    ORDER BY IFNULL(LENGTH(TRIM(sort)),0) ASC,optime DESC  
+    LIMIT 0,7
+  </select>
+  
+  <!-- 根据站点标识码查询更多公告 -->
+  <select id="show" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_news
+    where STATION = #{station,jdbcType=VARCHAR}
+    ORDER BY IFNULL(LENGTH(TRIM(sort)),0) ASC,optime DESC
+     limit #{page},#{limit}
+  </select>
+  
+  
+  <!-- 根据站点标识码查询更多公告的总行数 -->
+  <select id="showRowCount" parameterType="java.lang.String" resultType="int">
+    select COUNT(*)  from ehy_news
+    where STATION = #{station,jdbcType=VARCHAR}
+    ORDER BY IFNULL(LENGTH(TRIM(sort)),0) ASC,optime DESC
+  </select>
+  
+  
+  
+  <!-- 根据ID修改取消置顶 -->
+  <update id="updateByPrimaryKey" parameterType="string">
+    update ehy_news set SORT = 999 where NEWS_ID = #{newsId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据ID修改置顶 -->
+  <update id="update" parameterType="string">
+    update ehy_news set SORT = 0 where NEWS_ID = #{newsId,jdbcType=VARCHAR}
+  </update>
+  
+   <!-- 根据站点查询是否该站点存在置顶 -->
+  <select id="showstation" parameterType="string" resultType="string">
+     SELECT * FROM ehy_news WHERE sort=0 AND STATION=#{station,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_news
+    where NEWS_ID = #{newsId,jdbcType=VARCHAR}
+  </delete>
+  
+ 
+  
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyNews">
+    insert into ehy_news
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="newsId != null">
+        NEWS_ID,
+      </if>
+      <if test="newsTitle != null">
+        NEWS_TITLE,
+      </if>
+      <if test="newsType != null">
+        NEWS_TYPE,
+      </if>
+      <if test="newsContent != null">
+        NEWS_CONTENT,
+      </if>
+      <if test="newsTime != null">
+        NEWS_TIME,
+      </if>
+      <if test="station != null">
+        STATION,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="newsId != null">
+        #{newsId,jdbcType=VARCHAR},
+      </if>
+      <if test="newsTitle != null">
+        #{newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newsType != null">
+        #{newsType,jdbcType=VARCHAR},
+      </if>
+      <if test="newsContent != null">
+        #{newsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="newsTime != null">
+        #{newsTime,jdbcType=VARCHAR},
+      </if>
+      <if test="station != null">
+        #{station,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+ 
+  
+</mapper>

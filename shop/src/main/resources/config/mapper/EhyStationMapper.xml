@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyStationMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyStation">
+    <id column="ST_ID" jdbcType="VARCHAR" property="stId" />
+    <result column="ST_NAME" jdbcType="VARCHAR" property="stName" />
+    <result column="ST_CODE" jdbcType="VARCHAR" property="stCode" />
+    <result column="ST_PID" jdbcType="VARCHAR" property="stPid" />
+    <result column="ST_TYPE" jdbcType="INTEGER" property="stType" />
+    <result column="ST_FLAG" jdbcType="VARCHAR" property="stFlag" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ST_ID, ST_NAME, ST_CODE, ST_PID, ST_TYPE, ST_FLAG, ISVA, OPTIME, OPER, SORT
+  </sql>
+ 	
+ 	<!-- 查询所有站点 -->
+   <select id="findStation" resultMap="BaseResultMap">
+   		select * from ehy_station where isva=1 order by SORT 
+   </select>
+  
+  <!-- 查询所有 -->
+  <select id="findAll" parameterType="map"  resultMap="BaseResultMap">
+  		select * from ehy_station  
+  		<where>
+	  		<if test="stName != null">
+	        	and st_name like CONCAT('%',#{stName},'%' )
+	      	</if>
+	      	<if test="stCode != null">
+	        	and ST_CODE like CONCAT('%',#{stCode},'%' )
+	      	</if>
+	      	<if test="stType != null">
+	        	and ST_TYPE=#{stType}
+	      	</if>
+	      	<if test="stFlag != null">
+	        	and ST_FLAG like CONCAT('%',#{stFlag},'%' )
+	      	</if>
+	      	and ISVA=1  
+  		</where>
+  		ORDER BY SORT  limit #{firstRows} , #{maxResult} 
+  </select>
+  
+  <!-- 查询总行数 -->
+  <select id="findRowCount" parameterType="map" resultType="int">
+  	select count(*) from EHY_STATION 
+  	<where>
+	  		<if test="stName != null">
+	        	and st_name like CONCAT('%',#{stName},'%' )
+	      	</if>
+	      	<if test="stCode != null">
+	        	and ST_CODE like CONCAT('%',#{stCode},'%' )
+	      	</if>
+	      	<if test="stType != null">
+	        	and ST_TYPE=#{stType}
+	      	</if>
+	      	<if test="stFlag != null">
+	        	and ST_FLAG like CONCAT('%',#{stFlag},'%' )
+	      	</if>
+	      	and ISVA=1 
+  		</where>
+  </select>
+
+  <!-- 根据id查找数据 -->
+  <select id="findById" parameterType="java.lang.String" resultMap="BaseResultMap">
+	select 
+    <include refid="Base_Column_List" />
+    from ehy_station
+    where ST_ID = #{stId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据站点ID查询站点 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_station
+    where ST_ID = #{stId,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 根据站点名称判断站点名称是否存在 -->
+  <select id="isStation" parameterType="java.lang.String" resultType="int">
+	select count(*) from ehy_station
+    where ST_name = #{stName,jdbcType=VARCHAR} and isva=1
+  </select>
+  
+  <!-- 增加 -->
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyStation">
+  	<selectKey keyProperty="stId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	 </selectKey>
+    insert into ehy_station
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stId != null">
+        ST_ID,
+      </if>
+      <if test="stName != null">
+        ST_NAME,
+      </if>
+      <if test="stCode != null">
+        ST_CODE,
+      </if>
+      <if test="stPid != null">
+        ST_PID,
+      </if>
+      <if test="stType != null">
+        ST_TYPE,
+      </if>
+      <if test="stFlag != null">
+        ST_FLAG,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort == null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stId != null">
+        #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="stName != null">
+        #{stName,jdbcType=VARCHAR},
+      </if>
+      <if test="stCode != null">
+        #{stCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stPid != null">
+        #{stPid,jdbcType=VARCHAR},
+      </if>
+      <if test="stType != null">
+        #{stType,jdbcType=INTEGER},
+      </if>
+      <if test="stFlag != null">
+        #{stFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort == null">
+        (SELECT IFNULL(max(SORT)+1,1) FROM ehy_station AS SORT),
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 修改 -->
+  <update id="update" parameterType="cn.ehuoyuan.shop.domain.EhyStation">
+    update ehy_station
+    <set>
+      <if test="stName != null">
+        ST_NAME = #{stName,jdbcType=VARCHAR},
+      </if>
+      <if test="stCode != null">
+        ST_CODE = #{stCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stPid != null">
+        ST_PID = #{stPid,jdbcType=VARCHAR},
+      </if>
+      <if test="stType != null">
+        ST_TYPE = #{stType,jdbcType=INTEGER},
+      </if>
+      <if test="stFlag != null">
+        ST_FLAG = #{stFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ST_ID = #{stId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 排序 -->
+   <update id="sortStation" parameterType="int" >
+  <!-- 
+  	往上排：让开始行数等于结束行数，再把小于开始行数大于结束行数的全部+1 
+  	往下排：让结束行数等于开始行数，再把大于开始行数小于结束行数的全部-1 
+  -->
+  	
+  	<if test="endNum &gt; startNum">
+  		update ehy_station set SORT=SORT-1 where SORT &lt;= #{endNum } and SORT &gt;= #{startNum };
+  		update ehy_station set SORT=#{endNum } where st_id=#{stId};
+  	</if>
+  	<if test="endNum &lt; startNum">
+  		update ehy_station set SORT=SORT+1 where SORT &gt;= #{endNum } and SORT &lt; #{startNum };
+  		update ehy_station set SORT=#{endNum } where st_id=#{stId}; 
+  	</if>
+  	
+  </update>
+ </mapper>

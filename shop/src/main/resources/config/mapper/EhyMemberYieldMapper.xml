@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyMemberYieldMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyMemberYield">
+    <id column="MY_ID" jdbcType="VARCHAR" property="myId" />
+    <result column="MB_ID" jdbcType="VARCHAR" property="mbId" />
+    <result column="MY_MONEY" jdbcType="DECIMAL" property="myMoney" />
+    <result column="MY_DATATIME" jdbcType="VARCHAR" property="myDatatime" />
+    <result column="MY_ISJS" jdbcType="INTEGER" property="myIsjs" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="YIELD_SOURCE" jdbcType="VARCHAR" property="yieldSource" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MY_ID, MB_ID, MY_MONEY, MY_DATATIME, MY_ISJS, ISVA, OPTIME, OPER, YIELD_SOURCE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_member_yield
+    where MY_ID = #{myId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_member_yield
+    where MY_ID = #{myId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyMemberYield">
+    insert into ehy_member_yield (MY_ID, MB_ID, MY_MONEY, 
+      MY_DATATIME, MY_ISJS, ISVA, 
+      OPTIME, OPER, YIELD_SOURCE
+      )
+    values (#{myId,jdbcType=VARCHAR}, #{mbId,jdbcType=VARCHAR}, #{myMoney,jdbcType=DECIMAL}, 
+      #{myDatatime,jdbcType=VARCHAR}, #{myIsjs,jdbcType=INTEGER}, #{isva,jdbcType=INTEGER}, 
+      #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}, #{yieldSource,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyMemberYield">
+    insert into ehy_member_yield
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="myId != null">
+        MY_ID,
+      </if>
+      <if test="mbId != null">
+        MB_ID,
+      </if>
+      <if test="myMoney != null">
+        MY_MONEY,
+      </if>
+      <if test="myDatatime != null">
+        MY_DATATIME,
+      </if>
+      <if test="myIsjs != null">
+        MY_ISJS,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="yieldSource != null">
+        YIELD_SOURCE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="myId != null">
+        #{myId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbId != null">
+        #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="myMoney != null">
+        #{myMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="myDatatime != null">
+        #{myDatatime,jdbcType=VARCHAR},
+      </if>
+      <if test="myIsjs != null">
+        #{myIsjs,jdbcType=INTEGER},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="yieldSource != null">
+        #{yieldSource,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyMemberYield">
+    update ehy_member_yield
+    <set>
+      <if test="mbId != null">
+        MB_ID = #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="myMoney != null">
+        MY_MONEY = #{myMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="myDatatime != null">
+        MY_DATATIME = #{myDatatime,jdbcType=VARCHAR},
+      </if>
+      <if test="myIsjs != null">
+        MY_ISJS = #{myIsjs,jdbcType=INTEGER},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="yieldSource != null">
+        YIELD_SOURCE = #{yieldSource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MY_ID = #{myId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyMemberYield">
+    update ehy_member_yield
+    set MB_ID = #{mbId,jdbcType=VARCHAR},
+      MY_MONEY = #{myMoney,jdbcType=DECIMAL},
+      MY_DATATIME = #{myDatatime,jdbcType=VARCHAR},
+      MY_ISJS = #{myIsjs,jdbcType=INTEGER},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      YIELD_SOURCE = #{yieldSource,jdbcType=VARCHAR}
+    where MY_ID = #{myId,jdbcType=VARCHAR}
+  </update>
+</mapper>

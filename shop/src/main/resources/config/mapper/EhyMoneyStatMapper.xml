@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyMoneyStatMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyMoneyStat">
+    <id column="MS_ID" jdbcType="VARCHAR" property="msId" />
+    <result column="ST_ID" jdbcType="VARCHAR" property="stId" />
+    <result column="MS_START_TIME" jdbcType="VARCHAR" property="msStartTime" />
+    <result column="MS_END_TIME" jdbcType="VARCHAR" property="msEndTime" />
+    <result column="MS_YEAR" jdbcType="INTEGER" property="msYear" />
+    <result column="MS_EMP" jdbcType="VARCHAR" property="msEmp" />
+    <result column="MS_DATETIME" jdbcType="VARCHAR" property="msDatetime" />
+    <result column="MS_MONEY" jdbcType="DECIMAL" property="msMoney" />
+    <result column="MS_ISJS" jdbcType="INTEGER" property="msIsjs" />
+    <result column="MS_GET" jdbcType="VARCHAR" property="msGet" />
+    <result column="MS_GETTYPE" jdbcType="VARCHAR" property="msGettype" />
+    <result column="MS_GETTIME" jdbcType="VARCHAR" property="msGettime" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MS_ID, ST_ID, MS_START_TIME, MS_END_TIME, MS_YEAR, MS_EMP, MS_DATETIME, MS_MONEY, 
+    MS_ISJS, MS_GET, MS_GETTYPE, MS_GETTIME, ISVA, OPTIME, OPER
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_money_stat
+    where MS_ID = #{msId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_money_stat
+    where MS_ID = #{msId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyMoneyStat">
+    insert into ehy_money_stat (MS_ID, ST_ID, MS_START_TIME, 
+      MS_END_TIME, MS_YEAR, MS_EMP, 
+      MS_DATETIME, MS_MONEY, MS_ISJS, 
+      MS_GET, MS_GETTYPE, MS_GETTIME, 
+      ISVA, OPTIME, OPER
+      )
+    values (#{msId,jdbcType=VARCHAR}, #{stId,jdbcType=VARCHAR}, #{msStartTime,jdbcType=VARCHAR}, 
+      #{msEndTime,jdbcType=VARCHAR}, #{msYear,jdbcType=INTEGER}, #{msEmp,jdbcType=VARCHAR}, 
+      #{msDatetime,jdbcType=VARCHAR}, #{msMoney,jdbcType=DECIMAL}, #{msIsjs,jdbcType=INTEGER}, 
+      #{msGet,jdbcType=VARCHAR}, #{msGettype,jdbcType=VARCHAR}, #{msGettime,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyMoneyStat">
+    insert into ehy_money_stat
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="msId != null">
+        MS_ID,
+      </if>
+      <if test="stId != null">
+        ST_ID,
+      </if>
+      <if test="msStartTime != null">
+        MS_START_TIME,
+      </if>
+      <if test="msEndTime != null">
+        MS_END_TIME,
+      </if>
+      <if test="msYear != null">
+        MS_YEAR,
+      </if>
+      <if test="msEmp != null">
+        MS_EMP,
+      </if>
+      <if test="msDatetime != null">
+        MS_DATETIME,
+      </if>
+      <if test="msMoney != null">
+        MS_MONEY,
+      </if>
+      <if test="msIsjs != null">
+        MS_ISJS,
+      </if>
+      <if test="msGet != null">
+        MS_GET,
+      </if>
+      <if test="msGettype != null">
+        MS_GETTYPE,
+      </if>
+      <if test="msGettime != null">
+        MS_GETTIME,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="msId != null">
+        #{msId,jdbcType=VARCHAR},
+      </if>
+      <if test="stId != null">
+        #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="msStartTime != null">
+        #{msStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="msEndTime != null">
+        #{msEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="msYear != null">
+        #{msYear,jdbcType=INTEGER},
+      </if>
+      <if test="msEmp != null">
+        #{msEmp,jdbcType=VARCHAR},
+      </if>
+      <if test="msDatetime != null">
+        #{msDatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="msMoney != null">
+        #{msMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="msIsjs != null">
+        #{msIsjs,jdbcType=INTEGER},
+      </if>
+      <if test="msGet != null">
+        #{msGet,jdbcType=VARCHAR},
+      </if>
+      <if test="msGettype != null">
+        #{msGettype,jdbcType=VARCHAR},
+      </if>
+      <if test="msGettime != null">
+        #{msGettime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyMoneyStat">
+    update ehy_money_stat
+    <set>
+      <if test="stId != null">
+        ST_ID = #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="msStartTime != null">
+        MS_START_TIME = #{msStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="msEndTime != null">
+        MS_END_TIME = #{msEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="msYear != null">
+        MS_YEAR = #{msYear,jdbcType=INTEGER},
+      </if>
+      <if test="msEmp != null">
+        MS_EMP = #{msEmp,jdbcType=VARCHAR},
+      </if>
+      <if test="msDatetime != null">
+        MS_DATETIME = #{msDatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="msMoney != null">
+        MS_MONEY = #{msMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="msIsjs != null">
+        MS_ISJS = #{msIsjs,jdbcType=INTEGER},
+      </if>
+      <if test="msGet != null">
+        MS_GET = #{msGet,jdbcType=VARCHAR},
+      </if>
+      <if test="msGettype != null">
+        MS_GETTYPE = #{msGettype,jdbcType=VARCHAR},
+      </if>
+      <if test="msGettime != null">
+        MS_GETTIME = #{msGettime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MS_ID = #{msId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyMoneyStat">
+    update ehy_money_stat
+    set ST_ID = #{stId,jdbcType=VARCHAR},
+      MS_START_TIME = #{msStartTime,jdbcType=VARCHAR},
+      MS_END_TIME = #{msEndTime,jdbcType=VARCHAR},
+      MS_YEAR = #{msYear,jdbcType=INTEGER},
+      MS_EMP = #{msEmp,jdbcType=VARCHAR},
+      MS_DATETIME = #{msDatetime,jdbcType=VARCHAR},
+      MS_MONEY = #{msMoney,jdbcType=DECIMAL},
+      MS_ISJS = #{msIsjs,jdbcType=INTEGER},
+      MS_GET = #{msGet,jdbcType=VARCHAR},
+      MS_GETTYPE = #{msGettype,jdbcType=VARCHAR},
+      MS_GETTIME = #{msGettime,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR}
+    where MS_ID = #{msId,jdbcType=VARCHAR}
+  </update>
+</mapper>

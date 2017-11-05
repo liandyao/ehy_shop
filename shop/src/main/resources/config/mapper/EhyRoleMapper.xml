@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyRoleMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyRole">
+    <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+    <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+    <result column="ROLE_CODE" jdbcType="VARCHAR" property="roleCode" />
+    <result column="ROLE_DESC" jdbcType="VARCHAR" property="roleDesc" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ROLE_ID, ROLE_NAME, ROLE_CODE, ROLE_DESC, ISVA, OPTIME, OPER
+  </sql>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+  	select * from ehy_role where ISVA=1 
+  </select>
+  
+  <select id="countRows" parameterType="cn.ehuoyuan.shop.domain.EhyRole" resultType="int">
+  	select count(*) from ehy_role where ISVA=1 
+  	<if test="role.roleName != null">
+  		and ROLE_NAME like #{role.roleName}
+  	</if>
+  	<if test="role.roleCode != null">
+  		and ROLE_CODE like #{role.roleCode}
+  	</if>
+  	<if test="role.roleDesc != null">
+  		and ROLE_DESC like #{role.roleDesc}
+  	</if>
+  </select>
+  
+  <select id="findAllPage" parameterType="map" resultMap="BaseResultMap">
+  	select * from ehy_role where ISVA=1 
+  	<if test="role.roleName != null">
+  		and ROLE_NAME like #{role.roleName}
+  	</if>
+  	<if test="role.roleCode != null">
+  		and ROLE_CODE like #{role.roleCode}
+  	</if>
+  	<if test="role.roleDesc != null">
+  		and ROLE_DESC like #{role.roleDesc}
+  	</if>
+  	order by OPTIME 
+  	limit #{pages.firstRows }, #{pages.maxResult }
+  </select>
+  
+  <update id="deleteRole" parameterType="string">
+	  update ehy_role set ISVA=0 where ROLE_ID=#{roleId}
+  </update>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_role
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_role
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyRole">
+    insert into ehy_role (ROLE_ID, ROLE_NAME, ROLE_CODE, 
+      ROLE_DESC, ISVA, OPTIME, 
+      OPER)
+    values (#{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{roleCode,jdbcType=VARCHAR}, 
+      #{roleDesc,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyRole">
+    insert into ehy_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="roleName != null">
+        ROLE_NAME,
+      </if>
+      <if test="roleCode != null">
+        ROLE_CODE,
+      </if>
+      <if test="roleDesc != null">
+        ROLE_DESC,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCode != null">
+        #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null">
+        #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyRole">
+    update ehy_role
+    <set>
+      <if test="roleName != null">
+        ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCode != null">
+        ROLE_CODE = #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null">
+        ROLE_DESC = #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyRole">
+    update ehy_role
+    set ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      ROLE_CODE = #{roleCode,jdbcType=VARCHAR},
+      ROLE_DESC = #{roleDesc,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR}
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

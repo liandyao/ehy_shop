@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyMoneyRecordMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyMoneyRecord">
+    <id column="MR_ID" jdbcType="VARCHAR" property="mrId" />
+    <result column="MS_ID" jdbcType="VARCHAR" property="msId" />
+    <result column="MR_DATETIME" jdbcType="VARCHAR" property="mrDatetime" />
+    <result column="MR_MONEY" jdbcType="DECIMAL" property="mrMoney" />
+    <result column="MR_REMARK" jdbcType="VARCHAR" property="mrRemark" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MR_ID, MS_ID, MR_DATETIME, MR_MONEY, MR_REMARK, ISVA, OPTIME, OPER
+  </sql>
+  
+  <select id="findMaxTime" resultType="string">
+  	SELECT MAX(MR_DATETIME) FROM ehy_money_record;
+  </select>
+  
+  <select id="showList" parameterType="map" resultMap="BaseResultMap">
+  	SELECT * FROM ehy_money_record WHERE ISVA=1 
+  	<if test="startTime != '' and startTime != null">
+  	AND MR_DATETIME>=#{startTime}
+  	</if>
+  	<if test="endTime != '' and endTime != null">
+  	AND MR_DATETIME&lt;=#{endTime}
+  	</if>
+  	<if test="minMoney != null and minMoney != ''">
+  	AND MR_MONEY>=#{minMoney }
+  	</if>
+  	<if test="maxMoney != null and maxMoney != ''">
+  	AND MR_MONEY&lt;=#{maxMoney }
+  	</if>
+  	ORDER BY OPTIME LIMIT #{pages.firstRows }, #{pages.maxResult}
+  </select>
+  
+  <select id="countRows" parameterType="map" resultType="int">
+  	SELECT COUNT(*) FROM ehy_money_record WHERE ISVA=1 
+  	<if test="startTime != '' and startTime != null">
+  	AND MR_DATETIME>=#{startTime}
+  	</if>
+  	<if test="endTime != '' and endTime != null">
+  	AND MR_DATETIME&lt;=#{endTime}
+  	</if>
+  	<if test="minMoney != null and minMoney != ''">
+  	AND MR_MONEY>=#{minMoney }
+  	</if>
+  	<if test="maxMoney != null and maxMoney != ''">
+  	AND MR_MONEY&lt;=#{maxMoney }
+  	</if>
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_money_record
+    where MR_ID = #{mrId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_money_record
+    where MR_ID = #{mrId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyMoneyRecord">
+    insert into ehy_money_record (MR_ID, MS_ID, 
+      MR_DATETIME, MR_MONEY, MR_REMARK, 
+      ISVA, OPTIME, OPER
+      )
+    values (#{mrId,jdbcType=VARCHAR}, #{msId,jdbcType=VARCHAR}, 
+      #{mrDatetime,jdbcType=VARCHAR}, #{mrMoney,jdbcType=DECIMAL}, #{mrRemark,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyMoneyRecord">
+    insert into ehy_money_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mrId != null">
+        MR_ID,
+      </if>
+      <if test="msId != null">
+        MS_ID,
+      </if>
+      <if test="mrDatetime != null">
+        MR_DATETIME,
+      </if>
+      <if test="mrMoney != null">
+        MR_MONEY,
+      </if>
+      <if test="mrRemark != null">
+        MR_REMARK,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mrId != null">
+        #{mrId,jdbcType=VARCHAR},
+      </if>
+      <if test="msId != null">
+        #{msId,jdbcType=VARCHAR},
+      </if>
+      <if test="mrDatetime != null">
+        #{mrDatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="mrMoney != null">
+        #{mrMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="mrRemark != null">
+        #{mrRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyMoneyRecord">
+    update ehy_money_record
+    <set>
+      <if test="msId != null">
+        MS_ID = #{msId,jdbcType=VARCHAR},
+      </if>
+      <if test="mrDatetime != null">
+        MR_DATETIME = #{mrDatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="mrMoney != null">
+        MR_MONEY = #{mrMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="mrRemark != null">
+        MR_REMARK = #{mrRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MR_ID = #{mrId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyMoneyRecord">
+    update ehy_money_record
+    set MS_ID = #{msId,jdbcType=VARCHAR},
+      MR_DATETIME = #{mrDatetime,jdbcType=VARCHAR},
+      MR_MONEY = #{mrMoney,jdbcType=DECIMAL},
+      MR_REMARK = #{mrRemark,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR}
+    where MR_ID = #{mrId,jdbcType=VARCHAR}
+  </update>
+</mapper>

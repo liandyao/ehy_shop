@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyCouponMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyCoupon">
+    <id column="COUPON_ID" jdbcType="VARCHAR" property="couponId" />
+    <result column="ST_ID" jdbcType="VARCHAR" property="stId" />
+    <result column="COUPON_CODE" jdbcType="VARCHAR" property="couponCode" />
+    <result column="COUPON_MONEY" jdbcType="DECIMAL" property="couponMoney" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="COUPON_MIN_MONEY" jdbcType="DECIMAL" property="couponMinMoney" />
+    <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    <result column="END_TIME" jdbcType="VARCHAR" property="endTime" />
+    <result column="CALC" jdbcType="VARCHAR" property="calc" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    COUPON_ID , ST_ID, COUPON_CODE, COUPON_MONEY, REMARK, COUPON_MIN_MONEY, START_TIME, 
+    END_TIME, CALC, ISVA, OPTIME, OPER, SORT
+  </sql>
+  
+  <!-- 查询数据 -->
+  <select id="findAll" parameterType="map" resultType="map">
+    select 
+    cou.COUPON_ID couponId,cou.ST_ID stId,cou.COUPON_CODE couponCode,cou.COUPON_MONEY couponMoney,
+    cou.COUPON_MIN_MONEY couponMinMoney,cou.REMARK remark,cou.START_TIME startTime,cou.END_TIME endTime,
+    cou.CALC calc,cou.sort sort ,sta.st_name stName
+    from ehy_coupon cou,ehy_station sta
+    <where>
+    sta.ST_ID=cou.ST_ID
+    <if test="stName!=null">
+    and sta.st_name like CONCAT('%',#{stName},'%' )
+    </if>
+    <if test="couponCode!=null">
+    and cou.COUPON_CODE like CONCAT('%',#{couponCode},'%' )
+    </if>
+    
+    <if test="startTime!=null">
+    and cou.START_TIME like CONCAT('%',#{startTime},'%' )
+    </if>
+     <if test="endTime!=null">
+    and cou.END_TIME like CONCAT('%',#{endTime},'%' )
+    </if>
+   	and cou.ISVA=1 and sta.ISVA=1
+  	</where>
+  	ORDER BY cou.sort limit #{firstRows} , #{maxResult}
+  </select>
+  
+  <!-- 查询总行数 -->
+  <select id="findRowCount" parameterType="map" resultType="int">
+    select count(*) from ehy_coupon cou,ehy_station sta
+    <where>
+    sta.ST_ID=cou.ST_ID
+    <if test="stName!=null">
+    and sta.st_name like CONCAT('%',#{stName},'%' )
+    </if>
+    <if test="couponCode!=null">
+    and cou.COUPON_CODE like CONCAT('%',#{couponCode},'%' )
+    </if>
+    
+    <if test="startTime!=null">
+    and cou.START_TIME like CONCAT('%',#{startTime},'%' )
+    </if>
+     <if test="endTime!=null">
+    and cou.END_TIME like CONCAT('%',#{endTime},'%' )
+    </if>
+   	 and cou.ISVA=1 and sta.ISVA=1
+  	</where>
+  </select>
+  
+  <!-- 根据id查找数据 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_coupon
+    where COUPON_ID = #{couponId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据优惠券编码查找数据 -->
+  <select id="selectByCode" parameterType="java.lang.String" resultType="int">
+    select count(*) from ehy_coupon
+    where COUPON_CODE = #{couponCode,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_coupon
+    where COUPON_ID = #{couponId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 增加 -->
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyCoupon">
+  	<selectKey keyProperty="couponId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	 </selectKey>
+    insert into ehy_coupon
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="couponId != null">
+        COUPON_ID,
+      </if>
+      <if test="stId != null">
+        ST_ID,
+      </if>
+      <if test="couponCode != null">
+        COUPON_CODE,
+      </if>
+      <if test="couponMoney != null">
+        COUPON_MONEY,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="couponMinMoney != null">
+        COUPON_MIN_MONEY,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="endTime != null">
+        END_TIME,
+      </if>
+      <if test="calc != null">
+        CALC,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort == null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="couponId != null">
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="stId != null">
+        #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="couponCode != null">
+        #{couponCode,jdbcType=VARCHAR},
+      </if>
+      <if test="couponMoney != null">
+        #{couponMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="couponMinMoney != null">
+        #{couponMinMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="calc != null">
+        #{calc,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort == null">
+         (SELECT IFNULL(max(SORT)+1,1) FROM ehy_coupon AS SORT),
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 修改 -->
+  <update id="updateSelective" parameterType="cn.ehuoyuan.shop.domain.EhyCoupon">
+    update ehy_coupon
+    <set>
+      <if test="stId != null">
+        ST_ID = #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="couponCode != null">
+        COUPON_CODE = #{couponCode,jdbcType=VARCHAR},
+      </if>
+      <if test="couponMoney != null">
+        COUPON_MONEY = #{couponMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="couponMinMoney != null">
+        COUPON_MIN_MONEY = #{couponMinMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        END_TIME = #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="calc != null">
+        CALC = #{calc,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where COUPON_ID = #{couponId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 排序 -->
+   <update id="sortCoupon" parameterType="int" >
+  <!-- 
+  	往上排：让开始行数等于结束行数，再把小于开始行数大于结束行数的全部+1 
+  	往下排：让结束行数等于开始行数，再把大于开始行数小于结束行数的全部-1 
+  -->
+  	
+  	<if test="endNum &gt; startNum">
+  		update ehy_coupon set SORT=SORT-1 where SORT &lt;= #{endNum } and SORT &gt;= #{startNum };
+  		update ehy_coupon set SORT=#{endNum } where COUPON_ID=#{couponId};
+  	</if>
+  	<if test="endNum &lt; startNum">
+  		update ehy_coupon set SORT=SORT+1 where SORT &gt;= #{endNum } and SORT &lt; #{startNum };
+  		update ehy_coupon set SORT=#{endNum } where COUPON_ID=#{couponId}; 
+  	</if> 
+  </update>
+</mapper>

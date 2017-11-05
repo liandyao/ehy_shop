@@ -1,0 +1,311 @@
+.bigBox {
+	width: 1197px;
+	/* border: 1px solid black; */
+	margin: 0px auto;
+	overflow: hidden;
+}
+
+.bigBox .leftBox {
+	float: left;
+	width: 200px;
+	/* border: 1px solid red; */
+}
+
+.bigBox .leftBox .glk {
+	margin: 0px;
+	margin-top: 10px;
+	text-align: center;
+}
+
+.bigBox .leftBox .glk a:HOVER {
+	color: red;
+}
+
+.bigBox .leftBox .glk a {
+	text-decoration: none;
+	color: black;
+}
+
+.bigBox .orderBox {
+	margin: 0px;
+	width: 1197;
+	overflow: hidden;
+}
+
+.bigBox .orderBox .ztBox {
+	overflow: hidden;
+}
+
+.bigBox .orderBox .ztBox .ddzt {
+	width: 110px;
+	text-align: center;
+	border: 1px solid gray;
+	border-bottom: 2px solid gray;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	float: left;
+}
+
+.bigBox .orderBox .ztBox .ddzt a {
+	text-decoration: none;
+	color: black;
+	font-weight: 700;
+}
+
+.ipt {
+	box-sizing: border-box;
+	width: 200px;
+	height: 26px;
+}
+
+.ssbt {
+	margin: 0px;
+	margin-top: -3px;
+	height: 26px;
+	width: 80px;
+	vertical-align: middle;
+	border:1px solid #bfbfbf;
+	background-color: #f5f5f5;
+}
+
+.bigBox .orderBox .ddSeek {
+	width: 50%;
+	overflow: hidden;
+}
+
+.bigBox .orderBox .ddSeek .forbox {
+	padding-top: 5px;
+	float: right;
+}
+
+.bigBox .orderBox .ddSeek .gd {
+	padding-top: 5px;
+	margin: 2px 0px 0px 14px;
+	float: right;
+}
+
+.bigBox .orderBox .ddSeek .gd img {
+	margin-bottom: 5px;
+}
+
+.bigBox .orderBox .ddSeek .gd a {
+	color: black;
+	text-decoration: none;
+}
+
+.orderBox .top {
+	width: 1196px;
+	margin: 10px 0;
+	background-color: #f5f5f5;
+	border: 1px solid #e8e8e8;
+	text-align: center;
+}
+
+.mes .mestr th {
+	text-align: center; font-weight : 400;
+	color: #3c3c3c;
+	font-weight: 400;
+}
+
+.baby {
+	text-align: center;
+	width: 35%;
+}
+
+
+.details .baby {
+	padding-top: 10px;
+	padding-bottom: 5px;
+}
+.mestr .price {
+	width: 10%;
+}
+.details .price {
+	width: 10%;
+}
+
+.mestr .num {
+	width: 10%;
+}
+.details .num {
+	width: 10%;
+}
+
+.mestr .pro_img {
+	width: 100px;
+	height: 100px;
+}
+.details .pro_img {
+	width: 100px;
+	height: 100px;
+}
+
+.sj_price {
+	width: 18%;
+}
+
+.ordersBox .order {
+	border-spacing: 0;
+	border: red;
+	width: 1196px;
+	text-align: center;
+	margin-top: 5px;
+	margin-top: 5px;
+}
+
+.ordersBox .order .details td {
+	border-top: 10px
+}
+
+.order .dh td {
+	border: 1px solid #f5f5f5;
+	background: #f5f5f5;
+}
+
+.pro {
+	margin-left: 3%;
+	text-align: center;
+	height: 100px;
+	float: left;
+}
+
+.pro_name {
+	padding-top: 40px;
+	text-align: center;
+	height: 50px;
+	width: 71%;
+	margin-left: 5px;
+	float: left;
+}
+
+.time {
+	float: left;
+	margin-left: 5px;
+}
+
+.orderNum {
+	float: left;
+	margin-left: 15px;
+}
+
+.bom {
+	overflow: hidden;
+}
+
+.bom td .ssbt {
+	float: right;
+	margin-right: 113px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.ordersBox .order td {
+	font-size: 13px;
+	border: 1px solid #f5f5f5;
+}
+
+.ordersBox .order td a {
+	text-decoration: none;
+	color: black;
+}
+
+.ordersBox .order td a:HOVER {
+	color: red;
+}
+
+.top {
+	float: left;
+	width: 100%;
+	border-bottom: 10px;
+}
+
+.top .logo {
+	height: 80px;
+}
+
+.ddSeek {
+	float: right;
+}
+
+.sldsm {
+	float: left;
+	height: 100px;
+	width: 1198px;
+	text-align: center;
+	border: 1px solid red;
+}
+
+.box {
+	margin-top: 10px;
+	float: left;
+}
+
+.hidn {
+	margin-top: 10px;
+	width: 100%;
+	float: left;
+	width: 100%;
+	display: none;
+}
+
+.times {
+	float: left;
+	margin-left: 36%;
+}
+
+.isord {
+	margin-top: 10px;
+	float: left;
+	margin-left: 36%;
+}
+
+.fz {
+	margin-top: 10px;
+	float: left;
+	margin-left: 36%;
+}
+
+.kddh {
+	float: left;
+	margin-left: 40%;
+}
+.pages{
+	width:100%;
+	float: left;
+	text-align: center;
+}
+.onddzt{
+	margin-top:1px;
+	width: 110px;
+	text-align: center;
+	border: 1px solid red;
+	border-bottom: 2px solid red;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	float: left;
+}
+.site {
+  /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+  border: solid 1px gray;
+  color:gray;
+  /*很关键：将默认的select选择框样式清除*/
+  appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+
+  /*在选择框的最右侧中间显示小箭头图片*/
+  background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center transparent;
+
+
+  /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+  padding-right: 14px;
+}
+.onddzt a{
+	text-decoration: none;
+	color: red;
+	font-weight: 700;
+}
+.onddzt a:link{
+	color: red;
+	text-decoration: none;
+}

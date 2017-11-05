@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyReturnsMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyReturns">
+    <id column="RE_ID" jdbcType="VARCHAR" property="reId" />
+    <result column="RE_CODE" jdbcType="VARCHAR" property="reCode" />
+    <result column="ORD_ID" jdbcType="VARCHAR" property="ordId" />
+    <result column="RE_TIME" jdbcType="VARCHAR" property="reTime" />
+    <result column="RE_STATE" jdbcType="INTEGER" property="reState" />
+    <result column="RE_MEMBER" jdbcType="VARCHAR" property="reMember" />
+    <result column="RE_ADDRESS" jdbcType="VARCHAR" property="reAddress" />
+    <result column="RE_PHONE" jdbcType="VARCHAR" property="rePhone" />
+    <result column="RE_EXPRESS_CODE" jdbcType="VARCHAR" property="reExpressCode" />
+    <result column="RE_EXPRESS" jdbcType="VARCHAR" property="reExpress" />
+    <result column="RE_XEPRESS_MONEY" jdbcType="DECIMAL" property="reXepressMoney" />
+    <result column="RE_DESC" jdbcType="VARCHAR" property="reDesc" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    RE_ID, RE_CODE, ORD_ID, RE_TIME, RE_STATE, RE_MEMBER, RE_ADDRESS, RE_PHONE, RE_EXPRESS_CODE, 
+    RE_EXPRESS, RE_XEPRESS_MONEY, RE_DESC, ISVA, OPTIME, OPER
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_returns
+    where RE_ID = #{reId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_returns
+    where RE_ID = #{reId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyReturns">
+    insert into ehy_returns (RE_ID, RE_CODE, ORD_ID, 
+      RE_TIME, RE_STATE, RE_MEMBER, 
+      RE_ADDRESS, RE_PHONE, RE_EXPRESS_CODE, 
+      RE_EXPRESS, RE_XEPRESS_MONEY, RE_DESC, 
+      ISVA, OPTIME, OPER
+      )
+    values (#{reId,jdbcType=VARCHAR}, #{reCode,jdbcType=VARCHAR}, #{ordId,jdbcType=VARCHAR}, 
+      #{reTime,jdbcType=VARCHAR}, #{reState,jdbcType=INTEGER}, #{reMember,jdbcType=VARCHAR}, 
+      #{reAddress,jdbcType=VARCHAR}, #{rePhone,jdbcType=VARCHAR}, #{reExpressCode,jdbcType=VARCHAR}, 
+      #{reExpress,jdbcType=VARCHAR}, #{reXepressMoney,jdbcType=DECIMAL}, #{reDesc,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyReturns">
+    insert into ehy_returns
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="reId != null">
+        RE_ID,
+      </if>
+      <if test="reCode != null">
+        RE_CODE,
+      </if>
+      <if test="ordId != null">
+        ORD_ID,
+      </if>
+      <if test="reTime != null">
+        RE_TIME,
+      </if>
+      <if test="reState != null">
+        RE_STATE,
+      </if>
+      <if test="reMember != null">
+        RE_MEMBER,
+      </if>
+      <if test="reAddress != null">
+        RE_ADDRESS,
+      </if>
+      <if test="rePhone != null">
+        RE_PHONE,
+      </if>
+      <if test="reExpressCode != null">
+        RE_EXPRESS_CODE,
+      </if>
+      <if test="reExpress != null">
+        RE_EXPRESS,
+      </if>
+      <if test="reXepressMoney != null">
+        RE_XEPRESS_MONEY,
+      </if>
+      <if test="reDesc != null">
+        RE_DESC,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="reId != null">
+        #{reId,jdbcType=VARCHAR},
+      </if>
+      <if test="reCode != null">
+        #{reCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null">
+        #{ordId,jdbcType=VARCHAR},
+      </if>
+      <if test="reTime != null">
+        #{reTime,jdbcType=VARCHAR},
+      </if>
+      <if test="reState != null">
+        #{reState,jdbcType=INTEGER},
+      </if>
+      <if test="reMember != null">
+        #{reMember,jdbcType=VARCHAR},
+      </if>
+      <if test="reAddress != null">
+        #{reAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="rePhone != null">
+        #{rePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="reExpressCode != null">
+        #{reExpressCode,jdbcType=VARCHAR},
+      </if>
+      <if test="reExpress != null">
+        #{reExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="reXepressMoney != null">
+        #{reXepressMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="reDesc != null">
+        #{reDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyReturns">
+    update ehy_returns
+    <set>
+      <if test="reCode != null">
+        RE_CODE = #{reCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null">
+        ORD_ID = #{ordId,jdbcType=VARCHAR},
+      </if>
+      <if test="reTime != null">
+        RE_TIME = #{reTime,jdbcType=VARCHAR},
+      </if>
+      <if test="reState != null">
+        RE_STATE = #{reState,jdbcType=INTEGER},
+      </if>
+      <if test="reMember != null">
+        RE_MEMBER = #{reMember,jdbcType=VARCHAR},
+      </if>
+      <if test="reAddress != null">
+        RE_ADDRESS = #{reAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="rePhone != null">
+        RE_PHONE = #{rePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="reExpressCode != null">
+        RE_EXPRESS_CODE = #{reExpressCode,jdbcType=VARCHAR},
+      </if>
+      <if test="reExpress != null">
+        RE_EXPRESS = #{reExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="reXepressMoney != null">
+        RE_XEPRESS_MONEY = #{reXepressMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="reDesc != null">
+        RE_DESC = #{reDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where RE_ID = #{reId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyReturns">
+    update ehy_returns
+    set RE_CODE = #{reCode,jdbcType=VARCHAR},
+      ORD_ID = #{ordId,jdbcType=VARCHAR},
+      RE_TIME = #{reTime,jdbcType=VARCHAR},
+      RE_STATE = #{reState,jdbcType=INTEGER},
+      RE_MEMBER = #{reMember,jdbcType=VARCHAR},
+      RE_ADDRESS = #{reAddress,jdbcType=VARCHAR},
+      RE_PHONE = #{rePhone,jdbcType=VARCHAR},
+      RE_EXPRESS_CODE = #{reExpressCode,jdbcType=VARCHAR},
+      RE_EXPRESS = #{reExpress,jdbcType=VARCHAR},
+      RE_XEPRESS_MONEY = #{reXepressMoney,jdbcType=DECIMAL},
+      RE_DESC = #{reDesc,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR}
+    where RE_ID = #{reId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyReturnsItemMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyReturnsItem">
+    <id column="RE_ITEM_ID" jdbcType="VARCHAR" property="reItemId" />
+    <result column="RE_ID" jdbcType="VARCHAR" property="reId" />
+    <result column="MX_ID" jdbcType="VARCHAR" property="mxId" />
+    <result column="PRODUCT_NAME" jdbcType="VARCHAR" property="productName" />
+    <result column="RE_ITEM_NUM" jdbcType="DECIMAL" property="reItemNum" />
+    <result column="RE_ITEM_PRICE" jdbcType="DECIMAL" property="reItemPrice" />
+    <result column="RE_ITEM_SUM_MONEY" jdbcType="DECIMAL" property="reItemSumMoney" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    RE_ITEM_ID, RE_ID, MX_ID, PRODUCT_NAME, RE_ITEM_NUM, RE_ITEM_PRICE, RE_ITEM_SUM_MONEY, 
+    ISVA, OPTIME, OPER
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_returns_item
+    where RE_ITEM_ID = #{reItemId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_returns_item
+    where RE_ITEM_ID = #{reItemId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyReturnsItem">
+    insert into ehy_returns_item (RE_ITEM_ID, RE_ID, MX_ID, 
+      PRODUCT_NAME, RE_ITEM_NUM, RE_ITEM_PRICE, 
+      RE_ITEM_SUM_MONEY, ISVA, OPTIME, 
+      OPER)
+    values (#{reItemId,jdbcType=VARCHAR}, #{reId,jdbcType=VARCHAR}, #{mxId,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{reItemNum,jdbcType=DECIMAL}, #{reItemPrice,jdbcType=DECIMAL}, 
+      #{reItemSumMoney,jdbcType=DECIMAL}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyReturnsItem">
+    insert into ehy_returns_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="reItemId != null">
+        RE_ITEM_ID,
+      </if>
+      <if test="reId != null">
+        RE_ID,
+      </if>
+      <if test="mxId != null">
+        MX_ID,
+      </if>
+      <if test="productName != null">
+        PRODUCT_NAME,
+      </if>
+      <if test="reItemNum != null">
+        RE_ITEM_NUM,
+      </if>
+      <if test="reItemPrice != null">
+        RE_ITEM_PRICE,
+      </if>
+      <if test="reItemSumMoney != null">
+        RE_ITEM_SUM_MONEY,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="reItemId != null">
+        #{reItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="reId != null">
+        #{reId,jdbcType=VARCHAR},
+      </if>
+      <if test="mxId != null">
+        #{mxId,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="reItemNum != null">
+        #{reItemNum,jdbcType=DECIMAL},
+      </if>
+      <if test="reItemPrice != null">
+        #{reItemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="reItemSumMoney != null">
+        #{reItemSumMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyReturnsItem">
+    update ehy_returns_item
+    <set>
+      <if test="reId != null">
+        RE_ID = #{reId,jdbcType=VARCHAR},
+      </if>
+      <if test="mxId != null">
+        MX_ID = #{mxId,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="reItemNum != null">
+        RE_ITEM_NUM = #{reItemNum,jdbcType=DECIMAL},
+      </if>
+      <if test="reItemPrice != null">
+        RE_ITEM_PRICE = #{reItemPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="reItemSumMoney != null">
+        RE_ITEM_SUM_MONEY = #{reItemSumMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where RE_ITEM_ID = #{reItemId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyReturnsItem">
+    update ehy_returns_item
+    set RE_ID = #{reId,jdbcType=VARCHAR},
+      MX_ID = #{mxId,jdbcType=VARCHAR},
+      PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
+      RE_ITEM_NUM = #{reItemNum,jdbcType=DECIMAL},
+      RE_ITEM_PRICE = #{reItemPrice,jdbcType=DECIMAL},
+      RE_ITEM_SUM_MONEY = #{reItemSumMoney,jdbcType=DECIMAL},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR}
+    where RE_ITEM_ID = #{reItemId,jdbcType=VARCHAR}
+  </update>
+</mapper>

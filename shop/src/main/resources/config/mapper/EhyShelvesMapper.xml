@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyShelvesMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyShelves">
+    <id column="SHE_ID" jdbcType="VARCHAR" property="sheId" />
+    <result column="MB_ID" jdbcType="VARCHAR" property="mbId" />
+    <result column="PRO_ID" jdbcType="VARCHAR" property="proId" />
+    <result column="ADD_TIME" jdbcType="VARCHAR" property="addTime" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    SHE_ID, MB_ID, PRO_ID, ADD_TIME, ISVA, OPTIME, OPER, SORT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_shelves
+    where SHE_ID = #{sheId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_shelves
+    where SHE_ID = #{sheId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyShelves">
+    insert into ehy_shelves (SHE_ID, MB_ID, PRO_ID, 
+      ADD_TIME, ISVA, OPTIME, 
+      OPER, SORT)
+    values (#{sheId,jdbcType=VARCHAR}, #{mbId,jdbcType=VARCHAR}, #{proId,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyShelves">
+    insert into ehy_shelves
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sheId != null">
+        SHE_ID,
+      </if>
+      <if test="mbId != null">
+        MB_ID,
+      </if>
+      <if test="proId != null">
+        PRO_ID,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sheId != null">
+        #{sheId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbId != null">
+        #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyShelves">
+    update ehy_shelves
+    <set>
+      <if test="mbId != null">
+        MB_ID = #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        PRO_ID = #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        ADD_TIME = #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where SHE_ID = #{sheId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyShelves">
+    update ehy_shelves
+    set MB_ID = #{mbId,jdbcType=VARCHAR},
+      PRO_ID = #{proId,jdbcType=VARCHAR},
+      ADD_TIME = #{addTime,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER}
+    where SHE_ID = #{sheId,jdbcType=VARCHAR}
+  </update>
+</mapper>

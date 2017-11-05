@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyDatadicMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyDatadic">
+    <id column="DIC_ID" jdbcType="VARCHAR" property="dicId" />
+    <result column="DIC_NAME" jdbcType="VARCHAR" property="dicName" />
+    <result column="DIC_CODE" jdbcType="VARCHAR" property="dicCode" />
+    <result column="DIC_REMARK" jdbcType="VARCHAR" property="dicRemark" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    DIC_ID, DIC_NAME, DIC_CODE, DIC_REMARK, ISVA, OPTIME, OPER
+  </sql>
+  
+  <select id="findByDicName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from ehy_datadic where DIC_NAME = #{dicName,jdbcType=VARCHAR} and ISVA=1
+  </select>
+  
+   <!-- 查询所有 -->
+  <select id="findAll" parameterType="map" resultMap="BaseResultMap">
+  	select * from ehy_datadic
+  	<where>
+  		<if test="dicName != null">
+  		 DIC_NAME like CONCAT('%',#{dicName},'%' )
+  		</if>
+  		<if test="dicCode != null">
+  		 and DIC_CODE like CONCAT('%',#{dicCode},'%' )
+  		</if>
+  		<if test="dicRemark != null">
+  		 and DIC_REMARK like CONCAT('%',#{dicRemark},'%' )
+  		</if>
+  		and ISVA=1
+  		ORDER BY DIC_CODE ASC
+  	</where>
+  	 limit #{page},#{limit}
+  	
+  </select>
+  
+  
+  <!-- 总行数 -->
+  <select id="findRowCount" parameterType="map" resultType="int">
+  	SELECT COUNT(*) FROM ehy_datadic
+  	<where>
+  		<if test="dicName != null">
+  		 DIC_NAME like CONCAT('%',#{dicName},'%' )
+  		</if>
+  		<if test="dicCode != null">
+  		 and DIC_CODE like CONCAT('%',#{dicCode},'%' )
+  		</if>
+  		<if test="dicRemark != null">
+  		 and DIC_REMARK like CONCAT('%',#{dicRemark},'%' )
+  		</if>
+  		and ISVA=1
+  		ORDER BY DIC_CODE ASC
+  	</where>
+  </select>
+  
+  <!-- 删除和修改方法 -->
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyDatadic">
+    update ehy_datadic
+    <set>
+      <if test="dicName != null">
+        DIC_NAME = #{dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicCode != null">
+        DIC_CODE = #{dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dicRemark != null">
+        DIC_REMARK = #{dicRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DIC_ID = #{dicId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 增加方法 -->
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyDatadic">
+  	<selectKey keyProperty="dicId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	  </selectKey>
+  
+    insert into ehy_datadic (DIC_ID, DIC_NAME, DIC_CODE, 
+      DIC_REMARK, ISVA, OPTIME, 
+      OPER)
+    values (#{dicId,jdbcType=VARCHAR}, #{dicName,jdbcType=VARCHAR}, #{dicCode,jdbcType=VARCHAR}, 
+      #{dicRemark,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 根据ID查询 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_datadic
+    where DIC_ID = #{dicId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_datadic
+    where DIC_ID = #{dicId,jdbcType=VARCHAR}
+  </delete>
+  
+ 
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyDatadic">
+  <selectKey keyProperty="dicId" resultType="string" order="BEFORE">
+			SELECT REPLACE(UUID(),'-','') AS id;
+		</selectKey>
+    insert into ehy_datadic
+    
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dicId != null">
+        DIC_ID,
+      </if>
+      <if test="dicName != null">
+        DIC_NAME,
+      </if>
+      <if test="dicCode != null">
+        DIC_CODE,
+      </if>
+      <if test="dicRemark != null">
+        DIC_REMARK,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dicId != null">
+        #{dicId,jdbcType=VARCHAR},
+      </if>
+      <if test="dicName != null">
+        #{dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicCode != null">
+        #{dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dicRemark != null">
+        #{dicRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyDatadic">
+    update ehy_datadic
+    set DIC_NAME = #{dicName,jdbcType=VARCHAR},
+      DIC_CODE = #{dicCode,jdbcType=VARCHAR},
+      DIC_REMARK = #{dicRemark,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR}
+    where DIC_ID = #{dicId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="deleteLevelId"  >
+  	
+	UPDATE ehy_datadic ed SET isva=0 WHERE ed.dic_code=#{code}
+  
+  </update>
+  
+  <!-- 根据名称和编号查询是否存在该条信息 返回查询到的行数 -->
+  <select id="selectNameAndCodeIsva" parameterType="cn.ehuoyuan.shop.domain.EhyDatadic" resultType="int">
+  	SELECT COUNT(*) FROM ehy_datadic WHERE dic_name = #{dicName} AND dic_code = #{dicCode}
+  </select>
+</mapper>

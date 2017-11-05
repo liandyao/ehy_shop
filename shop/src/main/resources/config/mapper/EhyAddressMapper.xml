@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyAddressMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyAddress">
+    <id column="ADD_ID" jdbcType="VARCHAR" property="addId" />
+    <result column="MB_ID" jdbcType="VARCHAR" property="mbId" />
+    <result column="ADD_PROVINCE" jdbcType="VARCHAR" property="addProvince" />
+    <result column="ADD_CITY" jdbcType="VARCHAR" property="addCity" />
+    <result column="ADD_COUNTY" jdbcType="VARCHAR" property="addCounty" />
+    <result column="ADD_ADDRESS" jdbcType="VARCHAR" property="addAddress" />
+    <result column="ADD_NATION" jdbcType="VARCHAR" property="addNation" />
+    <result column="ADD_EMP" jdbcType="VARCHAR" property="addEmp" />
+    <result column="ADD_PHONE" jdbcType="VARCHAR" property="addPhone" />
+    <result column="ADD_PHONE2" jdbcType="VARCHAR" property="addPhone2" />
+    <result column="ADD_REMARK" jdbcType="VARCHAR" property="addRemark" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ADD_ID, MB_ID, ADD_PROVINCE, ADD_CITY, ADD_COUNTY, ADD_ADDRESS, ADD_NATION, ADD_EMP, 
+    ADD_PHONE, ADD_PHONE2, ADD_REMARK, ISVA, OPTIME, OPER, SORT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_address
+    where ADD_ID = #{addId,jdbcType=VARCHAR}
+  </select>
+  
+  <!--根据会员ID查询收货地址  -->
+  <select id="selectByMbId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_address
+    where MB_ID = #{mbId,jdbcType=VARCHAR}
+    ORDER BY  sort DESC  ;
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_address
+    where ADD_ID = #{addId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyAddress">
+    insert into ehy_address (ADD_ID, MB_ID, ADD_PROVINCE, 
+      ADD_CITY, ADD_COUNTY, ADD_ADDRESS, 
+      ADD_NATION, ADD_EMP, ADD_PHONE, 
+      ADD_PHONE2, ADD_REMARK, ISVA, 
+      OPTIME, OPER, SORT
+      )
+    values (#{addId,jdbcType=VARCHAR}, #{mbId,jdbcType=VARCHAR}, #{addProvince,jdbcType=VARCHAR}, 
+      #{addCity,jdbcType=VARCHAR}, #{addCounty,jdbcType=VARCHAR}, #{addAddress,jdbcType=VARCHAR}, 
+      #{addNation,jdbcType=VARCHAR}, #{addEmp,jdbcType=VARCHAR}, #{addPhone,jdbcType=VARCHAR}, 
+      #{addPhone2,jdbcType=VARCHAR}, #{addRemark,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, 
+      #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyAddress">
+  
+  <selectKey keyProperty="addId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	  </selectKey>
+  
+    insert into ehy_address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="addId != null">
+        ADD_ID,
+      </if>
+      <if test="mbId != null">
+        MB_ID,
+      </if>
+      <if test="addProvince != null">
+        ADD_PROVINCE,
+      </if>
+      <if test="addCity != null">
+        ADD_CITY,
+      </if>
+      <if test="addCounty != null">
+        ADD_COUNTY,
+      </if>
+      <if test="addAddress != null">
+        ADD_ADDRESS,
+      </if>
+      <if test="addNation != null">
+        ADD_NATION,
+      </if>
+      <if test="addEmp != null">
+        ADD_EMP,
+      </if>
+      <if test="addPhone != null">
+        ADD_PHONE,
+      </if>
+      <if test="addPhone2 != null">
+        ADD_PHONE2,
+      </if>
+      <if test="addRemark != null">
+        ADD_REMARK,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="addId != null">
+        #{addId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbId != null">
+        #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="addProvince != null">
+        #{addProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addCity != null">
+        #{addCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addCounty != null">
+        #{addCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addAddress != null">
+        #{addAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="addNation != null">
+        #{addNation,jdbcType=VARCHAR},
+      </if>
+      <if test="addEmp != null">
+        #{addEmp,jdbcType=VARCHAR},
+      </if>
+      <if test="addPhone != null">
+        #{addPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="addPhone2 != null">
+        #{addPhone2,jdbcType=VARCHAR},
+      </if>
+      <if test="addRemark != null">
+        #{addRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyAddress">
+    update ehy_address
+    <set>
+      <if test="mbId != null">
+        MB_ID = #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="addProvince != null">
+        ADD_PROVINCE = #{addProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addCity != null">
+        ADD_CITY = #{addCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addCounty != null">
+        ADD_COUNTY = #{addCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addAddress != null">
+        ADD_ADDRESS = #{addAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="addNation != null">
+        ADD_NATION = #{addNation,jdbcType=VARCHAR},
+      </if>
+      <if test="addEmp != null">
+        ADD_EMP = #{addEmp,jdbcType=VARCHAR},
+      </if>
+      <if test="addPhone != null">
+        ADD_PHONE = #{addPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="addPhone2 != null">
+        ADD_PHONE2 = #{addPhone2,jdbcType=VARCHAR},
+      </if>
+      <if test="addRemark != null">
+        ADD_REMARK = #{addRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ADD_ID = #{addId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyAddress">
+    update ehy_address
+    set MB_ID = #{mbId,jdbcType=VARCHAR},
+      ADD_PROVINCE = #{addProvince,jdbcType=VARCHAR},
+      ADD_CITY = #{addCity,jdbcType=VARCHAR},
+      ADD_COUNTY = #{addCounty,jdbcType=VARCHAR},
+      ADD_ADDRESS = #{addAddress,jdbcType=VARCHAR},
+      ADD_NATION = #{addNation,jdbcType=VARCHAR},
+      ADD_EMP = #{addEmp,jdbcType=VARCHAR},
+      ADD_PHONE = #{addPhone,jdbcType=VARCHAR},
+      ADD_PHONE2 = #{addPhone2,jdbcType=VARCHAR},
+      ADD_REMARK = #{addRemark,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER}
+    where ADD_ID = #{addId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <update id="updateSortById" parameterType="cn.ehuoyuan.shop.domain.EhyAddress">
+  	update ehy_address set sort=1 where ADD_ID = #{addId,jdbcType=VARCHAR}
+  
+  </update>
+  
+  <update id="updateSort" parameterType="cn.ehuoyuan.shop.domain.EhyAddress">
+  	update ehy_address set sort=0
+  
+  </update>
+  
+  
+</mapper>

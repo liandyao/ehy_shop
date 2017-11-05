@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyProTypeMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyProType">
+    <id column="PRO_TYPE_ID" jdbcType="VARCHAR" property="proTypeId" />
+    <result column="PT_ID" jdbcType="VARCHAR" property="ptId" />
+    <result column="PRO_TYPE_CODE" jdbcType="VARCHAR" property="proTypeCode" />
+    <result column="PRO_TYPE_NAME" jdbcType="VARCHAR" property="proTypeName" />
+    <result column="PRO_TYPE_REMARK" jdbcType="VARCHAR" property="proTypeRemark" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PRO_TYPE_ID, PT_ID, PRO_TYPE_CODE, PRO_TYPE_NAME, PRO_TYPE_REMARK, ISVA, OPTIME, 
+    OPER, SORT
+  </sql>
+  <!-- 得到集合 
+  
+  SELECT * FROM ehy_pro_type t WHERE 
+t.PT_ID=(SELECT PRO_TYPE_ID 
+	FROM ehy_pro_type ty WHERE 
+	PRO_TYPE_NAME LIKE '%产品%' LIMIT 1) OR 
+	    PRO_TYPE_NAME LIKE '%产品%' OR
+	    PRO_TYPE_CODE LIKE '%产品%' OR
+	    PRO_TYPE_REMARK LIKE '%产品%' 
+  
+  -->
+  <select id="selectAllProType" resultMap="BaseResultMap" parameterType="map">
+  	select 
+    <include refid="Base_Column_List" />
+    from ehy_pro_type
+   	where 
+   	<if test="like != null and like!=''"  >
+   	(PT_ID = (SELECT PRO_TYPE_ID FROM ehy_pro_type WHERE PRO_TYPE_NAME like #{like} limit 1) OR
+   	PRO_TYPE_CODE like #{like} or
+   	PRO_TYPE_REMARK like #{like} or
+   	PRO_TYPE_NAME like #{like} )and
+   	</if>
+   	isva = 1 
+   	ORDER BY OPTIME DESC
+   	limit #{pages.firstRows},#{pages.maxResult}
+  </select>
+  <!-- 得到行数 -->
+  <select id="selectCountProType" resultType="int">
+  	select count(*)
+  	from ehy_pro_type
+   	where 
+   	<if test="like != null and like!=''"  >
+   	(PT_ID = (SELECT PRO_TYPE_ID FROM ehy_pro_type WHERE PRO_TYPE_NAME like #{like} limit 1) OR
+   	PRO_TYPE_CODE like #{like} or
+   	PRO_TYPE_REMARK like #{like} or
+   	PRO_TYPE_NAME like #{like}) and 
+   	</if>
+   	isva = 1
+  </select>
+  <select id="selectByPtId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT 
+  	<include refid="Base_Column_List" /> 
+  	FROM ehy_pro_type WHERE PRO_TYPE_ID = #{proTypeId} and isva=1
+  </select>
+  <!-- 根据上级分类ID查询分类 -->
+  <select id="findChildren" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT t.pro_type_id,t.pro_type_name FROM ehy_pro_type t WHERE t.PT_ID=#{ptId} and t.isva=1;
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT ep1.*,ep2.pro_type_name AS typeName,ep2.pro_type_id AS typeId FROM 
+    ehy_pro_type ep1,ehy_pro_type ep2 WHERE  
+    ep2.isva=1 AND ep1.isva=1 AND 
+    ep1.pro_type_id=#{proTypeId} AND
+    (ep1.pt_id=ep2.pro_type_id OR ep1.PT_ID=0) LIMIT 1
+  </select>
+  
+  <!-- 下拉框赋值查询 -->
+  <select id="selectIdOrName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select PRO_TYPE_ID,pro_type_name
+    from ehy_pro_type
+  </select>
+  
+  <!-- 三表关联查询  -->
+  <select id="SelectByKey" parameterType="map" resultType="int">
+  	SELECT count(*) FROM ehy_pro_type ept ,EHY_PRODUCT ep,ehy_pro_type_specification epts WHERE
+  	ept.isva = #{isva} AND 
+	ep.isva = #{isva} AND 
+	epts.isva = #{isva} AND
+	(ept.pt_id = #{typeId} OR ep.pro_type_id = #{typeId} OR epts.type_id = #{typeId})
+  </select>
+  <!--
+  <select id="selectByStationId" parameterType="map" resultType="int">
+  	
+ </select>-->
+ 
+ <!-- 根据站点id查询该站点有无选择类别 -->
+ <select id="selectByStation" parameterType="String" resultType="int" >
+ 	select count(*) from ehy_pro_type where pro_type_remark like #{stId}
+ </select>
+  
+  
+  <!-- 根据类型id进行删除方法 -->
+  <update id="deleteByPrimaryKey" parameterType="map">
+    update ehy_pro_type set isva=#{isva} where pro_type_id = #{typeId}
+  </update>
+  
+  
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyProType">
+    insert into ehy_pro_type (PRO_TYPE_ID, PT_ID, PRO_TYPE_CODE, 
+      PRO_TYPE_NAME, PRO_TYPE_REMARK, ISVA, 
+      OPTIME, OPER, SORT
+      )
+    values (#{proTypeId,jdbcType=VARCHAR}, #{ptId,jdbcType=VARCHAR}, #{proTypeCode,jdbcType=VARCHAR}, 
+      #{proTypeName,jdbcType=VARCHAR}, #{proTypeRemark,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, 
+      #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyProType" keyProperty="proTypeId">
+  	<selectKey keyProperty="proTypeId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
+    insert into ehy_pro_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="proTypeId != null">
+        PRO_TYPE_ID,
+      </if>
+      <if test="ptId != null">
+        PT_ID,
+      </if>
+      <if test="proTypeCode != null">
+        PRO_TYPE_CODE,
+      </if>
+      <if test="proTypeName != null">
+        PRO_TYPE_NAME,
+      </if>
+      <if test="proTypeRemark != null">
+        PRO_TYPE_REMARK,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="proTypeId != null">
+        #{proTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="ptId != null">
+        #{ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="proTypeCode != null">
+        #{proTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="proTypeName != null">
+        #{proTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="proTypeRemark != null">
+        #{proTypeRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyProType">
+    update ehy_pro_type
+    <set>
+      <if test="ptId != null">
+        PT_ID = #{ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="proTypeCode != null">
+        PRO_TYPE_CODE = #{proTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="proTypeName != null">
+        PRO_TYPE_NAME = #{proTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="proTypeRemark != null">
+        PRO_TYPE_REMARK = #{proTypeRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PRO_TYPE_ID = #{proTypeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyProType">
+    update ehy_pro_type
+    set PT_ID = #{ptId,jdbcType=VARCHAR},
+      PRO_TYPE_CODE = #{proTypeCode,jdbcType=VARCHAR},
+      PRO_TYPE_NAME = #{proTypeName,jdbcType=VARCHAR},
+      PRO_TYPE_REMARK = #{proTypeRemark,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER}
+    where PRO_TYPE_ID = #{proTypeId,jdbcType=VARCHAR}
+  </update>
+  
+   
+  <!-- 首页产品分类的返回类型 -->
+  <resultMap type="map" id="TypeMap">
+  	<id column="产品类型ID" property="typeId" jdbcType="VARCHAR"/>
+  	<result column="产品类型名称" property="typeName" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 根据站点ID查询二级分类：最上级分类(产品)的下级分类 -->
+  <select id="findByStId" parameterType="java.lang.String" resultMap="TypeMap">
+	SELECT 	
+		t.pro_type_id AS 产品类型ID,
+		t.pro_type_name AS 产品类型名称
+	FROM 
+		ehy_pro_type AS t
+	WHERE 
+		t.PRO_TYPE_REMARK LIKE CONCAT('%', #{stId, jdbcType=VARCHAR}, '%')
+	AND 
+		t.PT_ID = '0' 
+	AND 
+		t.ISVA = '1'
+  </select>
+
+  <!-- 查询首页展示的产品下级分类 ：女鞋：凉/拖鞋、帆布鞋、低帮鞋、高帮鞋、靴子-->
+  <select id="findSubordinate" parameterType="java.lang.String" resultMap="TypeMap">
+  	SELECT 	t.pro_type_id AS 产品类型ID,
+			t.pro_type_name AS 产品类型名称
+	FROM 
+		ehy_pro_type AS t 
+	WHERE 
+		t.PT_ID = #{ptId,jdbcType=VARCHAR}
+	AND 
+  		t.ISVA = '1'
+	GROUP BY 
+		t.pro_type_id
+  </select>
+</mapper>

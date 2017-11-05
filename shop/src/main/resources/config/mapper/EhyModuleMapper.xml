@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyModuleMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyModule">
+    <id column="MOD_ID" jdbcType="VARCHAR" property="modId" />
+    <result column="EHY_MOD_ID" jdbcType="VARCHAR" property="ehyModId" />
+    <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="MOD_NAME" jdbcType="VARCHAR" property="modName" />
+    <result column="MOD_CODE" jdbcType="VARCHAR" property="modCode" />
+    <result column="MOD_DESC" jdbcType="VARCHAR" property="modDesc" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMapModule" type="cn.ehuoyuan.shop.domain.EhyModule">
+    <id column="MOD_ID" jdbcType="VARCHAR" property="modId" />
+    <result column="EHY_MOD_ID" jdbcType="VARCHAR" property="ehyModId" />
+    <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="MOD_NAME" jdbcType="VARCHAR" property="modName" />
+    <result column="MOD_CODE" jdbcType="VARCHAR" property="modCode" />
+    <result column="MOD_DESC" jdbcType="VARCHAR" property="modDesc" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+    <collection property="moduleList" column="MOD_ID" ofType="cn.ehuoyuan.shop.domain.EhyModule" select="findInferior">
+    	
+    </collection>
+   	<collection property="module" column="EHY_MOD_ID" ofType="BaseResultMap" select="selectByPrimaryKey">
+    	
+    </collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    MOD_ID, EHY_MOD_ID, URL, MOD_NAME, MOD_CODE, MOD_DESC, ISVA, OPTIME, OPER, SORT
+  </sql>
+  
+  <select id="maxSort" resultType="int">
+  	SELECT MAX(sort+1) FROM ehy_module
+  </select>
+  
+  <update id="sortModule" parameterType="int" >
+  <!-- 
+  	往上排：让开始行数等于结束行数，再把小于开始行数大于结束行数的全部+1 
+  	往下排：让结束行数等于开始行数，再把大于开始行数小于结束行数的全部-1 
+  -->
+  	
+  	<if test="endNum &gt; startNum">
+  		update ehy_module set SORT=SORT-1 where SORT &lt;= #{endNum } and SORT &gt;= #{startNum };
+  		update ehy_module set SORT=#{endNum } where MOD_ID=#{modId};
+  	</if>
+  	<if test="endNum &lt; startNum">
+  		update ehy_module set SORT=SORT+1 where SORT &gt;= #{endNum } and SORT &lt; #{startNum };
+  		update ehy_module set SORT=#{endNum } where MOD_ID=#{modId}; 
+  	</if>
+  	
+  </update>
+  
+  <select id="findAll" resultMap="BaseResultMapModule">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from ehy_module where ISVA=1
+  </select>
+  
+  <select id="findFirstLevel" resultMap="BaseResultMapModule">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from ehy_module where ISVA=1 and EHY_MOD_ID is null
+  </select>
+  
+  <select id="countRows" parameterType="map" resultType="int">
+  	select 
+  	count(*)
+  	from ehy_module where ISVA=1
+  	<if test="module.ehyModId != null">
+  		and EHY_MOD_ID = #{module.ehyModId }
+  	</if>
+  	<if test="module.modName != null">
+  		and MOD_NAME like #{module.modName }
+  	</if>
+  	<if test="module.modCode != null">
+  		and MOD_CODE like #{module.modCode}
+  	</if>
+  	<if test="module.modDesc != null">
+  		and MOD_DESC like #{module.modDesc}
+  	</if>
+  </select>
+  
+  <select id="findAllPage" parameterType="map" resultMap="BaseResultMapModule">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from ehy_module where ISVA=1
+  	<if test="module.ehyModId != null">
+  		and EHY_MOD_ID = #{module.ehyModId }
+  	</if>
+  	<if test="module.modName != null">
+  		and MOD_NAME like #{module.modName }
+  	</if>
+  	<if test="module.modCode != null">
+  		and MOD_CODE like #{module.modCode}
+  	</if>
+  	<if test="module.modDesc != null">
+  		and MOD_DESC like #{module.modDesc}
+  	</if>
+  	order by sort, optime 
+  	limit #{pages.firstRows }, #{pages.maxResult }
+  </select>
+  
+  <update id="deleteEhyModule" parameterType="string">
+  	update ehy_module set ISVA=0 where MOD_ID=#{modId }
+  </update>
+  
+  <select id="findInferior" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from ehy_module where ISVA=1 and EHY_MOD_ID=#{modId }
+  </select>
+  
+  <select id="showMenuTree" parameterType="java.lang.String" resultMap="BaseResultMapModule">
+  	SELECT mo.* FROM 
+  		ehy_manager mg, ehy_manager_role mr, ehy_module mo, ehy_role ro, ehy_role_module rm
+		WHERE mg.MAN_ID=mr.MAN_ID 
+		AND mr.ROLE_ID=ro.ROLE_ID 
+		AND ro.ROLE_ID=rm.ROLE_ID 
+		AND rm.MOD_ID=mo.MOD_ID 
+		AND (mg.MAN_ID=#{manId }
+		or #{manId }='1')
+		AND mo.ISVA=1
+		AND ro.ISVA=1
+		AND mo.EHY_MOD_ID is null
+		GROUP BY mo.mod_id
+		order by SORT
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMapModule">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_module
+    where MOD_ID = #{modId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_module
+    where MOD_ID = #{modId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyModule">
+    insert into ehy_module (MOD_ID, EHY_MOD_ID, URL, 
+      MOD_NAME, MOD_CODE, MOD_DESC, 
+      ISVA, OPTIME, OPER, 
+      SORT)
+    values (#{modId,jdbcType=VARCHAR}, #{ehyModId,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{modName,jdbcType=VARCHAR}, #{modCode,jdbcType=VARCHAR}, #{modDesc,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyModule">
+    insert into ehy_module
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="modId != null">
+        MOD_ID,
+      </if>
+      <if test="ehyModId != null">
+        EHY_MOD_ID,
+      </if>
+      <if test="url != null">
+        URL,
+      </if>
+      <if test="modName != null">
+        MOD_NAME,
+      </if>
+      <if test="modCode != null">
+        MOD_CODE,
+      </if>
+      <if test="modDesc != null">
+        MOD_DESC,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="modId != null">
+        #{modId,jdbcType=VARCHAR},
+      </if>
+      <if test="ehyModId != null">
+        #{ehyModId,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="modName != null">
+        #{modName,jdbcType=VARCHAR},
+      </if>
+      <if test="modCode != null">
+        #{modCode,jdbcType=VARCHAR},
+      </if>
+      <if test="modDesc != null">
+        #{modDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyModule">
+    update ehy_module
+    <set>
+      <!-- <if test="ehyModId != null"> -->
+        EHY_MOD_ID = #{ehyModId,jdbcType=VARCHAR},
+     <!--  </if> -->
+      <if test="url != null">
+        URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="modName != null">
+        MOD_NAME = #{modName,jdbcType=VARCHAR},
+      </if>
+      <if test="modCode != null">
+        MOD_CODE = #{modCode,jdbcType=VARCHAR},
+      </if>
+      <if test="modDesc != null">
+        MOD_DESC = #{modDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where MOD_ID = #{modId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyModule">
+    update ehy_module
+    set EHY_MOD_ID = #{ehyModId,jdbcType=VARCHAR},
+      URL = #{url,jdbcType=VARCHAR},
+      MOD_NAME = #{modName,jdbcType=VARCHAR},
+      MOD_CODE = #{modCode,jdbcType=VARCHAR},
+      MOD_DESC = #{modDesc,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER}
+    where MOD_ID = #{modId,jdbcType=VARCHAR}
+  </update>
+</mapper>

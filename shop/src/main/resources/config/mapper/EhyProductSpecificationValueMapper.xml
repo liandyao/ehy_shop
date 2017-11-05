@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyProductSpecificationValueMapper" >
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyProductSpecificationValue" >
+    <id column="PRI_ID" property="priId" jdbcType="VARCHAR" />
+    <result column="PRO_ID" property="proId" jdbcType="VARCHAR" />
+    <result column="SPT_ID" property="sptId" jdbcType="VARCHAR" />
+    <result column="SPT_NAME" property="sptName" jdbcType="VARCHAR" />
+    <result column="SP_NAME" property="spName" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+    <result column="OPTIME" property="optime" jdbcType="TIMESTAMP" />
+    <result column="OPER" property="oper" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="java.util.Map" id="SptVo">
+  	<result column="sptName" property="sptName" jdbcType="VARCHAR"/>
+  	<result column="spNames" property="spNames" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <select id="findByProId" parameterType="java.lang.String" resultMap="SptVo">
+  	SELECT 
+		any_value(psv.SPT_NAME) AS sptName,
+		GROUP_CONCAT(psv.SP_NAME) AS spNames
+	FROM 
+		ehy_product_specification_value AS psv,
+		ehy_product AS pro
+	WHERE 
+		psv.PRO_ID=pro.PRO_ID
+	AND
+		psv.ISVA=1 AND pro.ISVA=1
+	AND 	
+		pro.PRO_ID= #{proId,jdbcType=VARCHAR}
+	GROUP BY
+		sptName
+  </select>
+  
+  <sql id="Base_Column_List" >
+    PRI_ID, PRO_ID, SPT_ID, SPT_NAME, SP_NAME, ISVA, OPTIME, OPER, REMARK
+  </sql>
+  
+  <!-- 根据产品ID查找该产品的规格 -->
+  <select id="findAllByProId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_product_specification_value
+    where PRO_ID = #{proId,jdbcType=VARCHAR} AND isva=1
+  </select>
+  
+  <update id="updateIsvaByProId" parameterType="java.lang.String" >
+    update ehy_product_specification_value set isva=0 WHERE PRO_ID=#{proId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_product_specification_value
+    where PRI_ID = #{priId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ehy_product_specification_value
+    where PRI_ID = #{priId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyProductSpecificationValue" >
+    insert into ehy_product_specification_value (PRI_ID, PRO_ID, SPT_ID, 
+      SPT_NAME, SP_NAME, ISVA, 
+      OPTIME, OPER, REMARK
+      )
+    values (#{priId,jdbcType=VARCHAR}, #{proId,jdbcType=VARCHAR}, #{sptId,jdbcType=VARCHAR}, 
+      #{sptName,jdbcType=VARCHAR}, #{spName,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, 
+      #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyProductSpecificationValue" >
+    insert into ehy_product_specification_value
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="priId != null" >
+        PRI_ID,
+      </if>
+      <if test="proId != null" >
+        PRO_ID,
+      </if>
+      <if test="sptId != null" >
+        SPT_ID,
+      </if>
+      <if test="sptName != null" >
+        SPT_NAME,
+      </if>
+      <if test="spName != null" >
+        SP_NAME,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="optime != null" >
+        OPTIME,
+      </if>
+      <if test="oper != null" >
+        OPER,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="priId != null" >
+        #{priId,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null" >
+        #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="sptId != null" >
+        #{sptId,jdbcType=VARCHAR},
+      </if>
+      <if test="sptName != null" >
+        #{sptName,jdbcType=VARCHAR},
+      </if>
+      <if test="spName != null" >
+        #{spName,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null" >
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null" >
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyProductSpecificationValue" >
+    update ehy_product_specification_value
+    <set >
+      <if test="proId != null" >
+        PRO_ID = #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="sptId != null" >
+        SPT_ID = #{sptId,jdbcType=VARCHAR},
+      </if>
+      <if test="sptName != null" >
+        SPT_NAME = #{sptName,jdbcType=VARCHAR},
+      </if>
+      <if test="spName != null" >
+        SP_NAME = #{spName,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null" >
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null" >
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PRI_ID = #{priId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyProductSpecificationValue" >
+    update ehy_product_specification_value
+    set PRO_ID = #{proId,jdbcType=VARCHAR},
+      SPT_ID = #{sptId,jdbcType=VARCHAR},
+      SPT_NAME = #{sptName,jdbcType=VARCHAR},
+      SP_NAME = #{spName,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where PRI_ID = #{priId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhySpecificationMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhySpecification">
+    <id column="SP_ID" jdbcType="VARCHAR" property="spId" />
+    <result column="SPT_ID" jdbcType="VARCHAR" property="sptId" />
+    <result column="SP_NAME" jdbcType="VARCHAR" property="spName" />
+    <result column="SP_VALUE" jdbcType="VARCHAR" property="spValue" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    SP_ID, SPT_ID, SP_NAME, SP_VALUE, ISVA, OPTIME, OPER, SORT
+  </sql>
+
+  <!-- 首页查询需要的返回类型 -->
+  <resultMap type="java.util.Map" id="IndexMap">
+  	<id column="规格值ID" property="spId" jdbcType="VARCHAR"/>
+  	<result column="规格值" property="spValue" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 根据规格类型ID查询规格值 -->
+  <select id="findBySptId" parameterType="java.lang.String" resultMap="IndexMap">
+  	SELECT  es.SP_ID AS 规格值ID,
+		es.SP_VALUE AS 规格值
+	FROM 
+		ehy_specification_type AS sp,
+		ehy_specification AS es
+	WHERE 
+		sp.SPT_ID=es.SPT_ID
+		AND
+		sp.SPT_ID= #{sptId,jdbcType=VARCHAR}
+		AND 
+		sp.ISVA=1 AND es.ISVA=1
+	ORDER BY 
+		es.SORT
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_specification
+    where SP_ID = #{spId,jdbcType=VARCHAR}
+  </select>
+  <!-- 根据规格类型id进行规格值删除  修改该状态为0-->
+  <update id="deleteByPrimaryKey" parameterType="map">
+    update ehy_specification set isva=#{isva}
+    where SPT_ID = #{sptId}
+  </update>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhySpecification">
+    insert into ehy_specification (SP_ID, SPT_ID, SP_NAME, 
+      SP_VALUE, ISVA, OPTIME, 
+      OPER, SORT)
+    values (#{spId,jdbcType=VARCHAR}, #{sptId,jdbcType=VARCHAR}, #{spName,jdbcType=VARCHAR}, 
+      #{spValue,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER})
+  </insert>
+  <!-- 规格值增加 有值加 无值不加 -->
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhySpecification">
+    <selectKey keyProperty="spId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
+    insert into ehy_specification
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="spId != null">
+        SP_ID,
+      </if>
+      <if test="sptId != null">
+        SPT_ID,
+      </if>
+      <if test="spName != null">
+        SP_NAME,
+      </if>
+      <if test="spValue != null">
+        SP_VALUE,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="spId != null">
+        #{spId,jdbcType=VARCHAR},
+      </if>
+      <if test="sptId != null">
+        #{sptId,jdbcType=VARCHAR},
+      </if>
+      <if test="spName != null">
+        #{spName,jdbcType=VARCHAR},
+      </if>
+      <if test="spValue != null">
+        #{spValue,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhySpecification">
+    update ehy_specification
+    <set>
+      <if test="sptId != null">
+        SPT_ID = #{sptId,jdbcType=VARCHAR},
+      </if>
+      <if test="spName != null">
+        SP_NAME = #{spName,jdbcType=VARCHAR},
+      </if>
+      <if test="spValue != null">
+        SP_VALUE = #{spValue,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where SP_ID = #{spId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhySpecification">
+    update ehy_specification
+    set SPT_ID = #{sptId,jdbcType=VARCHAR},
+      SP_NAME = #{spName,jdbcType=VARCHAR},
+      SP_VALUE = #{spValue,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER}
+    where SP_ID = #{spId,jdbcType=VARCHAR}
+  </update>
+</mapper>

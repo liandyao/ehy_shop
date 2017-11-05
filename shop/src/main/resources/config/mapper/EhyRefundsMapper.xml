@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyRefundsMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyRefunds">
+    <id column="REF_ID" jdbcType="VARCHAR" property="refId" />
+    <result column="RE_ID" jdbcType="VARCHAR" property="reId" />
+    <result column="REF_CODE" jdbcType="VARCHAR" property="refCode" />
+    <result column="REF_SEND_ACCOUNT" jdbcType="VARCHAR" property="refSendAccount" />
+    <result column="REF_SEND_BANK" jdbcType="VARCHAR" property="refSendBank" />
+    <result column="REF_SEND_MONEY" jdbcType="DECIMAL" property="refSendMoney" />
+    <result column="REF_REMARK" jdbcType="VARCHAR" property="refRemark" />
+    <result column="REF_OPER" jdbcType="VARCHAR" property="refOper" />
+    <result column="REF_RECEIVER" jdbcType="VARCHAR" property="refReceiver" />
+    <result column="REF_RECEIVE_TYPE" jdbcType="VARCHAR" property="refReceiveType" />
+    <result column="REF_RECEIVE_ACCOUNT" jdbcType="VARCHAR" property="refReceiveAccount" />
+    <result column="REF_RECEIVE_MONEY" jdbcType="DECIMAL" property="refReceiveMoney" />
+    <result column="REF_RECEIVE_BANK" jdbcType="VARCHAR" property="refReceiveBank" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    REF_ID, RE_ID, REF_CODE, REF_SEND_ACCOUNT, REF_SEND_BANK, REF_SEND_MONEY, REF_REMARK, 
+    REF_OPER, REF_RECEIVER, REF_RECEIVE_TYPE, REF_RECEIVE_ACCOUNT, REF_RECEIVE_MONEY, 
+    REF_RECEIVE_BANK, ISVA, OPTIME, OPER
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_refunds
+    where REF_ID = #{refId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_refunds
+    where REF_ID = #{refId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyRefunds">
+    insert into ehy_refunds (REF_ID, RE_ID, REF_CODE, 
+      REF_SEND_ACCOUNT, REF_SEND_BANK, REF_SEND_MONEY, 
+      REF_REMARK, REF_OPER, REF_RECEIVER, 
+      REF_RECEIVE_TYPE, REF_RECEIVE_ACCOUNT, REF_RECEIVE_MONEY, 
+      REF_RECEIVE_BANK, ISVA, OPTIME, 
+      OPER)
+    values (#{refId,jdbcType=VARCHAR}, #{reId,jdbcType=VARCHAR}, #{refCode,jdbcType=VARCHAR}, 
+      #{refSendAccount,jdbcType=VARCHAR}, #{refSendBank,jdbcType=VARCHAR}, #{refSendMoney,jdbcType=DECIMAL}, 
+      #{refRemark,jdbcType=VARCHAR}, #{refOper,jdbcType=VARCHAR}, #{refReceiver,jdbcType=VARCHAR}, 
+      #{refReceiveType,jdbcType=VARCHAR}, #{refReceiveAccount,jdbcType=VARCHAR}, #{refReceiveMoney,jdbcType=DECIMAL}, 
+      #{refReceiveBank,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyRefunds">
+    insert into ehy_refunds
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="refId != null">
+        REF_ID,
+      </if>
+      <if test="reId != null">
+        RE_ID,
+      </if>
+      <if test="refCode != null">
+        REF_CODE,
+      </if>
+      <if test="refSendAccount != null">
+        REF_SEND_ACCOUNT,
+      </if>
+      <if test="refSendBank != null">
+        REF_SEND_BANK,
+      </if>
+      <if test="refSendMoney != null">
+        REF_SEND_MONEY,
+      </if>
+      <if test="refRemark != null">
+        REF_REMARK,
+      </if>
+      <if test="refOper != null">
+        REF_OPER,
+      </if>
+      <if test="refReceiver != null">
+        REF_RECEIVER,
+      </if>
+      <if test="refReceiveType != null">
+        REF_RECEIVE_TYPE,
+      </if>
+      <if test="refReceiveAccount != null">
+        REF_RECEIVE_ACCOUNT,
+      </if>
+      <if test="refReceiveMoney != null">
+        REF_RECEIVE_MONEY,
+      </if>
+      <if test="refReceiveBank != null">
+        REF_RECEIVE_BANK,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="refId != null">
+        #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="reId != null">
+        #{reId,jdbcType=VARCHAR},
+      </if>
+      <if test="refCode != null">
+        #{refCode,jdbcType=VARCHAR},
+      </if>
+      <if test="refSendAccount != null">
+        #{refSendAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="refSendBank != null">
+        #{refSendBank,jdbcType=VARCHAR},
+      </if>
+      <if test="refSendMoney != null">
+        #{refSendMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="refRemark != null">
+        #{refRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="refOper != null">
+        #{refOper,jdbcType=VARCHAR},
+      </if>
+      <if test="refReceiver != null">
+        #{refReceiver,jdbcType=VARCHAR},
+      </if>
+      <if test="refReceiveType != null">
+        #{refReceiveType,jdbcType=VARCHAR},
+      </if>
+      <if test="refReceiveAccount != null">
+        #{refReceiveAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="refReceiveMoney != null">
+        #{refReceiveMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="refReceiveBank != null">
+        #{refReceiveBank,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyRefunds">
+    update ehy_refunds
+    <set>
+      <if test="reId != null">
+        RE_ID = #{reId,jdbcType=VARCHAR},
+      </if>
+      <if test="refCode != null">
+        REF_CODE = #{refCode,jdbcType=VARCHAR},
+      </if>
+      <if test="refSendAccount != null">
+        REF_SEND_ACCOUNT = #{refSendAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="refSendBank != null">
+        REF_SEND_BANK = #{refSendBank,jdbcType=VARCHAR},
+      </if>
+      <if test="refSendMoney != null">
+        REF_SEND_MONEY = #{refSendMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="refRemark != null">
+        REF_REMARK = #{refRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="refOper != null">
+        REF_OPER = #{refOper,jdbcType=VARCHAR},
+      </if>
+      <if test="refReceiver != null">
+        REF_RECEIVER = #{refReceiver,jdbcType=VARCHAR},
+      </if>
+      <if test="refReceiveType != null">
+        REF_RECEIVE_TYPE = #{refReceiveType,jdbcType=VARCHAR},
+      </if>
+      <if test="refReceiveAccount != null">
+        REF_RECEIVE_ACCOUNT = #{refReceiveAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="refReceiveMoney != null">
+        REF_RECEIVE_MONEY = #{refReceiveMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="refReceiveBank != null">
+        REF_RECEIVE_BANK = #{refReceiveBank,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where REF_ID = #{refId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyRefunds">
+    update ehy_refunds
+    set RE_ID = #{reId,jdbcType=VARCHAR},
+      REF_CODE = #{refCode,jdbcType=VARCHAR},
+      REF_SEND_ACCOUNT = #{refSendAccount,jdbcType=VARCHAR},
+      REF_SEND_BANK = #{refSendBank,jdbcType=VARCHAR},
+      REF_SEND_MONEY = #{refSendMoney,jdbcType=DECIMAL},
+      REF_REMARK = #{refRemark,jdbcType=VARCHAR},
+      REF_OPER = #{refOper,jdbcType=VARCHAR},
+      REF_RECEIVER = #{refReceiver,jdbcType=VARCHAR},
+      REF_RECEIVE_TYPE = #{refReceiveType,jdbcType=VARCHAR},
+      REF_RECEIVE_ACCOUNT = #{refReceiveAccount,jdbcType=VARCHAR},
+      REF_RECEIVE_MONEY = #{refReceiveMoney,jdbcType=DECIMAL},
+      REF_RECEIVE_BANK = #{refReceiveBank,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR}
+    where REF_ID = #{refId,jdbcType=VARCHAR}
+  </update>
+</mapper>

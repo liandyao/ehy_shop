@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyRoleModuleMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyRoleModule">
+    <id column="RM_ID" jdbcType="VARCHAR" property="rmId" />
+    <result column="MOD_ID" jdbcType="VARCHAR" property="modId" />
+    <result column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    RM_ID, MOD_ID, ROLE_ID
+  </sql>
+  
+  <select id="findByRoleId" parameterType="string" resultMap="BaseResultMap">
+  	select * from ehy_role_module where role_id=#{roleId}
+  </select>
+  
+  <delete id="deleteModRole" parameterType="string">
+  	delete from ehy_role_module where ROLE_ID=#{roleId}
+  </delete>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_role_module
+    where RM_ID = #{rmId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_role_module
+    where RM_ID = #{rmId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyRoleModule">
+    insert into ehy_role_module (RM_ID, MOD_ID, ROLE_ID
+      )
+    values (#{rmId,jdbcType=VARCHAR}, #{modId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyRoleModule">
+    insert into ehy_role_module
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rmId != null">
+        RM_ID,
+      </if>
+      <if test="modId != null">
+        MOD_ID,
+      </if>
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rmId != null">
+        #{rmId,jdbcType=VARCHAR},
+      </if>
+      <if test="modId != null">
+        #{modId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyRoleModule">
+    update ehy_role_module
+    <set>
+      <if test="modId != null">
+        MOD_ID = #{modId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        ROLE_ID = #{roleId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where RM_ID = #{rmId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyRoleModule">
+    update ehy_role_module
+    set MOD_ID = #{modId,jdbcType=VARCHAR},
+      ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    where RM_ID = #{rmId,jdbcType=VARCHAR}
+  </update>
+</mapper>

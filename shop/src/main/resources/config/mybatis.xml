@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+   
+  <!-- 日志输出 -->
+  <settings>  
+      <setting name="logImpl" value="STDOUT_LOGGING"/>  
+  </settings> 
+  
+  <!-- 简配配置 -->
+ 	<typeAliases>
+  		<package name="cn.ehuoyuan.shop.domain"/>
+  	</typeAliases>
+   	
+   	<!-- 配置PageHelper分页插件 -->
+	 <plugins>
+         <!-- PageHelper4.1.1 --> 
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="dialect" value="mysql"/>
+            <property name="offsetAsPageNum" value="false"/>
+            <property name="rowBoundsWithCount" value="true"/>
+            <property name="pageSizeZero" value="true"/>
+            <property name="reasonable" value="false"/>
+            <property name="supportMethodsArguments" value="false"/>
+            <property name="returnPageInfo" value="none"/>
+        </plugin>
+    </plugins>  
+</configuration>

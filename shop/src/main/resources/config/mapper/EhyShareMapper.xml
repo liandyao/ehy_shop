@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyShareMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyShare">
+    <id column="SHA_ID" jdbcType="VARCHAR" property="shaId" />
+    <result column="MX_ID" jdbcType="VARCHAR" property="mxId" />
+    <result column="SHA_DATETIME" jdbcType="VARCHAR" property="shaDatetime" />
+    <result column="SHA_PRICE" jdbcType="DECIMAL" property="shaPrice" />
+    <result column="SHA_FACTORY_PRICE" jdbcType="DECIMAL" property="shaFactoryPrice" />
+    <result column="SHA_YIELD" jdbcType="DECIMAL" property="shaYield" />
+    <result column="SHA_REMARK" jdbcType="VARCHAR" property="shaRemark" />
+    <result column="SHA_EVAL" jdbcType="VARCHAR" property="shaEval" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
+    <result column="PRODUCT_NAME" jdbcType="VARCHAR" property="productName" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+    <result column="MB_ID" jdbcType="VARCHAR" property="mbId" />
+    <result column="MB_NAME" jdbcType="VARCHAR" property="mbName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    SHA_ID, MX_ID, SHA_DATETIME, SHA_PRICE, SHA_FACTORY_PRICE, SHA_YIELD, SHA_REMARK, 
+    SHA_EVAL, ISVA, OPTIME, OPER, PRODUCT_ID, PRODUCT_NAME, SORT, MB_ID, MB_NAME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_share
+    where SHA_ID = #{shaId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_share
+    where SHA_ID = #{shaId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyShare">
+    insert into ehy_share (SHA_ID, MX_ID, SHA_DATETIME, 
+      SHA_PRICE, SHA_FACTORY_PRICE, SHA_YIELD, 
+      SHA_REMARK, SHA_EVAL, ISVA, 
+      OPTIME, OPER, PRODUCT_ID, 
+      PRODUCT_NAME, SORT, MB_ID, 
+      MB_NAME)
+    values (#{shaId,jdbcType=VARCHAR}, #{mxId,jdbcType=VARCHAR}, #{shaDatetime,jdbcType=VARCHAR}, 
+      #{shaPrice,jdbcType=DECIMAL}, #{shaFactoryPrice,jdbcType=DECIMAL}, #{shaYield,jdbcType=DECIMAL}, 
+      #{shaRemark,jdbcType=VARCHAR}, #{shaEval,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, 
+      #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{mbId,jdbcType=VARCHAR}, 
+      #{mbName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyShare">
+    insert into ehy_share
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shaId != null">
+        SHA_ID,
+      </if>
+      <if test="mxId != null">
+        MX_ID,
+      </if>
+      <if test="shaDatetime != null">
+        SHA_DATETIME,
+      </if>
+      <if test="shaPrice != null">
+        SHA_PRICE,
+      </if>
+      <if test="shaFactoryPrice != null">
+        SHA_FACTORY_PRICE,
+      </if>
+      <if test="shaYield != null">
+        SHA_YIELD,
+      </if>
+      <if test="shaRemark != null">
+        SHA_REMARK,
+      </if>
+      <if test="shaEval != null">
+        SHA_EVAL,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="productName != null">
+        PRODUCT_NAME,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+      <if test="mbId != null">
+        MB_ID,
+      </if>
+      <if test="mbName != null">
+        MB_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shaId != null">
+        #{shaId,jdbcType=VARCHAR},
+      </if>
+      <if test="mxId != null">
+        #{mxId,jdbcType=VARCHAR},
+      </if>
+      <if test="shaDatetime != null">
+        #{shaDatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="shaPrice != null">
+        #{shaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="shaFactoryPrice != null">
+        #{shaFactoryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="shaYield != null">
+        #{shaYield,jdbcType=DECIMAL},
+      </if>
+      <if test="shaRemark != null">
+        #{shaRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="shaEval != null">
+        #{shaEval,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="mbId != null">
+        #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbName != null">
+        #{mbName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyShare">
+    update ehy_share
+    <set>
+      <if test="mxId != null">
+        MX_ID = #{mxId,jdbcType=VARCHAR},
+      </if>
+      <if test="shaDatetime != null">
+        SHA_DATETIME = #{shaDatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="shaPrice != null">
+        SHA_PRICE = #{shaPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="shaFactoryPrice != null">
+        SHA_FACTORY_PRICE = #{shaFactoryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="shaYield != null">
+        SHA_YIELD = #{shaYield,jdbcType=DECIMAL},
+      </if>
+      <if test="shaRemark != null">
+        SHA_REMARK = #{shaRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="shaEval != null">
+        SHA_EVAL = #{shaEval,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="mbId != null">
+        MB_ID = #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbName != null">
+        MB_NAME = #{mbName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SHA_ID = #{shaId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyShare">
+    update ehy_share
+    set MX_ID = #{mxId,jdbcType=VARCHAR},
+      SHA_DATETIME = #{shaDatetime,jdbcType=VARCHAR},
+      SHA_PRICE = #{shaPrice,jdbcType=DECIMAL},
+      SHA_FACTORY_PRICE = #{shaFactoryPrice,jdbcType=DECIMAL},
+      SHA_YIELD = #{shaYield,jdbcType=DECIMAL},
+      SHA_REMARK = #{shaRemark,jdbcType=VARCHAR},
+      SHA_EVAL = #{shaEval,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER},
+      MB_ID = #{mbId,jdbcType=VARCHAR},
+      MB_NAME = #{mbName,jdbcType=VARCHAR}
+    where SHA_ID = #{shaId,jdbcType=VARCHAR}
+  </update>
+</mapper>

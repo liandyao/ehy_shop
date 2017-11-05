@@ -1,0 +1,189 @@
+@CHARSET "UTF-8";
+#cartList{
+	margin: 45px auto
+}
+#cartList *{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#cartList em{
+	font-style: normal;
+}
+#cartList table{
+	border-collapse:collapse; 
+	width: 980px;
+}
+
+#cartList tbody tr{
+	border: 1px solid #eee;
+	letter-spacing: 1px;
+}
+#cartList thead th{
+	height: 30px;
+	text-align: center;
+}
+#cartList tfoot tr{
+	height: 50px;
+}
+#cartList tbody tr:nth-child(2n-1){
+	height: 30px;
+	background: #fafafa4d;
+}
+#cartList tbody tr:nth-child(2n){
+	height: 123px;
+}
+#cartList tbody tr td{
+	padding-left: 30px;
+}
+#cartList tr td:first-child{
+	overflow: hidden;
+	padding-left: 20px;
+	padding-right: 0px;
+}
+#cartList tr td:first-child > div{
+	float: left;
+}
+#cartList tr td > div{
+	height: 80px;
+}
+#cartList tbody tr td > div.aceBox{
+	line-height: 80px;
+	padding-right: 10px;
+}
+#cartList tr td > div.aceBox input{
+	display: none;
+}
+#cartList tr td > div.aceBox span.lbl{
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+	background-color: #fff;
+	background-image: url(../images/checkbox.png);
+	background-repeat: no-repeat;
+}
+#cartList tr td > div.aceBox input:checked + span.lbl{
+	background-position-y: -16px; 
+}
+
+#cartList tbody tr div.img{
+	border: 1px solid #ddd;
+	width: 80px;
+	height: 80px;
+	padding: 2px;
+}
+#cartList tbody tr div.img > img{
+	max-height: 100%;
+	max-width: 100%;
+}
+#cartList tbody tr div.txt{
+	width: 111px;
+	margin-left: 10px;
+	position: relative;
+}
+#cartList tbody tr div.txt > span{
+	position: absolute;
+	top: 50%;
+	transform: translate(0, -50%);
+}
+#cartList tbody tr .info{
+	color: #a29a9a;
+}
+#cartList tbody tr .num-box {
+    width: 75px;
+    height: 23px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+}
+
+#cartList tbody tr .num-box > .box_item {
+    width: 17px;
+    line-height: 21px;
+    text-align: center;
+    float: left;
+}
+#cartList tbody tr .num-box > .span {
+	position: relative;
+	background-color: transparent;
+	cursor: pointer;
+	color: black;
+	font-size: 18px;
+}
+#cartList tbody tr .num-box > .span:hover {
+    color: #111;
+    font-size: 20px;
+}
+#cartList tbody tr .num-box > .num {
+	width: 38px;
+    color: #111;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    position: relative;
+    top: -1px;
+    font-size: 14px;
+}
+#cartList tbody tr .subtotal{
+	font-size: 20px;
+	color: #ff4300;
+	font-weight: 500;
+	line-height: 70px;
+}
+#cartList tbody tr div.cont{
+	line-height: 70px;
+}
+#cartList tbody tr div.cont .btn{
+	font-size: 18px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+#cartList tbody tr div.cont a{
+	font-size: 18px;
+}
+#cartList tfoot *{
+	font-size: 16px;
+}
+#cartList .top2{
+	position: relative;
+	top: 2px;
+}
+#cartList thead tr:first-child, #cartList tfoot tr:last-child{
+	border: 1px solid #eee;
+	background: #fafafa;
+}
+
+#cartList tfoot tr td:first-child{
+	line-height: 80px;
+}
+#cartList tfoot tr .selectAll{
+	margin-left: 20px; 
+	margin-right: 20px; 
+}
+#cartList tfoot tr b{
+	color: rgb(85, 160, 255);;
+}
+#cartList .ft20{
+	font-size: 20px;
+	color: #ff4300;
+    position: relative;
+    top: 3px;
+    font-weight: 500;
+}
+#cartList tfoot tr td:last-child{
+	padding: 0px;
+	text-align: center;
+}
+#cartList .btn-warning {
+    background-color: #fc4302;
+    border-color: #fe452d;
+    height: 50px;
+	width: 120px;
+	font-size: 16px;
+	font-family: "SimHei";
+	letter-spacing: 1px;
+	cursor: pointer;
+}
+#cartList .btn-warning:hover{
+	color: #fff;
+	background-color: #fe7d52;
+	border-color: #fc4302;
+}

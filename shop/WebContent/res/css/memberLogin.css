@@ -1,0 +1,141 @@
+@CHARSET "UTF-8";
+#loginModal *{
+	margin: 0px;
+	padding: 0px;
+	font-size: 14px;
+	font-family: "Microsoft YaHei","Segoe UI", "Lucida Grande", Helvetica, Arial,sans-serif;
+}
+#loginModal *, #loginModal *::before,#loginModal *::after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+#loginModal{
+	width: 540px;
+	height: 319px;
+	box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+	position: fixed;
+	top: calc(50% - 160px);
+	left: calc(50% - 270px);
+	z-index: 9999;
+}
+#loginModal > .col-left{
+	float:left;
+	width: 225px;
+	height: 319px;
+	background: url(../images/sprite_0.png) 0 -717px no-repeat;
+}
+#loginModal > .col-right{
+	background-color: #fff;
+	float:left;
+	width: 315px;
+	height: 319px;
+	color: #b2b2b2;
+}
+#loginModal .modal-header {
+    min-height: 16.43px;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    overflow: hidden;
+}
+#loginModal .modal-title {
+	color: #ff6100;
+	font-weight: 500;
+    margin: 0;
+    line-height: 1.42857143;
+    font-size: 18px;
+    float: left;
+}
+#loginModal .modal-close{
+	float: right;
+	margin-top: -2px;
+	font-size: 21px;
+	font-weight: 700;
+	line-height: 1;
+	color: #000;
+	text-shadow: 0 1px 0 #fff;
+	filter: alpha(opacity=20);
+	opacity: .2;
+}
+#loginModal .modal-close:hover {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.5;
+}
+#loginModal .modal-body {
+    position: relative;
+    padding: 15px;
+}
+#loginModal .modal-body {
+    height: 263px;
+}
+#loginModal .v5-input-txt {
+    padding: 0 15px 10px;
+}
+#loginModal ul{
+    list-style: none;
+}
+#loginModal .v5-input-txt .form-control {
+	padding: 10px 12px;
+	font-size: 14px;
+	width: 100%;
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+#loginModal .form-control:focus {
+    border-color: #ff9600;
+    outline: 0;
+    -webkit-box-shadow: 0 1px 1px rgb(207, 207, 207) inset, 0 0 8px rgb(255, 150, 0.6);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 150, 1, 0.71);
+}
+#loginModal .marginB10 {
+    margin-bottom: 10px;
+}
+#loginModal .good-tips, #loginModal .good-tips a{
+	font-size: 12px;
+}
+#loginModal .good-tips a:hover{
+	text-decoration: underline;
+}
+#loginModal section >p > a:first-child {
+    color: #ff9600;
+    text-decoration: none;
+}
+#loginModal section >p > a:last-child{
+	float: right;
+	color: blue;
+	text-decoration: none;
+}
+#loginModal .btn{
+	height: 47px;
+	background: #ff9600;
+	color: #fff;
+	width: 100%;
+	border: 1px solid transparent;
+	font-size: 14px;
+	font-weight: 700;
+	cursor: pointer;
+	border-radius: 4px;
+}
+#loginModal .login-box{
+	height: 78px;
+}
+#loginModal .tips-error {
+    padding: 2px 10px;
+    margin-top: 10px;
+    background-color: #f2dede;
+}
+#loginModal .threeLogin a {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url(../images/login_img.png) no-repeat;
+    vertical-align: middle;
+    margin-left: 15px;
+    cursor: pointer;
+}
+#loginModal .threeLogin .nwx {
+    background-position: -20px 0;
+}

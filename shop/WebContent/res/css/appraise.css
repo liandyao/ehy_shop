@@ -1,0 +1,254 @@
+@CHARSET "UTF-8";
+
+#header .logo .txt{
+	font-size: 18px;
+	color: #c30000;
+	font-weight: bold;
+	position: relative;
+	top: -23px;
+	font-family: "SimHei";
+}
+
+/* 主体内容样式  start */
+#main{
+	width: 100%;
+	height: auto;
+	margin-bottom: 30px;
+}
+
+#main .content{
+	height: 100%;
+}
+
+/*  头部：第一个大div  start  */
+.top{
+	height: 302px;
+	width: 100%;
+	overflow: hidden;
+	margin-bottom: 30px;
+}
+.title{
+	width: 100%;
+	height: 35px;
+	line-height: 35px;
+	background-color: #f3f3f3;
+	color: #3e3e3e;
+	font-size: 18px;
+	font-weight: bold;
+	padding-left: 15px;
+	border-bottom: 1px solid #d6d6d6;
+}
+
+/* 宝贝图片参数    start */
+.parameter{
+	width: 925px;
+	height: 298px;
+	float: left;
+	overflow: hidden;
+	border: 1px solid #d6d6d6;
+}
+.max-img{
+	border: 1px solid #d6d6d6;
+	width: 243px;
+	height: 241px;
+	margin: 10px;
+	float: left;
+}
+/*  参数规格  start  */
+.param{
+	float: left;
+	margin: 10px;
+}
+.param > div{
+	margin-bottom: 11px;
+}
+.param > .pay{
+	font-size: 16px;
+	color: #969696;
+}
+.param .key{
+	font-size: 15px;
+	font-weight: bold;
+}
+.param > .price > .value{
+	font-size: 15px;
+	font-weight: bold;
+}
+.min-img ul li{
+	border: 1px solid #d6d6d6;
+	width: 60px;
+	height: 60px;
+	float: left;
+	margin-right: 10px;
+}
+.min-img ul li.active{
+	border-color: red;
+}
+.min-img > ul > li > img{
+	padding: 2px;
+}
+/*  参数规格    end   */
+
+/*  宝贝图片参数    end  */
+
+/*  商品展示   start  */
+.goods{
+	width: 250px;
+	height: 298px;
+	float: right;
+	border: 1px solid #d6d6d6;
+	overflow: hidden;
+}
+.goods > .list > ul{
+	margin: 10px;
+}
+.goods > .list > ul li{
+	overflow: hidden;
+	margin-bottom: 5px;
+	height: 62px;
+}
+.goods > .list > ul > li > div{
+	float: left;
+	height: 100%;
+}
+.goods > .list > ul > li > div.img{
+	width: 60px;
+	height: 60px;
+	float: left;
+	margin-right: 6px;
+	border: 1px solid #d6d6d6;
+}
+.goods > .list > ul > li > div.img > img{
+	padding: 2px;
+}
+.goods > .list > ul > li > div.txt{
+	padding: 12px 0;
+	line-height: 20px;
+}
+/*  商品展示        end  */
+
+/*  头部：第一个大div   end   */
+
+/*  头部：第二个大div  start  */
+.cont{
+	width: 1198px;
+	height: auto;
+	border: 1px solid #d6d6d6;
+}
+.cont > div{
+	border-bottom: 1px solid #d6d6d6;
+}
+
+/*  实物描述  start  */
+.cont > div.describe{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.describe > .box{
+	width: 100%;
+	height: 219px;
+	overflow: hidden;
+}
+.describe > .box > div{
+	height: 100%;
+	float: left;
+}
+.remark{
+	width: 773px;
+	border-right: 1px solid #d6d6d6;
+}
+.remark > div{
+	margin: 10px 50px; 
+}
+.remark *{
+	font-size: 16px;
+}
+.remark > .datum{
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+.remark > .datum > div{
+	float: left;
+	height: 75px;
+}
+#portrait{
+	height: 73px;
+	width: 73px;
+	border: 1px solid #c9c9c9;
+	border-radius: 50%;
+	overflow: hidden;
+}
+#info{
+	margin-left: 15px;
+}
+#info .buyer{
+	color: red;
+}
+
+.remark > .list li{
+	height: 60px;
+}
+
+.bargain{
+	width: 424px;
+	padding: 35px 0px;
+}
+.bargain *{
+	font-size: 18px;
+}
+.bargain > .name, .bargain > .price, .bargain > .save{
+	font-weight: bold;
+	padding:  5px 80px;
+}
+.bargain .price em{
+	color: red;
+	font-size: 20px;
+}
+.bargain > .save{
+	color: red;
+}
+
+.btn-links > div.btn{
+	width: 120px;
+}
+.btn-links > div.btn:hover {
+    color: #fff;
+    background-color: #fe7d52;
+    border-color: #fc4302;
+}
+.btn-links > div.like{
+	line-height: 16px;
+	padding-top: 2px;
+	padding-bottom: 3px;
+}
+.btn{
+	text-decoration: none;
+	border-radius: 4px;
+	background-image: none;
+	border: 1px solid transparent;
+	vertical-align: middle;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	display: inline-block;
+	padding: 6px 12px;
+	color: #fff;
+	background-color: #fc4302;
+	border-color: #fe452d;;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+/*  实物描述      end   */
+
+/*  上传照片  start  */
+.cont .photo{
+	
+}
+/*  上传照片      end   */
+
+/*  头部：第二个大div   end   */
+
+/* 主体内容样式  start */

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyProductSpecificationPriceMapper" >
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyProductSpecificationPrice" >
+    <id column="PSP_ID" property="pspId" jdbcType="VARCHAR" />
+    <result column="PRO_ID" property="proId" jdbcType="VARCHAR" />
+    <result column="PRO_NAME" property="proName" jdbcType="VARCHAR" />
+    <result column="PSP_NAME" property="pspName" jdbcType="VARCHAR" />
+    <result column="PSP_GROUP_NAME" property="pspGroupName" jdbcType="VARCHAR" />
+    <result column="PSP_FACTORY_PRICE" property="pspFactoryPrice" jdbcType="DECIMAL" />
+    <result column="PSP_PRICE" property="pspPrice" jdbcType="DECIMAL" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+    <result column="OPTIME" property="optime" jdbcType="TIMESTAMP" />
+    <result column="OPER" property="oper" jdbcType="VARCHAR" />
+    <result column="SORT" property="sort" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PSP_ID, PRO_ID, PRO_NAME, PSP_NAME, PSP_GROUP_NAME, PSP_FACTORY_PRICE, PSP_PRICE, 
+    ISVA, OPTIME, OPER, SORT
+  </sql>
+  
+  <!-- 根据产品ID查找该产品的规格价格 -->
+  <select id="findAllByProId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_product_specification_price
+    where PRO_ID = #{proId,jdbcType=VARCHAR} AND isva=1
+  </select>
+  
+  <!-- 根据产品ID修改该产品的所有规格价格为无效 -->
+  <update id="updateIsvaByProId" parameterType="java.lang.String" >
+    update ehy_product_specification_price set isva=0 WHERE PRO_ID=#{proId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_product_specification_price
+    where PSP_ID = #{pspId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ehy_product_specification_price
+    where PSP_ID = #{pspId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyProductSpecificationPrice" >
+    insert into ehy_product_specification_price (PSP_ID, PRO_ID, PRO_NAME, 
+      PSP_NAME, PSP_GROUP_NAME, PSP_FACTORY_PRICE, 
+      PSP_PRICE, ISVA, OPTIME, 
+      OPER, SORT)
+    values (#{pspId,jdbcType=VARCHAR}, #{proId,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, 
+      #{pspName,jdbcType=VARCHAR}, #{pspGroupName,jdbcType=VARCHAR}, #{pspFactoryPrice,jdbcType=DECIMAL}, 
+      #{pspPrice,jdbcType=DECIMAL}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyProductSpecificationPrice" >
+    insert into ehy_product_specification_price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pspId != null" >
+        PSP_ID,
+      </if>
+      <if test="proId != null" >
+        PRO_ID,
+      </if>
+      <if test="proName != null" >
+        PRO_NAME,
+      </if>
+      <if test="pspName != null" >
+        PSP_NAME,
+      </if>
+      <if test="pspGroupName != null" >
+        PSP_GROUP_NAME,
+      </if>
+      <if test="pspFactoryPrice != null" >
+        PSP_FACTORY_PRICE,
+      </if>
+      <if test="pspPrice != null" >
+        PSP_PRICE,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="optime != null" >
+        OPTIME,
+      </if>
+      <if test="oper != null" >
+        OPER,
+      </if>
+      <if test="sort != null" >
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pspId != null" >
+        #{pspId,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null" >
+        #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null" >
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="pspName != null" >
+        #{pspName,jdbcType=VARCHAR},
+      </if>
+      <if test="pspGroupName != null" >
+        #{pspGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="pspFactoryPrice != null" >
+        #{pspFactoryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="pspPrice != null" >
+        #{pspPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null" >
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null" >
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyProductSpecificationPrice" >
+    update ehy_product_specification_price
+    <set >
+      <if test="proId != null" >
+        PRO_ID = #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null" >
+        PRO_NAME = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="pspName != null" >
+        PSP_NAME = #{pspName,jdbcType=VARCHAR},
+      </if>
+      <if test="pspGroupName != null" >
+        PSP_GROUP_NAME = #{pspGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="pspFactoryPrice != null" >
+        PSP_FACTORY_PRICE = #{pspFactoryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="pspPrice != null" >
+        PSP_PRICE = #{pspPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null" >
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null" >
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PSP_ID = #{pspId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyProductSpecificationPrice" >
+    update ehy_product_specification_price
+    set PRO_ID = #{proId,jdbcType=VARCHAR},
+      PRO_NAME = #{proName,jdbcType=VARCHAR},
+      PSP_NAME = #{pspName,jdbcType=VARCHAR},
+      PSP_GROUP_NAME = #{pspGroupName,jdbcType=VARCHAR},
+      PSP_FACTORY_PRICE = #{pspFactoryPrice,jdbcType=DECIMAL},
+      PSP_PRICE = #{pspPrice,jdbcType=DECIMAL},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER}
+    where PSP_ID = #{pspId,jdbcType=VARCHAR}
+  </update>
+</mapper>

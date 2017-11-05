@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyExpressTemplateMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyExpressTemplate">
+    <id column="TEMP_ID" jdbcType="VARCHAR" property="tempId" />
+    <result column="TEMP_NAME" jdbcType="VARCHAR" property="tempName" />
+    <result column="EXPRESS_ID" jdbcType="VARCHAR" property="expressId" />
+    <result column="MONEY" jdbcType="DECIMAL" property="money" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="ST_ID" jdbcType="VARCHAR" property="stId" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    TEMP_ID, TEMP_NAME, EXPRESS_ID, MONEY, REMARK, ST_ID, ISVA, OPTIME, OPER, SORT
+  </sql>
+  
+  <!-- 根据站点ID查询所有运费模板 -->
+  <select id="findByStId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_express_template
+    where ST_ID = #{stId,jdbcType=VARCHAR}
+  </select>
+  
+   <!-- 查询数据 -->
+  <select id="findAll" parameterType="map" resultType="map">
+  	SELECT eet.TEMP_ID tempId,eet.TEMP_NAME tempName,eet.EXPRESS_ID expressId,
+	eet.MONEY money,eet.REMARK remark,eet.ST_ID stId,eet.sort sort,
+	ee.NAME name,es.ST_NAME stName 
+	FROM ehy_express_template eet,ehy_express ee,ehy_station es 
+  	<where>
+  		eet.EXPRESS_ID=ee.EXPREESS_ID AND eet.ST_ID=es.ST_ID
+  		<if test="tempName!='' and tempName!=null">
+  			and eet.TEMP_NAME like CONCAT('%',#{tempName},'%' )
+  		</if>
+  		<if test="name!='' and name!=null">
+  			and ee.NAME like CONCAT('%',#{name},'%' )
+  		</if>
+  		<if test="stName!='' and stName!=null">
+  			and es.ST_NAME like CONCAT('%',#{stName},'%' )
+  		</if>
+  		AND eet.ISVA=1 AND ee.ISVA=1 AND es.ISVA=1 
+  	</where>
+  	ORDER BY eet.SORT limit #{firstRows} , #{maxResult}
+  </select>
+  
+ <!-- 查询总行数 -->
+  <select id="findRowCount" parameterType="map" resultType="int">
+  	SELECT count(*) FROM 
+  	ehy_express_template eet,ehy_express ee,ehy_station es 
+  	<where>
+  		eet.EXPRESS_ID=ee.EXPREESS_ID AND eet.ST_ID=es.ST_ID
+  		<if test="tempName!='' and tempName!=null">
+  			and eet.TEMP_NAME like CONCAT('%',#{tempName},'%' )
+  		</if>
+  		<if test="name!='' and name!=null">
+  			and ee.NAME like CONCAT('%',#{name},'%' )
+  		</if>
+  		<if test="stName!='' and stName!=null">
+  			and es.ST_NAME like CONCAT('%',#{stName},'%' )
+  		</if>
+  		AND eet.ISVA=1 AND ee.ISVA=1 AND es.ISVA=1 
+  	</where>
+  </select>
+  
+  <!-- 根据id查询 -->
+  <select id="findById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_express_template
+    where TEMP_ID = #{tempId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <!-- 增加 -->
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyExpressTemplate">
+    <selectKey keyProperty="tempId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	 </selectKey>
+    insert into ehy_express_template
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tempId != null">
+        TEMP_ID,
+      </if>
+      <if test="tempName != null">
+        TEMP_NAME,
+      </if>
+      <if test="expressId != null">
+        EXPRESS_ID,
+      </if>
+      <if test="money != null">
+        MONEY,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="stId != null">
+        ST_ID,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort == null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tempId != null">
+        #{tempId,jdbcType=VARCHAR},
+      </if>
+      <if test="tempName != null">
+        #{tempName,jdbcType=VARCHAR},
+      </if>
+      <if test="expressId != null">
+        #{expressId,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="stId != null">
+        #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort == null">
+       (SELECT IFNULL(max(SORT)+1,1) FROM ehy_express_template AS SORT),
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 修改 -->
+  <update id="updateSelective" parameterType="cn.ehuoyuan.shop.domain.EhyExpressTemplate">
+    update ehy_express_template
+    <set>
+      <if test="tempName != null">
+        TEMP_NAME = #{tempName,jdbcType=VARCHAR},
+      </if>
+      <if test="expressId != null">
+        EXPRESS_ID = #{expressId,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        MONEY = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="stId != null">
+        ST_ID = #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where TEMP_ID = #{tempId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 排序 -->
+   <update id="sortTemplate" parameterType="int" >
+  <!-- 
+  	往上排：让开始行数等于结束行数，再把小于开始行数大于结束行数的全部+1 
+  	往下排：让结束行数等于开始行数，再把大于开始行数小于结束行数的全部-1 
+  -->
+  	
+  	<if test="endNum &gt; startNum">
+  		update ehy_express_template set SORT=SORT-1 where SORT &lt;= #{endNum } and SORT &gt;= #{startNum };
+  		update ehy_express_template set SORT=#{endNum } where TEMP_ID=#{tempId};
+  	</if>
+  	<if test="endNum &lt; startNum">
+  		update ehy_express_template set SORT=SORT+1 where SORT &gt;= #{endNum } and SORT &lt; #{startNum };
+  		update ehy_express_template set SORT=#{endNum } where TEMP_ID=#{tempId}; 
+  	</if>
+  	
+  </update>
+</mapper>

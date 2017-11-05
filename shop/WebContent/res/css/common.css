@@ -1,0 +1,242 @@
+@CHARSET "UTF-8";
+
+/* 公共样式区       start  */
+*{
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	font-family: "SimHei";
+}
+input{
+	border: 1px solid #d9d9d9;
+}
+textarea:focus, 
+  input[type="text"]:focus,
+  input[type="password"]:focus, 
+  input[type="datetime"]:focus, 
+  input[type="datetime-local"]:focus, 
+  input[type="date"]:focus, 
+  input[type="month"]:focus, 
+  input[type="time"]:focus, 
+  input[type="week"]:focus, 
+  input[type="number"]:focus, 
+  input[type="email"]:focus, 
+  input[type="url"]:focus, 
+  input[type="search"]:focus, 
+  input[type="tel"]:focus, 
+  input[type="color"]:focus{
+	border-color: #f59942;
+}
+#curtain{
+	position: fixed;
+	background-color: rgb(51, 51, 51);
+	opacity: 0.4;
+	width: 100%;
+	height: 100%;
+	z-index:8888;
+}
+.btn{
+	text-decoration: none;
+	border-radius: 4px;
+	background-image: none;
+	border: 1px solid transparent;
+	vertical-align: middle;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	display: inline-block;
+	padding: 6px 12px;
+	color: #fff;
+	background-color: #fc4302;
+	cursor: pointer;
+}
+.btn-warning {
+    background-color: #fc4302;
+    border-color: #fe452d;
+}
+.btn-warning:hover{
+	color: #fff;
+	background-color: #fe7d52;
+	border-color: #fc4302;
+}
+
+.btn-primary{
+	background-color: #0379f7;
+	border-color: #0379d2;
+}
+.btn-primary:hover{
+	color: #fff;
+	background-color: #286090;
+	border-color: #204d74;
+}
+textarea{
+	resize: none;
+	border: 1px solid #d5d5d5;
+}
+ul{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+	color: #000;
+}
+em, i{
+	font-style: normal;
+}
+a:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.content{
+	width: 1200px;
+	height: 100%;
+	margin: 0 auto; 
+}
+.bg-color{
+	background-color:#ff6100;
+}
+.font-color-white{
+	color: #fefefe;
+}
+.line-height{
+	display: inline-block;
+	width: 1px;
+	height: 14px;
+	background-color: #fff;
+	position: relative;
+	top: 2px;
+}
+.clear{ 
+	clear:both
+} 
+
+/* 公共样式区       end  */
+
+
+/*  右边工具栏  start   */
+#toolbar{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 40px;
+	height: 287px;
+	color: #f7fffd;
+	transform: translate(620px, -50%);
+	overflow: hidden;
+}
+#toolbar *{
+	color: #fff;
+}
+#toolbar a:hover{
+	text-decoration: none;
+}
+#toolbar li{
+	margin-bottom: 5px;
+	width: 40px;
+	background-color: #7a6e6e;
+	padding: 10px 0px;
+	cursor: pointer;
+}
+#toolbar li:hover{
+	background-color: #c81623;
+}
+#toolbar li div span.number{
+	font-size: 16px;
+	background-color: #ff6100;
+	border-radius: 50%;
+	padding: 3px 7px;
+}
+#toolbar li div span.txt{
+	font-size: 10px;
+}
+#toolbar img{
+}
+#toolbar li div span.glyphicon-menu-up{
+	font-size: 20px;
+	color: #f7fffd;
+}
+/*  右边工具栏  end   */
+
+
+/* 页眉样式区       start  */
+#header{
+	/* background-color: #eee; */
+	height: 100%;
+	width: 100%;
+}
+#header .head-top{
+	background-color: #fff;
+	height: 50px;
+}
+#header .content{
+	/* background-color: #ff80ff; */
+}
+.logo{
+	height: 80px;
+}
+.login-regist{
+	background-color: #af544f;
+	float: right;
+	display: inline-block;
+	padding: 5px 15px;
+	margin-right: 40px;
+	margin-top: 35px;
+}
+.login-regist > a, .login-regist span{
+	color: #fefefe;
+}
+
+.links-li{
+	width: 100%;
+	height: 38px;
+}
+.links-li li{
+	float: left;
+	height: 38px;
+	line-height: 38px;
+}
+.links-li .line-height{
+	margin:0px;
+	background-color: #000;
+	height: 17px;
+}
+.links-li li a{
+	font-size: 18px;
+	padding: 0 20px;
+}
+.links-li li a:hover{
+	text-decoration: none;
+}
+.links-li li.active{
+	background-color:#ff6100;
+}
+.links-li li.active > a{
+	color: #fff;
+}
+.links-li li.active > div.line-height, .links-li li > div.active{
+	display: none;
+}
+.links-li li.text-img img{
+	margin: 0 20px 2px 20px;
+}
+.line-width{
+	height: 2px;
+	min-width: 1200px;
+	max-width: 100%;
+	margin-bottom: 20px;
+}
+/* 页眉样式区       end  */
+
+/* 页脚样式区       start  */
+#footer{
+	background-color: darkorange;
+	width: 100%;
+}
+#footer .content{
+	background-color: #80ff80;
+}
+
+/* 页脚样式区       end  */

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyManagerMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyManager">
+    <id column="MAN_ID" jdbcType="VARCHAR" property="manId" />
+    <result column="ST_ID" jdbcType="VARCHAR" property="stId" />
+    <result column="MAN_USER" jdbcType="VARCHAR" property="manUser" />
+    <result column="MAN_PWD" jdbcType="VARCHAR" property="manPwd" />
+    <result column="MAN_PHONE" jdbcType="VARCHAR" property="manPhone" />
+    <result column="MAN_CARDID" jdbcType="VARCHAR" property="manCardid" />
+    <result column="MAN_REMARK" jdbcType="VARCHAR" property="manRemark" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <association property="station" column="ST_ID" select="findStation">
+    	
+    </association>
+  </resultMap>
+  <resultMap id="BaseResultMapStation" type="cn.ehuoyuan.shop.domain.EhyStation">
+    <id column="ST_ID" jdbcType="VARCHAR" property="stId" />
+    <result column="ST_NAME" jdbcType="VARCHAR" property="stName" />
+    <result column="ST_CODE" jdbcType="VARCHAR" property="stCode" />
+    <result column="ST_PID" jdbcType="VARCHAR" property="stPid" />
+    <result column="ST_TYPE" jdbcType="INTEGER" property="stType" />
+    <result column="ST_FLAG" jdbcType="VARCHAR" property="stFlag" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    MAN_ID, ST_ID, MAN_USER, MAN_PWD, MAN_PHONE, MAN_CARDID, MAN_REMARK, ISVA, OPTIME, 
+    OPER
+  </sql>
+  <select id="findStation" resultMap="BaseResultMapStation">
+  	select * from ehy_station where st_id=#{stId}
+  </select>
+  <select id="findByName" parameterType="string" resultType="int">
+	  	select count(*) from ehy_manager where man_user=#{manUser}
+  </select>
+  <select id="countRows" parameterType="cn.ehuoyuan.shop.domain.EhyManager" resultType="int">
+  	select count(*) from ehy_manager where ISVA=1 
+  	<if test="manager.stId != null">
+ 		and ST_ID = #{manager.stId}
+ 	</if>
+  	<if test="manager.manUser != null">
+		and MAN_USER like #{manager.manUser }
+	</if>
+	<if test="manager.manPhone != null">
+		and MAN_PHONE like #{manager.manPhone }
+	</if>
+	<if test="manager.manCardid != null">
+		and MAN_CARDID like #{manager.manCardid }
+	</if>
+	<if test="manager.manRemark != null">
+		and MAN_REMARK like #{manager.manRemark }
+	</if>
+  </select>
+  
+  <select id="findAllPage" parameterType="map" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from ehy_manager where ISVA=1 
+  		<if test="manager.stId != null">
+  			and ST_ID = #{manager.stId}
+  		</if>
+		<if test="manager.manUser != null">
+			and MAN_USER like #{manager.manUser }
+		</if>
+		<if test="manager.manPhone != null">
+			and MAN_PHONE like #{manager.manPhone }
+		</if>
+		<if test="manager.manCardid != null">
+			and MAN_CARDID like #{manager.manCardid }
+		</if>
+		<if test="manager.manRemark != null">
+			and MAN_REMARK like #{manager.manRemark }
+		</if>
+	order by MAN_REMARK 
+  	limit #{pages.firstRows }, #{pages.maxResult }
+  </select>
+  
+  <update id="delete" parameterType="string" >
+  	update ehy_manager set ISVA=0 where MAN_ID=#{manId }
+  </update>
+  
+  <select id="isLogin" parameterType="cn.ehuoyuan.shop.domain.EhyManager" resultMap="BaseResultMap">
+  	select  
+  	<include refid="Base_Column_List" />
+  	from  ehy_manager where MAN_USER=#{manUser} and MAN_PWD=#{manPwd} and ISVA=1 
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_manager
+    where MAN_ID = #{manId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_manager
+    where MAN_ID = #{manId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyManager">
+	<!-- <selectKey keyProperty="MAN_ID" resultType="String" order="BEFORE">
+		select replace(uuid(),'-','') from dual //原样照抄
+	</selectKey> -->
+    insert into ehy_manager (MAN_ID, ST_ID, MAN_USER, 
+      MAN_PWD, MAN_PHONE, MAN_CARDID, 
+      MAN_REMARK, ISVA, OPTIME, 
+      OPER)
+    values (#{manId,jdbcType=VARCHAR}, #{stId,jdbcType=VARCHAR}, #{manUser,jdbcType=VARCHAR}, 
+      #{manPwd,jdbcType=VARCHAR}, #{manPhone,jdbcType=VARCHAR}, #{manCardid,jdbcType=VARCHAR}, 
+      #{manRemark,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyManager">
+    insert into ehy_manager
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="manId != null">
+        MAN_ID,
+      </if>
+      <if test="stId != null">
+        ST_ID,
+      </if>
+      <if test="manUser != null">
+        MAN_USER,
+      </if>
+      <if test="manPwd != null">
+        MAN_PWD,
+      </if>
+      <if test="manPhone != null">
+        MAN_PHONE,
+      </if>
+      <if test="manCardid != null">
+        MAN_CARDID,
+      </if>
+      <if test="manRemark != null">
+        MAN_REMARK,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="manId != null">
+        #{manId,jdbcType=VARCHAR},
+      </if>
+      <if test="stId != null">
+        #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="manUser != null">
+        #{manUser,jdbcType=VARCHAR},
+      </if>
+      <if test="manPwd != null">
+        #{manPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="manPhone != null">
+        #{manPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="manCardid != null">
+        #{manCardid,jdbcType=VARCHAR},
+      </if>
+      <if test="manRemark != null">
+        #{manRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyManager">
+    update ehy_manager
+    <set>
+      <if test="stId != null">
+        ST_ID = #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="manUser != null">
+        MAN_USER = #{manUser,jdbcType=VARCHAR},
+      </if>
+      <if test="manPwd != null">
+        MAN_PWD = #{manPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="manPhone != null">
+        MAN_PHONE = #{manPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="manCardid != null">
+        MAN_CARDID = #{manCardid,jdbcType=VARCHAR},
+      </if>
+      <if test="manRemark != null">
+        MAN_REMARK = #{manRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = 1,
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MAN_ID = #{manId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyManager">
+    update ehy_manager
+    set ST_ID = #{stId,jdbcType=VARCHAR},
+      MAN_USER = #{manUser,jdbcType=VARCHAR},
+      MAN_PWD = #{manPwd,jdbcType=VARCHAR},
+      MAN_PHONE = #{manPhone,jdbcType=VARCHAR},
+      MAN_CARDID = #{manCardid,jdbcType=VARCHAR},
+      MAN_REMARK = #{manRemark,jdbcType=VARCHAR},
+      ISVA = 1,
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR}
+    where MAN_ID = #{manId,jdbcType=VARCHAR}
+  </update>
+</mapper>

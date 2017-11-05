@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyLogsMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyLogs">
+    <id column="LOGS_ID" jdbcType="VARCHAR" property="logsId" />
+    <result column="LOGS_MODULE" jdbcType="VARCHAR" property="logsModule" />
+    <result column="LOGS_REMARK" jdbcType="VARCHAR" property="logsRemark" />
+    <result column="LOGS_DATETIME" jdbcType="TIMESTAMP" property="logsDatetime" />
+    <result column="LOGS_OPER" jdbcType="VARCHAR" property="logsOper" />
+    <result column="LOGS_CODE" jdbcType="VARCHAR" property="logsCode" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    LOGS_ID, LOGS_MODULE, LOGS_REMARK, LOGS_DATETIME, LOGS_OPER, LOGS_CODE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_logs
+    where LOGS_ID = #{logsId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_logs
+  </select>
+  <select id="select" parameterType="cn.ehuoyuan.shop.domain.EhyLogs" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_logs
+    <where>
+      <if test="logsId != null">
+        and logs_Id=#{logsId,jdbcType=VARCHAR},
+      </if>
+      <if test="logsModule != null">
+        and logs_Module=#{logsModule,jdbcType=VARCHAR},
+      </if>
+      <if test="logsRemark != null">
+        and logs_Remark=#{logsRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="logsDatetime != null">
+        and logs_Datetime=#{logsDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logsOper != null">
+        and logs_Oper=#{logsOper,jdbcType=VARCHAR},
+      </if>
+      <if test="logsCode != null">
+        and logs_Code=#{logsCode,jdbcType=VARCHAR},
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_logs
+    where LOGS_ID = #{logsId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyLogs">
+  	  <selectKey keyProperty="logsId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	  </selectKey>
+    insert into ehy_logs (LOGS_ID, LOGS_MODULE, LOGS_REMARK, 
+      LOGS_DATETIME, LOGS_OPER, LOGS_CODE
+      )
+    values (#{logsId,jdbcType=VARCHAR}, #{logsModule,jdbcType=VARCHAR}, #{logsRemark,jdbcType=VARCHAR}, 
+      #{logsDatetime,jdbcType=TIMESTAMP}, #{logsOper,jdbcType=VARCHAR}, #{logsCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyLogs">
+    insert into ehy_logs
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logsId != null">
+        LOGS_ID,
+      </if>
+      <if test="logsModule != null">
+        LOGS_MODULE,
+      </if>
+      <if test="logsRemark != null">
+        LOGS_REMARK,
+      </if>
+      <if test="logsDatetime != null">
+        LOGS_DATETIME,
+      </if>
+      <if test="logsOper != null">
+        LOGS_OPER,
+      </if>
+      <if test="logsCode != null">
+        LOGS_CODE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="logsId != null">
+        #{logsId,jdbcType=VARCHAR},
+      </if>
+      <if test="logsModule != null">
+        #{logsModule,jdbcType=VARCHAR},
+      </if>
+      <if test="logsRemark != null">
+        #{logsRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="logsDatetime != null">
+        #{logsDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logsOper != null">
+        #{logsOper,jdbcType=VARCHAR},
+      </if>
+      <if test="logsCode != null">
+        #{logsCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyLogs">
+    update ehy_logs
+    <set>
+      <if test="logsModule != null">
+        LOGS_MODULE = #{logsModule,jdbcType=VARCHAR},
+      </if>
+      <if test="logsRemark != null">
+        LOGS_REMARK = #{logsRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="logsDatetime != null">
+        LOGS_DATETIME = #{logsDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logsOper != null">
+        LOGS_OPER = #{logsOper,jdbcType=VARCHAR},
+      </if>
+      <if test="logsCode != null">
+        LOGS_CODE = #{logsCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where LOGS_ID = #{logsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyLogs">
+    update ehy_logs
+    set LOGS_MODULE = #{logsModule,jdbcType=VARCHAR},
+      LOGS_REMARK = #{logsRemark,jdbcType=VARCHAR},
+      LOGS_DATETIME = #{logsDatetime,jdbcType=TIMESTAMP},
+      LOGS_OPER = #{logsOper,jdbcType=VARCHAR},
+      LOGS_CODE = #{logsCode,jdbcType=VARCHAR}
+    where LOGS_ID = #{logsId,jdbcType=VARCHAR}
+  </update>
+</mapper>

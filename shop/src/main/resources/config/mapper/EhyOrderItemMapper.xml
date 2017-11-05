@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyOrderItemMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyOrderItem">
+    <id column="MX_ID" jdbcType="VARCHAR" property="mxId" />
+    <result column="ORD_CODE" jdbcType="VARCHAR" property="ordCode" />
+    <result column="MX_BATCH_NO" jdbcType="VARCHAR" property="mxBatchNo" />
+    <result column="MX_DATETIME" jdbcType="VARCHAR" property="mxDatetime" />
+    <result column="MX_NUM" jdbcType="INTEGER" property="mxNum" />
+    <result column="MX_PRICE" jdbcType="DECIMAL" property="mxPrice" />
+    <result column="MX_MONEY" jdbcType="DECIMAL" property="mxMoney" />
+    <result column="MX_MONEY_FACT" jdbcType="DECIMAL" property="mxMoneyFact" />
+    <result column="MX_LI" jdbcType="DECIMAL" property="mxLi" />
+    <result column="MX_REMARK" jdbcType="VARCHAR" property="mxRemark" />
+    <result column="MB_ID" jdbcType="VARCHAR" property="mbId" />
+    <result column="MB_NAME" jdbcType="VARCHAR" property="mbName" />
+    <result column="ORD_ID" jdbcType="VARCHAR" property="ordId" />
+    <result column="PRO_ID" jdbcType="VARCHAR" property="proId" />
+    <result column="MX_ISJS" jdbcType="INTEGER" property="mxIsjs" />
+    <result column="MX_JSTIME" jdbcType="TIMESTAMP" property="mxJstime" />
+    <result column="MX_EMP" jdbcType="VARCHAR" property="mxEmp" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="IS_STAT" jdbcType="INTEGER" property="isStat" />
+    <result column="SHARE_ID" jdbcType="VARCHAR" property="shareId" />
+    <result column="ORD_EXPRESS" jdbcType="VARCHAR" property="ordExpress" />
+    <result column="ORD_EXPRESS_CODE" jdbcType="VARCHAR" property="ordExpressCode" />
+    <result column="ORD_STATE" jdbcType="INTEGER" property="ordState" />
+    <result column="ORD_FREIGHT" jdbcType="VARCHAR" property="ordFreight" />
+    <result column="ST_ID" jdbcType="VARCHAR" property="stId" />
+    <result column="ST_NAME" jdbcType="VARCHAR" property="stName" />
+    <result column="PRO_NAME" jdbcType="VARCHAR" property="proName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MX_ID, ORD_CODE, MX_BATCH_NO, MX_DATETIME, MX_NUM, MX_PRICE, MX_MONEY, MX_MONEY_FACT, 
+    MX_LI, MX_REMARK, MB_ID, MB_NAME, ORD_ID, PRO_ID, MX_ISJS, MX_JSTIME, MX_EMP, ISVA, 
+    OPTIME, OPER, IS_STAT, SHARE_ID, ORD_EXPRESS, ORD_EXPRESS_CODE, ORD_STATE, ORD_FREIGHT, 
+    ST_ID, ST_NAME, PRO_NAME
+  </sql>
+  
+  <select id="backShowAll" parameterType="map" resultMap="BaseResultMap">
+  	SELECT * FROM 
+	ehy_order_item eoi, ehy_order eo, ehy_product ep
+	WHERE eoi.ORD_ID=eo.ORD_ID AND eoi.PRO_ID=ep.PRO_ID 
+	<if test="mxIsjs != null">
+		and MX_ISJS=#{mxIsjs}
+	</if>
+	ORDER BY eoi.ORD_ID limit #{firstRows} ,#{maxResult}
+  </select>
+  <!-- 已收货的订单 -->
+  <select id="receivedShowAll" parameterType="map" resultMap="BaseResultMap">
+  	select * from ehy_order_item eoi, ehy_order eo, ehy_product ep where 
+  	eoi.ORD_ID=eo.ORD_ID AND eoi.PRO_ID=ep.PRO_ID and eoi.ORD_STATE in (0,1,2,40)
+  </select>
+  
+  <!-- 待发货的订单 -->
+  <select id="overhangShowAll" parameterType="map" resultMap="BaseResultMap">
+  	select * from ehy_order_item eoi, ehy_order eo, ehy_product ep where 
+  	eoi.ORD_ID=eo.ORD_ID AND eoi.PRO_ID=ep.PRO_ID and eoi.ORD_STATE = 20
+  </select>
+  
+  <!-- 已发货的订单 -->
+  <select id="deliveredShowAll" parameterType="map" resultMap="BaseResultMap">
+  	select * from ehy_order_item eoi, ehy_order eo, ehy_product ep where 
+  	eoi.ORD_ID=eo.ORD_ID AND eoi.PRO_ID=ep.PRO_ID and eoi.ORD_STATE=30
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_order_item
+    where MX_ID = #{mxId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_order_item
+    where MX_ID = #{mxId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyOrderItem">
+    insert into ehy_order_item (MX_ID, ORD_CODE, MX_BATCH_NO, 
+      MX_DATETIME, MX_NUM, MX_PRICE, 
+      MX_MONEY, MX_MONEY_FACT, MX_LI, 
+      MX_REMARK, MB_ID, MB_NAME, 
+      ORD_ID, PRO_ID, MX_ISJS, 
+      MX_JSTIME, MX_EMP, ISVA, 
+      OPTIME, OPER, IS_STAT, 
+      SHARE_ID, ORD_EXPRESS, ORD_EXPRESS_CODE, 
+      ORD_STATE, ORD_FREIGHT, ST_ID, 
+      ST_NAME, PRO_NAME)
+    values (#{mxId,jdbcType=VARCHAR}, #{ordCode,jdbcType=VARCHAR}, #{mxBatchNo,jdbcType=VARCHAR}, 
+      #{mxDatetime,jdbcType=VARCHAR}, #{mxNum,jdbcType=INTEGER}, #{mxPrice,jdbcType=DECIMAL}, 
+      #{mxMoney,jdbcType=DECIMAL}, #{mxMoneyFact,jdbcType=DECIMAL}, #{mxLi,jdbcType=DECIMAL}, 
+      #{mxRemark,jdbcType=VARCHAR}, #{mbId,jdbcType=VARCHAR}, #{mbName,jdbcType=VARCHAR}, 
+      #{ordId,jdbcType=VARCHAR}, #{proId,jdbcType=VARCHAR}, #{mxIsjs,jdbcType=INTEGER}, 
+      #{mxJstime,jdbcType=TIMESTAMP}, #{mxEmp,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, 
+      #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR}, #{isStat,jdbcType=INTEGER}, 
+      #{shareId,jdbcType=VARCHAR}, #{ordExpress,jdbcType=VARCHAR}, #{ordExpressCode,jdbcType=VARCHAR}, 
+      #{ordState,jdbcType=INTEGER}, #{ordFreight,jdbcType=VARCHAR}, #{stId,jdbcType=VARCHAR}, 
+      #{stName,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyOrderItem">
+    insert into ehy_order_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mxId != null">
+        MX_ID,
+      </if>
+      <if test="ordCode != null">
+        ORD_CODE,
+      </if>
+      <if test="mxBatchNo != null">
+        MX_BATCH_NO,
+      </if>
+      <if test="mxDatetime != null">
+        MX_DATETIME,
+      </if>
+      <if test="mxNum != null">
+        MX_NUM,
+      </if>
+      <if test="mxPrice != null">
+        MX_PRICE,
+      </if>
+      <if test="mxMoney != null">
+        MX_MONEY,
+      </if>
+      <if test="mxMoneyFact != null">
+        MX_MONEY_FACT,
+      </if>
+      <if test="mxLi != null">
+        MX_LI,
+      </if>
+      <if test="mxRemark != null">
+        MX_REMARK,
+      </if>
+      <if test="mbId != null">
+        MB_ID,
+      </if>
+      <if test="mbName != null">
+        MB_NAME,
+      </if>
+      <if test="ordId != null">
+        ORD_ID,
+      </if>
+      <if test="proId != null">
+        PRO_ID,
+      </if>
+      <if test="mxIsjs != null">
+        MX_ISJS,
+      </if>
+      <if test="mxJstime != null">
+        MX_JSTIME,
+      </if>
+      <if test="mxEmp != null">
+        MX_EMP,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="isStat != null">
+        IS_STAT,
+      </if>
+      <if test="shareId != null">
+        SHARE_ID,
+      </if>
+      <if test="ordExpress != null">
+        ORD_EXPRESS,
+      </if>
+      <if test="ordExpressCode != null">
+        ORD_EXPRESS_CODE,
+      </if>
+      <if test="ordState != null">
+        ORD_STATE,
+      </if>
+      <if test="ordFreight != null">
+        ORD_FREIGHT,
+      </if>
+      <if test="stId != null">
+        ST_ID,
+      </if>
+      <if test="stName != null">
+        ST_NAME,
+      </if>
+      <if test="proName != null">
+        PRO_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mxId != null">
+        #{mxId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordCode != null">
+        #{ordCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mxBatchNo != null">
+        #{mxBatchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mxDatetime != null">
+        #{mxDatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="mxNum != null">
+        #{mxNum,jdbcType=INTEGER},
+      </if>
+      <if test="mxPrice != null">
+        #{mxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mxMoney != null">
+        #{mxMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="mxMoneyFact != null">
+        #{mxMoneyFact,jdbcType=DECIMAL},
+      </if>
+      <if test="mxLi != null">
+        #{mxLi,jdbcType=DECIMAL},
+      </if>
+      <if test="mxRemark != null">
+        #{mxRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="mbId != null">
+        #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbName != null">
+        #{mbName,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null">
+        #{ordId,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="mxIsjs != null">
+        #{mxIsjs,jdbcType=INTEGER},
+      </if>
+      <if test="mxJstime != null">
+        #{mxJstime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mxEmp != null">
+        #{mxEmp,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="isStat != null">
+        #{isStat,jdbcType=INTEGER},
+      </if>
+      <if test="shareId != null">
+        #{shareId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordExpress != null">
+        #{ordExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="ordExpressCode != null">
+        #{ordExpressCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ordState != null">
+        #{ordState,jdbcType=INTEGER},
+      </if>
+      <if test="ordFreight != null">
+        #{ordFreight,jdbcType=VARCHAR},
+      </if>
+      <if test="stId != null">
+        #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="stName != null">
+        #{stName,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyOrderItem">
+    update ehy_order_item
+    <set>
+      <if test="ordCode != null">
+        ORD_CODE = #{ordCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mxBatchNo != null">
+        MX_BATCH_NO = #{mxBatchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mxDatetime != null">
+        MX_DATETIME = #{mxDatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="mxNum != null">
+        MX_NUM = #{mxNum,jdbcType=INTEGER},
+      </if>
+      <if test="mxPrice != null">
+        MX_PRICE = #{mxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mxMoney != null">
+        MX_MONEY = #{mxMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="mxMoneyFact != null">
+        MX_MONEY_FACT = #{mxMoneyFact,jdbcType=DECIMAL},
+      </if>
+      <if test="mxLi != null">
+        MX_LI = #{mxLi,jdbcType=DECIMAL},
+      </if>
+      <if test="mxRemark != null">
+        MX_REMARK = #{mxRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="mbId != null">
+        MB_ID = #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbName != null">
+        MB_NAME = #{mbName,jdbcType=VARCHAR},
+      </if>
+      <if test="ordId != null">
+        ORD_ID = #{ordId,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        PRO_ID = #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="mxIsjs != null">
+        MX_ISJS = #{mxIsjs,jdbcType=INTEGER},
+      </if>
+      <if test="mxJstime != null">
+        MX_JSTIME = #{mxJstime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mxEmp != null">
+        MX_EMP = #{mxEmp,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="isStat != null">
+        IS_STAT = #{isStat,jdbcType=INTEGER},
+      </if>
+      <if test="shareId != null">
+        SHARE_ID = #{shareId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordExpress != null">
+        ORD_EXPRESS = #{ordExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="ordExpressCode != null">
+        ORD_EXPRESS_CODE = #{ordExpressCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ordState != null">
+        ORD_STATE = #{ordState,jdbcType=INTEGER},
+      </if>
+      <if test="ordFreight != null">
+        ORD_FREIGHT = #{ordFreight,jdbcType=VARCHAR},
+      </if>
+      <if test="stId != null">
+        ST_ID = #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="stName != null">
+        ST_NAME = #{stName,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        PRO_NAME = #{proName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MX_ID = #{mxId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyOrderItem">
+    update ehy_order_item
+    set ORD_CODE = #{ordCode,jdbcType=VARCHAR},
+      MX_BATCH_NO = #{mxBatchNo,jdbcType=VARCHAR},
+      MX_DATETIME = #{mxDatetime,jdbcType=VARCHAR},
+      MX_NUM = #{mxNum,jdbcType=INTEGER},
+      MX_PRICE = #{mxPrice,jdbcType=DECIMAL},
+      MX_MONEY = #{mxMoney,jdbcType=DECIMAL},
+      MX_MONEY_FACT = #{mxMoneyFact,jdbcType=DECIMAL},
+      MX_LI = #{mxLi,jdbcType=DECIMAL},
+      MX_REMARK = #{mxRemark,jdbcType=VARCHAR},
+      MB_ID = #{mbId,jdbcType=VARCHAR},
+      MB_NAME = #{mbName,jdbcType=VARCHAR},
+      ORD_ID = #{ordId,jdbcType=VARCHAR},
+      PRO_ID = #{proId,jdbcType=VARCHAR},
+      MX_ISJS = #{mxIsjs,jdbcType=INTEGER},
+      MX_JSTIME = #{mxJstime,jdbcType=TIMESTAMP},
+      MX_EMP = #{mxEmp,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      IS_STAT = #{isStat,jdbcType=INTEGER},
+      SHARE_ID = #{shareId,jdbcType=VARCHAR},
+      ORD_EXPRESS = #{ordExpress,jdbcType=VARCHAR},
+      ORD_EXPRESS_CODE = #{ordExpressCode,jdbcType=VARCHAR},
+      ORD_STATE = #{ordState,jdbcType=INTEGER},
+      ORD_FREIGHT = #{ordFreight,jdbcType=VARCHAR},
+      ST_ID = #{stId,jdbcType=VARCHAR},
+      ST_NAME = #{stName,jdbcType=VARCHAR},
+      PRO_NAME = #{proName,jdbcType=VARCHAR}
+    where MX_ID = #{mxId,jdbcType=VARCHAR}
+  </update>
+  <select id="frontShowAll" resultType="cn.ehuoyuan.shop.action.order.vo.OrderVo" parameterType="map">
+  	SELECT GROUP_CONCAT(oritem.PRO_ID,"|",oritem.PRO_NAME,"|",img.IMG_PATH,"|",oritem.MX_MONEY_FACT,"|",oritem.MX_NUM,"|",oritem.MX_PRICE) AS "product",
+	SUM(oritem.MX_MONEY_FACT) AS "totalMoney",SUM(oritem.MX_NUM) AS "totalNum",COUNT(*) AS "totalSum",
+	any_value(oritem.ord_state) AS "ordState",
+	any_value(oritem.optime) AS "opTime",
+	any_value(orders.ord_code) AS "ordCode",
+	any_value(oritem.st_name) AS "stName",
+	any_value(oritem.ord_express) AS "expressName",
+	any_value(orders.ORD_ID) AS "ordId",
+	any_value(oritem.ORD_EXPRESS_CODE) AS "expressCode",any_value(orders.ORD_ADDRESS) AS "ordAddress",any_value(orders.ORD_MEMBER) AS "ordMember",any_value(datadic.DIC_REMARK) AS "isShare"
+	FROM
+	ehy_order_item oritem,
+	EHY_PRODUCT_IMG img,
+	ehy_member member,
+	ehy_member_level levels,
+	ehy_datadic datadic,
+	ehy_order orders
+	WHERE
+	orders.ORD_ID=oritem.ORD_ID AND
+	member.mb_id=oritem.MB_ID AND
+	member.LEVEL_ID=levels.LEVEL_ID AND
+	datadic.DIC_NAME="isShare" AND
+	datadic.DIC_CODE=levels.LEVEL_ID AND
+	img.IMG_PATH=(SELECT im.IMG_PATH FROM EHY_PRODUCT_IMG im WHERE oritem.PRO_ID=im.PRO_ID LIMIT 1)AND
+	member.MB_ID = #{mbId} and
+	oritem.ORD_STATE>0 and
+	orders.ORD_ID in (SELECT orit.ORD_ID FROM ehy_order_item orit WHERE 
+	orders.ORD_ID=orit.ORD_ID
+	<if test="null!=ordState and ''!=ordState and 0&lt;ordState">
+	and orit.ORD_STATE = #{ordState}
+	</if>
+	<if test="null!=keyword and ''!=keyword">
+	and (orit.PRO_NAME LIKE CONCAT('%',#{keyword},'%') or orders.ORD_CODE LIKE CONCAT('%',#{keyword},'%'))
+	</if>
+	<if test="null!=start and ''!=start">
+	and orit.OPTIME&gt;#{start}
+	</if>
+	<if test="null!=terminus and ''!=terminus">
+	and orit.OPTIME&lt;CONCAT(#{terminus},' 23:59:59')
+	</if>
+	<if test="null!=site and ''!=site">
+	and orit.ST_ID=#{site}
+	</if>
+	)
+	GROUP BY 
+	oritem.ST_ID,oritem.ORD_ID
+	ORDER BY 
+	any_value(oritem.OPTIME)
+	LIMIT #{page.firstRows},10
+  </select>
+  <select id="ordersCount" resultType="int" parameterType="map">
+  	SELECT COUNT(*) FROM(SELECT COUNT(*) FROM ehy_order_item oritem, ehy_order orders WHERE 
+  	orders.ORD_ID=oritem.ORD_ID and 
+  	oritem.ORD_STATE>0 and
+	orders.ORD_ID in (SELECT orit.ORD_ID FROM ehy_order_item orit WHERE 
+	orders.ORD_ID=orit.ORD_ID
+	<if test="null!=ordState and ''!=ordState and 0&lt;ordState">
+	and orit.ORD_STATE = #{ordState}
+	</if>
+	<if test="null!=keyword and ''!=keyword">
+	and (orit.PRO_NAME LIKE CONCAT('%',#{keyword},'%') or orders.ORD_CODE LIKE CONCAT('%',#{keyword},'%'))
+	</if>
+	<if test="null!=start and ''!=start">
+	and orit.OPTIME&gt;#{start}
+	</if>
+	<if test="null!=terminus and ''!=terminus">
+	and orit.OPTIME&lt;CONCAT(#{terminus},' 23:59:59')
+	</if>
+	<if test="null!=site and ''!=site">
+	and orit.ST_ID=#{site}
+	</if>
+	)
+    GROUP BY orders.ORD_ID) AS orderCount
+  </select>
+  
+  <update id="receipt" parameterType="map">
+  update ehy_order_item set ORD_STATE=40 where ORD_ID=#{ordId} and MB_ID=#{mbId};
+  </update>
+</mapper>

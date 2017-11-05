@@ -1,0 +1,115 @@
+@CHARSET "UTF-8";
+/* 标题样式 开始 */
+.address {
+    width: auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0px 5px;
+	height: 27px;
+    line-height: 27px;
+    display: inline-block;
+	font-size: 13px;
+    color: #666;
+    position: relative;
+}
+.address-open {
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    z-index: 1003;
+}
+.address-item {
+    color: #333;
+    cursor: pointer;
+}
+.caret {
+    display: inline-block;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 5px solid black;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+	position: relative;
+	top: -1px;
+}
+/* 标题样式 结束 */
+
+
+
+
+
+
+/* ul样式表  开始 */
+.menu {
+    display: none;
+	position: absolute;
+    top: 35px;
+    padding: 5px 0;
+    list-style: none;
+    font-size: 14px;
+    border: 1px solid rgba(0,0,0,.15);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    background-clip: padding-box;
+	border-radius: 0 4px 4px 4px;
+    margin-top: 0px;
+}
+.boxShow{
+    display: block;
+}
+/* ul样式表  结束 */
+
+
+/* li样式 开始 */
+.title {
+    margin-top: 10px;
+    padding-left: 3%;
+    position: relative;
+}
+.active {
+    background-color: #fff;
+}
+.txt {
+	margin-right: 8px;
+    display: inline-block;
+    padding: 0 15px;
+    color: #111;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    font: normal normal normal 12px/20px '微软雅黑';
+}
+/* li样式 结束 */
+
+/* div样式表 开始 */
+.express {
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+    margin-top: -15px
+}
+.cont {
+    width: 350px;
+    padding-bottom: 15px;
+    border-radius: 4px;
+	margin-left: 10px;
+	display:none;
+}
+p.item {
+    display: inline-block;
+    margin: 4px 0px;
+    cursor: pointer;
+    font: normal normal normal 12px/20px '微软雅黑';
+}
+p.item > span {
+    min-width: 40px;
+    text-align: left;
+    display: inline-block;
+    padding: 0 8px;
+    margin: 0 5px;
+}
+.font-blue, p.item span:hover {
+    background-color: #2485ff;
+    color: #fff;
+    border-radius: 4px;
+}
+/* div样式表 结束 */

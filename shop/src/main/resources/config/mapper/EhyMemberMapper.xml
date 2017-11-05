@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyMemberMapper">
+	<resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyMember">
+		<id column="MB_ID" jdbcType="VARCHAR" property="mbId" />
+		<result column="LEVEL_ID" jdbcType="VARCHAR" property="levelId" />
+		<result column="MB_LOGIN" jdbcType="VARCHAR" property="mbLogin" />
+		<result column="MB_LOGIN_PWD" jdbcType="VARCHAR" property="mbLoginPwd" />
+		<result column="MB_PAY_PWD" jdbcType="VARCHAR" property="mbPayPwd" />
+		<result column="MB_WEIXIN" jdbcType="VARCHAR" property="mbWeixin" />
+		<result column="MB_QQ" jdbcType="VARCHAR" property="mbQq" />
+		<result column="MB_EMAIL" jdbcType="VARCHAR" property="mbEmail" />
+		<result column="MB_CODE" jdbcType="VARCHAR" property="mbCode" />
+		<result column="MB_NAME" jdbcType="VARCHAR" property="mbName" />
+		<result column="MB_SEX" jdbcType="VARCHAR" property="mbSex" />
+		<result column="MB_BIRTHDAY" jdbcType="VARCHAR" property="mbBirthday" />
+		<result column="MB_CARDID" jdbcType="VARCHAR" property="mbCardid" />
+		<result column="MB_BALANCE" jdbcType="DECIMAL" property="mbBalance" />
+		<result column="MB_JIFEN" jdbcType="DECIMAL" property="mbJifen" />
+		<result column="MB_LEVEL" jdbcType="INTEGER" property="mbLevel" />
+		<result column="MB_PHONE" jdbcType="VARCHAR" property="mbPhone" />
+		<result column="MB_ADDR" jdbcType="VARCHAR" property="mbAddr" />
+		<result column="MB_STATION" jdbcType="VARCHAR" property="mbStation" />
+		<result column="INVITATION_CODE" jdbcType="VARCHAR" property="invitationCode" />
+		<result column="MB_REMARK" jdbcType="VARCHAR" property="mbRemark" />
+		<result column="MB_EXP" jdbcType="VARCHAR" property="mbExp" />
+		<result column="MB_ISBZJ" jdbcType="INTEGER" property="mbIsbzj" />
+		<result column="ISVA" jdbcType="INTEGER" property="isva" />
+		<result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+		<result column="OPER" jdbcType="VARCHAR" property="oper" />
+	</resultMap>
+	<select id="selectPhone" parameterType="java.lang.String" resultType="int">
+	SELECT  COUNT(*) FROM  ehy_member em WHERE em.MB_PHONE=#{mbPhone}
+	
+	</select>
+      
+	<!-- 查询所有会员 -->
+	<select id="findMember"  resultMap="BaseResultMap">
+		SELECT  * FROM  ehy_member  WHERE ISVA=1
+	</select>
+	
+	<!-- 根据会员id判断邀请码是否存在 -->
+	<select id="isCode" parameterType="java.lang.String" resultType="int">
+	   select count(*) from ehy_member
+       where MB_ID = #{mbId,jdbcType=VARCHAR} and INVITATION_CODE!="" and isva=1
+  	</select>
+
+	<sql id="Base_Column_List">
+		MB_ID, LEVEL_ID, MB_LOGIN, MB_LOGIN_PWD, MB_PAY_PWD, MB_WEIXIN, MB_QQ,
+		MB_EMAIL,
+		MB_CODE, MB_NAME, MB_SEX, MB_BIRTHDAY, MB_CARDID, MB_BALANCE, MB_JIFEN,
+		MB_LEVEL,
+		MB_PHONE, MB_ADDR, MB_STATION, INVITATION_CODE, MB_REMARK, MB_EXP, MB_ISBZJ,
+		ISVA,
+		OPTIME, OPER
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ehy_member
+		where MB_ID = #{mbId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectLogin" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from ehy_member  
+		<where>
+		     
+		  (MB_LOGIN=#{mbLogin} or MB_PHONE=#{mbPhone})
+		  and MB_LOGIN_PWD=#{mbLoginPwd}
+		
+		</where>
+	</select>
+
+	<select id="findMenberBy" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select 
+			<include refid="Base_Column_List" />
+		from ehy_member where MB_ID = #{mbId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据ID修改会员信息 -->
+	<update id="updateMember" parameterType="int" >
+		
+	</update>
+
+	<delete id="deleteByPrimaryKey" >
+		update ehy_member set ISVA=0 ,OPER=#{1} where MB_ID =#{0} 
+	</delete>
+
+	<insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyMember">
+		insert into ehy_member (MB_ID, LEVEL_ID, MB_LOGIN,
+		MB_LOGIN_PWD, MB_PAY_PWD, MB_WEIXIN,
+		MB_QQ, MB_EMAIL, MB_CODE,
+		MB_NAME, MB_SEX, MB_BIRTHDAY,
+		MB_CARDID, MB_BALANCE, MB_JIFEN,
+		MB_LEVEL, MB_PHONE, MB_ADDR,
+		MB_STATION, INVITATION_CODE, MB_REMARK,
+		MB_EXP, MB_ISBZJ, ISVA,
+		OPTIME, OPER)
+		values (#{mbId,jdbcType=VARCHAR}, #{levelId,jdbcType=VARCHAR},
+		#{mbLogin,jdbcType=VARCHAR},
+		#{mbLoginPwd,jdbcType=VARCHAR}, #{mbPayPwd,jdbcType=VARCHAR}, #{mbWeixin,jdbcType=VARCHAR},
+		#{mbQq,jdbcType=VARCHAR}, #{mbEmail,jdbcType=VARCHAR},
+		#{mbCode,jdbcType=VARCHAR},
+		#{mbName,jdbcType=VARCHAR}, #{mbSex,jdbcType=VARCHAR}, #{mbBirthday,jdbcType=VARCHAR},
+		#{mbCardid,jdbcType=VARCHAR}, #{mbBalance,jdbcType=DECIMAL},
+		#{mbJifen,jdbcType=DECIMAL},
+		#{mbLevel,jdbcType=INTEGER}, #{mbPhone,jdbcType=VARCHAR}, #{mbAddr,jdbcType=VARCHAR},
+		#{mbStation,jdbcType=VARCHAR}, #{invitationCode,jdbcType=VARCHAR},
+		#{mbRemark,jdbcType=VARCHAR},
+		#{mbExp,jdbcType=VARCHAR}, #{mbIsbzj,jdbcType=INTEGER}, #{isva,jdbcType=INTEGER},
+		#{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR})
+	</insert>
+
+
+
+	
+	<update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyMember">
+		update ehy_member
+		<set>
+			<if test="levelId != null">
+				LEVEL_ID = #{levelId,jdbcType=VARCHAR},
+			</if>
+			<if test="mbLogin != null">
+				MB_LOGIN = #{mbLogin,jdbcType=VARCHAR},
+			</if>
+			<if test="mbLoginPwd != null">
+				MB_LOGIN_PWD = #{mbLoginPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="mbPayPwd != null">
+				MB_PAY_PWD = #{mbPayPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="mbWeixin != null">
+				MB_WEIXIN = #{mbWeixin,jdbcType=VARCHAR},
+			</if>
+			<if test="mbQq != null">
+				MB_QQ = #{mbQq,jdbcType=VARCHAR},
+			</if>
+			<if test="mbEmail != null">
+				MB_EMAIL = #{mbEmail,jdbcType=VARCHAR},
+			</if>
+			<if test="mbCode != null">
+				MB_CODE = #{mbCode,jdbcType=VARCHAR},
+			</if>
+			<if test="mbName != null">
+				MB_NAME = #{mbName,jdbcType=VARCHAR},
+			</if>
+			<if test="mbSex != null">
+				MB_SEX = #{mbSex,jdbcType=VARCHAR},
+			</if>
+			<if test="mbBirthday != null">
+				MB_BIRTHDAY = #{mbBirthday,jdbcType=VARCHAR},
+			</if>
+			<if test="mbCardid != null">
+				MB_CARDID = #{mbCardid,jdbcType=VARCHAR},
+			</if>
+			<if test="mbBalance != null">
+				MB_BALANCE = #{mbBalance,jdbcType=DECIMAL},
+			</if>
+			<if test="mbJifen != null">
+				MB_JIFEN = #{mbJifen,jdbcType=DECIMAL},
+			</if>
+			<if test="mbLevel != null">
+				MB_LEVEL = #{mbLevel,jdbcType=INTEGER},
+			</if>
+			<if test="mbPhone != null">
+				MB_PHONE = #{mbPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="mbAddr != null">
+				MB_ADDR = #{mbAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="mbStation != null">
+				MB_STATION = #{mbStation,jdbcType=VARCHAR},
+			</if>
+			<if test="invitationCode != null">
+				INVITATION_CODE = #{invitationCode,jdbcType=VARCHAR},
+			</if>
+			<if test="mbRemark != null">
+				MB_REMARK = #{mbRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="mbExp != null">
+				MB_EXP = #{mbExp,jdbcType=VARCHAR},
+			</if>
+			<if test="mbIsbzj != null">
+				MB_ISBZJ = #{mbIsbzj,jdbcType=INTEGER},
+			</if>
+			<if test="isva != null">
+				ISVA = #{isva,jdbcType=INTEGER},
+			</if>
+			<if test="optime != null">
+				OPTIME = #{optime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="oper != null">
+				OPER = #{oper,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where MB_ID = #{mbId,jdbcType=VARCHAR}
+	</update>
+	
+
+	<!-- 后台的分页模糊查询 -->
+	<select id="findAll" resultType="map" parameterType="map">
+		SELECT * FROM ehy_member_level eml, ehy_member em  
+		<where>
+			eml.LEVEL_ID=em.LEVEL_ID 
+			<if test="levelId != null">
+				and em.LEVEL_ID like CONCAT('%','${levelId}','%' )
+			</if>
+			<if test="mbPhone != null">
+				and em.MB_PHONE like CONCAT('%','${mbPhone}','%' )
+			</if>
+			<if test="mbIsbzj != null">
+				and em.MB_ISBZJ like CONCAT('%','${mbIsbzj}','%' )
+			</if>
+			<if test="mbName != null">
+				and em.MB_NAME like CONCAT('%','${mbName}','%' )
+			</if>
+			and em.isva =1
+		</where>
+		limit #{firstRows} , #{maxResult}
+	</select>
+
+	<select id="getTatolRows" resultType="int"
+		parameterType="map">
+		SELECT count(*) FROM ehy_member_level eml, ehy_member em  
+		<where>
+			eml.LEVEL_ID=em.LEVEL_ID
+			<if test="levelId != null">
+				and em.LEVEL_ID like CONCAT('%','${levelId}','%' )
+			</if>
+			<if test="mbPhone != null">
+				and em.MB_PHONE like CONCAT('%','${mbPhone}','%' )
+			</if>
+			<if test="mbIsbzj != null">
+				and em.MB_ISBZJ like CONCAT('%','${mbIsbzj}','%' )
+			</if>
+			<if test="mbName != null">
+				and em.MB_NAME like CONCAT('%','${mbName}','%' )
+			</if>
+			and em.isva=1
+		</where>
+	</select>
+
+
+
+  
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyMember">
+  <selectKey keyProperty="mbId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	  </selectKey>
+  
+    insert into ehy_member
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mbId != null">
+        MB_ID,
+      </if>
+      <if test="levelId != null">
+        LEVEL_ID,
+      </if>
+      <if test="mbLogin != null">
+        MB_LOGIN,
+      </if>
+      <if test="mbLoginPwd != null">
+        MB_LOGIN_PWD,
+      </if>
+      <if test="mbPayPwd != null">
+        MB_PAY_PWD,
+      </if>
+      <if test="mbWeixin != null">
+        MB_WEIXIN,
+      </if>
+      <if test="mbQq != null">
+        MB_QQ,
+      </if>
+      <if test="mbEmail != null">
+        MB_EMAIL,
+      </if>
+      <if test="mbCode != null">
+        MB_CODE,
+      </if>
+      <if test="mbName != null">
+        MB_NAME,
+      </if>
+      <if test="mbSex != null">
+        MB_SEX,
+      </if>
+      <if test="mbBirthday != null">
+        MB_BIRTHDAY,
+      </if>
+      <if test="mbCardid != null">
+        MB_CARDID,
+      </if>
+      <if test="mbBalance != null">
+        MB_BALANCE,
+      </if>
+      <if test="mbJifen != null">
+        MB_JIFEN,
+      </if>
+      <if test="mbLevel != null">
+        MB_LEVEL,
+      </if>
+      <if test="mbPhone != null">
+        MB_PHONE,
+      </if>
+      <if test="mbAddr != null">
+        MB_ADDR,
+      </if>
+      <if test="mbStation != null">
+        MB_STATION,
+      </if>
+      <if test="invitationCode != null">
+        INVITATION_CODE,
+      </if>
+      <if test="mbRemark != null">
+        MB_REMARK,
+      </if>
+      <if test="mbExp != null">
+        MB_EXP,
+      </if>
+      <if test="mbIsbzj != null">
+        MB_ISBZJ,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mbId != null">
+        #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="levelId != null">
+        #{levelId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbLogin != null">
+        #{mbLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="mbLoginPwd != null">
+        #{mbLoginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="mbPayPwd != null">
+        #{mbPayPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="mbWeixin != null">
+        #{mbWeixin,jdbcType=VARCHAR},
+      </if>
+      <if test="mbQq != null">
+        #{mbQq,jdbcType=VARCHAR},
+      </if>
+      <if test="mbEmail != null">
+        #{mbEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="mbCode != null">
+        #{mbCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mbName != null">
+        #{mbName,jdbcType=VARCHAR},
+      </if>
+      <if test="mbSex != null">
+        #{mbSex,jdbcType=VARCHAR},
+      </if>
+      <if test="mbBirthday != null">
+        #{mbBirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="mbCardid != null">
+        #{mbCardid,jdbcType=VARCHAR},
+      </if>
+      <if test="mbBalance != null">
+        #{mbBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="mbJifen != null">
+        #{mbJifen,jdbcType=DECIMAL},
+      </if>
+      <if test="mbLevel != null">
+        #{mbLevel,jdbcType=INTEGER},
+      </if>
+      <if test="mbPhone != null">
+        #{mbPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="mbAddr != null">
+        #{mbAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="mbStation != null">
+        #{mbStation,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationCode != null">
+        #{invitationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mbRemark != null">
+        #{mbRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="mbExp != null">
+        #{mbExp,jdbcType=VARCHAR},
+      </if>
+      <if test="mbIsbzj != null">
+        #{mbIsbzj,jdbcType=INTEGER},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyMember">
+    update ehy_member
+		<set>
+			<if test="levelId != null">
+				LEVEL_ID = #{levelId,jdbcType=VARCHAR},
+			</if>
+			<if test="mbLogin != null">
+				MB_LOGIN = #{mbLogin,jdbcType=VARCHAR},
+			</if>
+			<if test="mbLoginPwd != null">
+				MB_LOGIN_PWD = #{mbLoginPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="mbPayPwd != null">
+				MB_PAY_PWD = #{mbPayPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="mbWeixin != null">
+				MB_WEIXIN = #{mbWeixin,jdbcType=VARCHAR},
+			</if>
+			<if test="mbQq != null">
+				MB_QQ = #{mbQq,jdbcType=VARCHAR},
+			</if>
+			<if test="mbEmail != null">
+				MB_EMAIL = #{mbEmail,jdbcType=VARCHAR},
+			</if>
+			<if test="mbCode != null">
+				MB_CODE = #{mbCode,jdbcType=VARCHAR},
+			</if>
+			<if test="mbName != null">
+				MB_NAME = #{mbName,jdbcType=VARCHAR},
+			</if>
+			<if test="mbSex != null">
+				MB_SEX = #{mbSex,jdbcType=VARCHAR},
+			</if>
+			<if test="mbBirthday != null">
+				MB_BIRTHDAY = #{mbBirthday,jdbcType=VARCHAR},
+			</if>
+			<if test="mbCardid != null">
+				MB_CARDID = #{mbCardid,jdbcType=VARCHAR},
+			</if>
+			<if test="mbBalance != null">
+				MB_BALANCE = #{mbBalance,jdbcType=DECIMAL},
+			</if>
+			<if test="mbJifen != null">
+				MB_JIFEN = #{mbJifen,jdbcType=DECIMAL},
+			</if>
+			<if test="mbLevel != null">
+				MB_LEVEL = #{mbLevel,jdbcType=INTEGER},
+			</if>
+			<if test="mbPhone != null">
+				MB_PHONE = #{mbPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="mbAddr != null">
+				MB_ADDR = #{mbAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="mbStation != null">
+				MB_STATION = #{mbStation,jdbcType=VARCHAR},
+			</if>
+			<if test="invitationCode != null">
+				INVITATION_CODE = #{invitationCode,jdbcType=VARCHAR},
+			</if>
+			<if test="mbRemark != null">
+				MB_REMARK = #{mbRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="mbExp != null">
+				MB_EXP = #{mbExp,jdbcType=VARCHAR},
+			</if>
+			<if test="mbIsbzj != null">
+				MB_ISBZJ = #{mbIsbzj,jdbcType=INTEGER},
+			</if>
+			<if test="isva != null">
+				ISVA = #{isva,jdbcType=INTEGER},
+			</if>
+			<if test="optime != null">
+				OPTIME = #{optime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="oper != null">
+				OPER = #{oper,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where MB_ID = #{mbId,jdbcType=VARCHAR}
+  </update>
+  			
+  
+  	<update id="updateMemberKey" parameterType="cn.ehuoyuan.shop.domain.EhyMember">
+  		update ehy_member 
+  		<set>
+			<if test="mbLoginPwd != null">
+				MB_LOGIN_PWD = #{mbLoginPwds,jdbcType=VARCHAR},
+			</if>
+			<if test="mbPayPwd != null">
+				MB_PAY_PWD = #{mbPayPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="mbPhone != null">
+				MB_PHONE = #{mbPhones,jdbcType=VARCHAR},
+			</if>
+			
+		</set>
+		where MB_PHONE = #{mbPhone,jdbcType=VARCHAR}
+  	</update>
+ 
+ 	<select id="isMbLogin" parameterType="string" resultType="int">
+		SELECT COUNT(*) FROM  ehy_member em WHERE em.MB_LOGIN=#{mbLogin} AND isva =1;
+	</select>
+</mapper>

@@ -1,0 +1,215 @@
+@CHARSET "UTF-8";
+#curtain{
+	position: fixed;
+	background-color: rgb(51, 51, 51);
+	opacity: 0.4;
+	width: 100%;
+	height: 100%;
+	z-index:8888;
+}
+#dialogs * {
+	line-height:1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+#dialogs{
+    width: 877px;
+    height: 620px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+#dialogs .close{
+	width: 65px;
+	height: 100%;
+	float: left;
+	line-height: 620px;
+}
+#dialogs textarea{
+	color: #696969;
+	letter-spacing: 1px;
+	text-indent: 15px;
+	padding: 5px 0px;
+}
+#dialogs textarea:focus{
+	color: black;
+	border-color: #f59942;
+	background-color: #fff;
+	outline: 0;
+}
+
+/*  用户中心分享页面弹出层  start  */
+#dialogs .share{
+	width: 800px;
+	height: 600px;
+	background-color: #ebebeb;
+	margin: 0 auto;
+	border: 1px solid #d3d3d0;
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+}
+
+/*  弹出层内容区   start  */
+#dialogs  .share > .cont{
+	background-color: #fff;
+	height: 100%;
+	width: 100%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+/*  主要内容区   start  */
+#dialogs .main-part{
+	width: 784px;
+	height: 270px;
+	border-bottom: 1px solid #d5d5d5;
+}
+#dialogs .main-part > .max-img{
+	width: 30%;
+	height: 100%;
+	float: left;
+}
+#dialogs .main-part > .max-img > img{
+	max-height: 185px;
+	max-width: 185px;
+	border: 1px solid #cbcece;
+	padding: 1px;
+	margin: 35px 20px;
+}
+
+#dialogs .main-part > .message{
+	width: 70%;
+	height: 100%;
+	float: right;
+}
+#dialogs .main-part > .message *{
+	font-size: 15px;
+}
+#dialogs .main-part > .message > .estimate{
+	margin-top: 10px;
+	margin-bottom: 8px;
+}
+#dialogs .main-part > .message > .estimate > textarea{
+	height: 48px;
+	width: 510px;
+}
+#dialogs .impress > div.options {
+	overflow: hidden;
+}
+#dialogs .impress > div.options >div > p.txt{
+	color: #7d7d7d;
+}
+#dialogs .impress > div.options *{
+	font-size: 15px;
+}
+#dialogs .impress > div > div{
+	float: left;
+	margin-right: 25px; 
+}
+#dialogs .impress > div > div:last-child{
+	margin-right: 0;
+}
+#dialogs .try-on{
+	text-align: center;
+	line-height: 22px;
+}
+#dialogs .try-on ul{
+	overflow: hidden;
+}
+#dialogs .try-on ul li{
+	float: left;
+	padding: 2px 8px;
+	background-color: #f2f2f2;
+	border-radius: 5px;
+	margin-right: 5px;
+}
+#dialogs .try-on ul li:last-child{
+	margin-right: 0;
+}
+
+#dialogs .main-part > .message > .price{
+	border-top: 2px dashed #ebebeb; 
+	border-bottom: 2px dashed #ebebeb; 
+	padding: 11px 0px;
+}
+
+#dialogs .set-earn{
+	overflow: hidden;
+	margin-top: 11px;
+	height: 40px;
+}
+#dialogs .set-earn > .set-price{
+	float: left;
+	margin-right: 20px;
+	width: 253px;
+	
+	border: 1px solid red;
+}
+#dialogs .set-earn > .set-price > .range{
+	float: left;
+	width: 165px;
+	height: 36px;
+	border-right: none;
+	font-size: 14px;
+	line-height: 17px;
+	padding-top: 2px;
+	padding-left: 4px;
+}
+#dialogs .set-earn > .set-price > .actual{
+	width: 86px;
+	background-color: #fe0000;
+	height: 38px;
+	float: left;
+	line-height: 40px;
+}
+#dialogs .set-earn > .set-price > .actual > div:first-child{
+	font-size: 28px;
+	color: #fff;
+}
+#dialogs .set-earn > .set-price > .actual > div:last-child > input{
+	font-size: 17px;
+	color: #fff;
+	width: 50px;
+	border-bottom: 1px solid #fff;
+	padding: 0px 2px;
+}
+#dialogs .set-earn > .set-price > .actual > div:last-child > input:FOCUS {
+	border-bottom: 1px solid #fff;
+}
+#dialogs .set-earn > .set-price > .actual > div{
+	float: left;
+}
+#dialogs .set-earn > .earnings{
+	float: left;
+	height: 100%;
+	line-height: 40px;
+}
+#dialogs .set-earn > .earnings, .set-earn >.earnings *{
+	color: red;
+	font-size: 18px;
+}
+#dialogs .earnings > span{
+	border-bottom: 1px solid red;
+}
+#dialogs .set-earn input{
+	border: none;
+	background: none;
+}
+/*  主要内容区     end   */
+
+/*  图片上传内容区   start  */
+#dialogs .upload-img{
+	padding: 15px 15px 20px 15px;
+	overflow: hidden;
+	height: auto;
+	width: 100%;
+}
+/*  图片上传内容区      end   */
+/*  弹出层内容区   end  */
+/*  用户中心分享页面弹出层   end  */

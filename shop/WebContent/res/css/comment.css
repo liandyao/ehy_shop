@@ -1,0 +1,118 @@
+.box {
+	width: 1200px;
+	margin: 0px auto;
+	border: 1px solid red;
+	overflow: hidden;
+}
+
+/*  div div {
+	border: 1px solid black;
+}  */
+.box .comment {
+	margin-top: 1px;
+	margin-left: 4%;
+	margin-right: 4%;
+	margin-bottom: 5%;
+	width: 25%;
+	height: 450px;
+	float: left;
+	border: 1px solid gray;
+}
+
+.box .comment .mbMesBox {
+	overflow: hidden;
+}
+
+.box .comment .mbMesBox .mbRemark {
+	margin:5% 0 2% 4%;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	float: left;
+}
+
+.box .comment .mbMesBox .mbRemark img {
+	border: 1px solid gray;
+	border-radius: 50%;
+	margin: 0px;
+	width: 100px;
+	heigth: 100px;
+	margin: 0px;
+}
+
+.box .comment .mbMesBox .mbMessage {
+	margin: 6% 0 0 2%;
+	width: 60%;
+	height: 30%;
+	float: right;
+}
+
+.box .comment .mbMesBox .mbMessage .nameAndLv {
+	list-style-type: none;
+	padding: 0px;
+}
+.box .comment .mbMesBox .mbMessage .nameAndLv .name{
+	color:red;
+}
+
+.box .comment .mbMesBox .num {
+	height:0px;
+	position: relative;
+	left: 10px;
+	top: 5px;
+}
+
+
+
+.box .comment .remark {
+	margin: auto;
+	margin-bottom: 2%; width : 90%;
+	height: 12%;
+	width: 90%;
+}
+.box .comment .remark .mes{
+	color:red;
+}
+
+.box .comment .photo {
+	margin: auto;
+	height: 30%;
+	width: 90%;
+	overflow: hidden;
+}
+
+.box .comment .photo .mbPhoto {
+	margin: 4% 0 3% 3%;
+	float: left;
+	width: 100px;
+	height: 100px;
+	border: 1px solid gray;
+}
+
+.box .comment .photo .mbPhoto img {
+	width: 100px;
+	height: 100px;
+}
+
+.box .comment .photo .sl {
+	margin: 2% 0 2% 2%;
+	width: 10%;
+	height: 100px;
+	float: left;
+}
+
+.box .comment .photo .sl p {
+	margin-top: 40px;
+}
+.box .comment .jump{
+	margin-top:10px;
+}
+.box .comment .jump .back{
+	color:gray;
+	font-size:14px;
+	text-decoration:none;
+	margin:25%;
+}
+.box .comment .jump .back:HOVER {
+	color:red;
+}

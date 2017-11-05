@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyOrderMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyOrder">
+    <id column="ORD_ID" jdbcType="VARCHAR" property="ordId" />
+    <result column="ORD_CODE" jdbcType="VARCHAR" property="ordCode" />
+    <result column="PAY_CODE" jdbcType="VARCHAR" property="payCode" />
+    <result column="PAY_TIME" jdbcType="VARCHAR" property="payTime" />
+    <result column="PAY_TYPE" jdbcType="VARCHAR" property="payType" />
+    <result column="PAY_MONEY" jdbcType="DECIMAL" property="payMoney" />
+    <result column="ORD_TIME" jdbcType="VARCHAR" property="ordTime" />
+    <result column="ORD_SUM_MONEY" jdbcType="DECIMAL" property="ordSumMoney" />
+    <result column="ORD_SUM" jdbcType="DECIMAL" property="ordSum" />
+    <result column="ORD_ISCOUPON" jdbcType="INTEGER" property="ordIscoupon" />
+    <result column="ORD_COUPON" jdbcType="VARCHAR" property="ordCoupon" />
+    <result column="ORD_MEMBER" jdbcType="VARCHAR" property="ordMember" />
+    <result column="ORD_ADDRESS" jdbcType="VARCHAR" property="ordAddress" />
+    <result column="ORD_PHONE" jdbcType="VARCHAR" property="ordPhone" />
+    <result column="ORD_ENDTIME" jdbcType="VARCHAR" property="ordEndtime" />
+    <result column="ORD_FREIGHT" jdbcType="DECIMAL" property="ordFreight" />
+    <result column="ORD_STATE" jdbcType="INTEGER" property="ordState" />
+    <result column="ORD_EXPRESS" jdbcType="VARCHAR" property="ordExpress" />
+    <result column="ORD_EXPRESS_CODE" jdbcType="VARCHAR" property="ordExpressCode" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ORD_ID, ORD_CODE, PAY_CODE, PAY_TIME, PAY_TYPE, PAY_MONEY, ORD_TIME, ORD_SUM_MONEY, 
+    ORD_SUM, ORD_ISCOUPON, ORD_COUPON, ORD_MEMBER, ORD_ADDRESS, ORD_PHONE, ORD_ENDTIME, 
+    ORD_FREIGHT, ORD_STATE, ORD_EXPRESS, ORD_EXPRESS_CODE, ISVA, OPTIME, OPER
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_order
+    where ORD_ID = #{ordId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_order
+    where ORD_ID = #{ordId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyOrder">
+    insert into ehy_order (ORD_ID, ORD_CODE, PAY_CODE, 
+      PAY_TIME, PAY_TYPE, PAY_MONEY, 
+      ORD_TIME, ORD_SUM_MONEY, ORD_SUM, 
+      ORD_ISCOUPON, ORD_COUPON, ORD_MEMBER, 
+      ORD_ADDRESS, ORD_PHONE, ORD_ENDTIME, 
+      ORD_FREIGHT, ORD_STATE, ORD_EXPRESS, 
+      ORD_EXPRESS_CODE, ISVA, OPTIME, 
+      OPER)
+    values (#{ordId,jdbcType=VARCHAR}, #{ordCode,jdbcType=VARCHAR}, #{payCode,jdbcType=VARCHAR}, 
+      #{payTime,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, #{payMoney,jdbcType=DECIMAL}, 
+      #{ordTime,jdbcType=VARCHAR}, #{ordSumMoney,jdbcType=DECIMAL}, #{ordSum,jdbcType=DECIMAL}, 
+      #{ordIscoupon,jdbcType=INTEGER}, #{ordCoupon,jdbcType=VARCHAR}, #{ordMember,jdbcType=VARCHAR}, 
+      #{ordAddress,jdbcType=VARCHAR}, #{ordPhone,jdbcType=VARCHAR}, #{ordEndtime,jdbcType=VARCHAR}, 
+      #{ordFreight,jdbcType=DECIMAL}, #{ordState,jdbcType=INTEGER}, #{ordExpress,jdbcType=VARCHAR}, 
+      #{ordExpressCode,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyOrder">
+    insert into ehy_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ordId != null">
+        ORD_ID,
+      </if>
+      <if test="ordCode != null">
+        ORD_CODE,
+      </if>
+      <if test="payCode != null">
+        PAY_CODE,
+      </if>
+      <if test="payTime != null">
+        PAY_TIME,
+      </if>
+      <if test="payType != null">
+        PAY_TYPE,
+      </if>
+      <if test="payMoney != null">
+        PAY_MONEY,
+      </if>
+      <if test="ordTime != null">
+        ORD_TIME,
+      </if>
+      <if test="ordSumMoney != null">
+        ORD_SUM_MONEY,
+      </if>
+      <if test="ordSum != null">
+        ORD_SUM,
+      </if>
+      <if test="ordIscoupon != null">
+        ORD_ISCOUPON,
+      </if>
+      <if test="ordCoupon != null">
+        ORD_COUPON,
+      </if>
+      <if test="ordMember != null">
+        ORD_MEMBER,
+      </if>
+      <if test="ordAddress != null">
+        ORD_ADDRESS,
+      </if>
+      <if test="ordPhone != null">
+        ORD_PHONE,
+      </if>
+      <if test="ordEndtime != null">
+        ORD_ENDTIME,
+      </if>
+      <if test="ordFreight != null">
+        ORD_FREIGHT,
+      </if>
+      <if test="ordState != null">
+        ORD_STATE,
+      </if>
+      <if test="ordExpress != null">
+        ORD_EXPRESS,
+      </if>
+      <if test="ordExpressCode != null">
+        ORD_EXPRESS_CODE,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ordId != null">
+        #{ordId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordCode != null">
+        #{ordCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payCode != null">
+        #{payCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="payMoney != null">
+        #{payMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="ordTime != null">
+        #{ordTime,jdbcType=VARCHAR},
+      </if>
+      <if test="ordSumMoney != null">
+        #{ordSumMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="ordSum != null">
+        #{ordSum,jdbcType=DECIMAL},
+      </if>
+      <if test="ordIscoupon != null">
+        #{ordIscoupon,jdbcType=INTEGER},
+      </if>
+      <if test="ordCoupon != null">
+        #{ordCoupon,jdbcType=VARCHAR},
+      </if>
+      <if test="ordMember != null">
+        #{ordMember,jdbcType=VARCHAR},
+      </if>
+      <if test="ordAddress != null">
+        #{ordAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ordPhone != null">
+        #{ordPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ordEndtime != null">
+        #{ordEndtime,jdbcType=VARCHAR},
+      </if>
+      <if test="ordFreight != null">
+        #{ordFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="ordState != null">
+        #{ordState,jdbcType=INTEGER},
+      </if>
+      <if test="ordExpress != null">
+        #{ordExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="ordExpressCode != null">
+        #{ordExpressCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyOrder">
+    update ehy_order
+    <set>
+      <if test="ordCode != null">
+        ORD_CODE = #{ordCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payCode != null">
+        PAY_CODE = #{payCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null">
+        PAY_TIME = #{payTime,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null">
+        PAY_TYPE = #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="payMoney != null">
+        PAY_MONEY = #{payMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="ordTime != null">
+        ORD_TIME = #{ordTime,jdbcType=VARCHAR},
+      </if>
+      <if test="ordSumMoney != null">
+        ORD_SUM_MONEY = #{ordSumMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="ordSum != null">
+        ORD_SUM = #{ordSum,jdbcType=DECIMAL},
+      </if>
+      <if test="ordIscoupon != null">
+        ORD_ISCOUPON = #{ordIscoupon,jdbcType=INTEGER},
+      </if>
+      <if test="ordCoupon != null">
+        ORD_COUPON = #{ordCoupon,jdbcType=VARCHAR},
+      </if>
+      <if test="ordMember != null">
+        ORD_MEMBER = #{ordMember,jdbcType=VARCHAR},
+      </if>
+      <if test="ordAddress != null">
+        ORD_ADDRESS = #{ordAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ordPhone != null">
+        ORD_PHONE = #{ordPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ordEndtime != null">
+        ORD_ENDTIME = #{ordEndtime,jdbcType=VARCHAR},
+      </if>
+      <if test="ordFreight != null">
+        ORD_FREIGHT = #{ordFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="ordState != null">
+        ORD_STATE = #{ordState,jdbcType=INTEGER},
+      </if>
+      <if test="ordExpress != null">
+        ORD_EXPRESS = #{ordExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="ordExpressCode != null">
+        ORD_EXPRESS_CODE = #{ordExpressCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ORD_ID = #{ordId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyOrder">
+    update ehy_order
+    set ORD_CODE = #{ordCode,jdbcType=VARCHAR},
+      PAY_CODE = #{payCode,jdbcType=VARCHAR},
+      PAY_TIME = #{payTime,jdbcType=VARCHAR},
+      PAY_TYPE = #{payType,jdbcType=VARCHAR},
+      PAY_MONEY = #{payMoney,jdbcType=DECIMAL},
+      ORD_TIME = #{ordTime,jdbcType=VARCHAR},
+      ORD_SUM_MONEY = #{ordSumMoney,jdbcType=DECIMAL},
+      ORD_SUM = #{ordSum,jdbcType=DECIMAL},
+      ORD_ISCOUPON = #{ordIscoupon,jdbcType=INTEGER},
+      ORD_COUPON = #{ordCoupon,jdbcType=VARCHAR},
+      ORD_MEMBER = #{ordMember,jdbcType=VARCHAR},
+      ORD_ADDRESS = #{ordAddress,jdbcType=VARCHAR},
+      ORD_PHONE = #{ordPhone,jdbcType=VARCHAR},
+      ORD_ENDTIME = #{ordEndtime,jdbcType=VARCHAR},
+      ORD_FREIGHT = #{ordFreight,jdbcType=DECIMAL},
+      ORD_STATE = #{ordState,jdbcType=INTEGER},
+      ORD_EXPRESS = #{ordExpress,jdbcType=VARCHAR},
+      ORD_EXPRESS_CODE = #{ordExpressCode,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR}
+    where ORD_ID = #{ordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

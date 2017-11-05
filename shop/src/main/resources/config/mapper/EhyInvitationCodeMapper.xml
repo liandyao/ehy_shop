@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyInvitationCodeMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyInvitationCode">
+    <id column="INVI_ID" jdbcType="VARCHAR" property="inviId" />
+    <result column="ST_ID" jdbcType="VARCHAR" property="stId" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="MB_ID" jdbcType="VARCHAR" property="mbId" />
+    <result column="MB_NAME" jdbcType="VARCHAR" property="mbName" />
+    <result column="INVITATION_MEMBER" jdbcType="VARCHAR" property="invitationMember" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    INVI_ID, ST_ID, CODE, MB_ID, MB_NAME, INVITATION_MEMBER, ISVA, OPTIME, OPER, SORT
+  </sql>
+  
+  <!-- 显示代理人 -->
+  <select id="findAll" parameterType="map" resultType="map">
+  	SELECT (COUNT(*)-1) count,any_value(eic.INVI_ID) inviId,any_value(eic.ST_ID) stId,any_value(eic.CODE) code,any_value(eic.MB_ID) mbId,
+	any_value(eic.MB_NAME) mbName,any_value(eic.INVITATION_MEMBER) invitationMember,any_value(eic.ISVA) isva,any_value(eic.sort) sort,any_value(es.ST_NAME) stName
+	FROM ehy_invitation_code eic,ehy_station es ,ehy_member em
+	<where>
+	eic.ST_ID=es.ST_ID AND eic.CODE=em.INVITATION_CODE
+	AND eic.ISVA!=0 and es.ISVA=1 AND em.ISVA=1 
+	<if test="stName != null and stName!=''"> 
+		and es.st_name like CONCAT('%',#{stName},'%' )
+	</if>
+	<if test="code != null and code!=''">
+		and eic.code like CONCAT('%',#{code},'%' )
+	</if>
+	<if test="mbName != null and mbName!=''">
+		and eic.mb_name like CONCAT('%',#{mbName},'%' )
+	</if>
+	
+	</where>
+	GROUP BY em.invitation_code ORDER BY any_value(eic.sort) limit #{firstRows} , #{maxResult}
+  </select>
+  
+  <!-- 查询总行数 -->
+  <select id="findRowCount" parameterType="map" resultType="int">
+    select count(*) 
+    FROM ehy_invitation_code eic,ehy_station es ,ehy_member em
+    <where>
+    eic.ST_ID=es.ST_ID AND eic.CODE=em.INVITATION_CODE
+    AND eic.ISVA!=0 and es.ISVA=1 AND em.ISVA=1
+	<if test="stName != null and stName!=''">
+		
+		and es.st_name like CONCAT('%',#{stName},'%' )
+	</if>
+	<if test="code != null and code!=''">
+		and eic.code like CONCAT('%',#{code},'%' )
+	</if>
+	<if test="mbName != null and mbName!=''">
+		and eic.mb_name like CONCAT('%',#{mbName},'%' )
+	</if>
+	
+  	</where>
+  	
+  </select>
+  
+  <!-- 根据邀请码查询邀请码是否存在 -->
+  <select id="selectByCode" parameterType="java.lang.String" resultType="int" >
+    select count(*) from ehy_invitation_code
+    where CODE = #{code,jdbcType=VARCHAR} and isva=1
+  </select>
+  
+  <!-- 根据代理人id查询代理人对象 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_invitation_code
+    where INVI_ID = #{inviId,jdbcType=VARCHAR}
+  </select>
+  
+ <!-- 增加 -->
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyInvitationCode">
+  	<selectKey keyProperty="inviId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	 </selectKey>
+    insert into ehy_invitation_code
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="inviId != null">
+        INVI_ID,
+      </if>
+      <if test="stId != null">
+        ST_ID,
+      </if>
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="mbId != null">
+        MB_ID,
+      </if>
+      <if test="mbName != null">
+        MB_NAME,
+      </if>
+      <if test="invitationMember != null">
+        INVITATION_MEMBER,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort == null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="inviId != null">
+        #{inviId,jdbcType=VARCHAR},
+      </if>
+      <if test="stId != null">
+        #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="mbId != null">
+        #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbName != null">
+        #{mbName,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationMember != null">
+        #{invitationMember,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort == null">
+         (SELECT IFNULL(max(SORT)+1,1) FROM ehy_invitation_code AS SORT),
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 修改 -->
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyInvitationCode">
+    update ehy_invitation_code
+    <set>
+      <if test="stId != null">
+        ST_ID = #{stId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="mbId != null">
+        MB_ID = #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbName != null">
+        MB_NAME = #{mbName,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationMember != null">
+        INVITATION_MEMBER = #{invitationMember,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where INVI_ID = #{inviId,jdbcType=VARCHAR}
+  </update>
+  
+  <delete id="deleteRec">
+  	update ehy_invitation_code set isva=0 where MB_ID=#{1} 
+  </delete>
+  
+   <!-- 排序 -->
+   <update id="sortInvitationCode" parameterType="int" >
+  <!-- 
+  	往上排：让开始行数等于结束行数，再把小于开始行数大于结束行数的全部+1 
+  	往下排：让结束行数等于开始行数，再把大于开始行数小于结束行数的全部-1 
+  -->
+  	
+  	<if test="endNum &gt; startNum">
+  		update ehy_invitation_code set SORT=SORT-1 where SORT &lt;= #{endNum } and SORT &gt;= #{startNum };
+  		update ehy_invitation_code set SORT=#{endNum } where INVI_ID=#{inviId};
+  	</if>
+  	<if test="endNum &lt; startNum">
+  		update ehy_invitation_code set SORT=SORT+1 where SORT &gt;= #{endNum } and SORT &lt; #{startNum };
+  		update ehy_invitation_code set SORT=#{endNum } where INVI_ID=#{inviId}; 
+  	</if>
+  	
+  </update>
+</mapper>

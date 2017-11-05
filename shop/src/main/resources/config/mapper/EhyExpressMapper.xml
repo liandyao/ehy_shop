@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyExpressMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyExpress">
+    <id column="EXPREESS_ID" jdbcType="VARCHAR" property="expreessId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="LOGO" jdbcType="VARCHAR" property="logo" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    EXPREESS_ID, NAME, CODE, URL, LOGO, ISVA, OPTIME, OPER, SORT
+  </sql>
+  
+  <!-- 查询所有的快递 -->
+  <select id="findExpress" resultMap="BaseResultMap">
+  	select * from ehy_express where ISVA=1 order by SORT desc
+  </select>
+  
+  <!-- 查询所有 -->
+  <select id="findAll" parameterType="map" resultMap="BaseResultMap">
+  	select * from ehy_express
+ <where>
+  		<if test="mingcheng != null">
+  			name like CONCAT('%','${mingcheng}','%')
+  		</if>
+  		<if test="code != null">
+  		 	and code like CONCAT('%','${code}','%')
+  		</if>
+  		<if test="url != null">
+  			and url like CONCAT('%','${url}','%')
+  		</if>
+  		and ISVA=1
+  		 ORDER BY SORT DESC
+  	</where>
+  	 limit #{page},#{limit}
+  </select>
+  
+  <!-- 总行数 -->
+  <select id="findRowCount" parameterType="map" resultType="int">
+  	SELECT COUNT(*) FROM ehy_express
+  	<where>
+  		<if test="mingcheng != null">
+  			name like CONCAT('%','${mingcheng}','%')
+  		</if>
+  		<if test="code != null">
+  		 	and code like CONCAT('%','${code}','%')
+  		</if>
+  		<if test="url != null">
+  			and url like CONCAT('%','${url}','%')
+  		</if>
+  		and ISVA=1 ORDER BY SORT DESC
+  	</where>
+  </select>
+  
+  
+  
+  
+  <!-- 根据ID查询 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_express
+    where EXPREESS_ID = #{expreessId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_express
+    where EXPREESS_ID = #{expreessId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 增加 -->
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyExpress">
+ 	<selectKey keyProperty="expreessId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	  </selectKey>
+ 
+    insert into ehy_express (EXPREESS_ID, NAME, CODE, 
+      URL, LOGO, ISVA, OPTIME, 
+      OPER, SORT)
+    values (#{expreessId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{optime,jdbcType=TIMESTAMP}, 
+      #{oper,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyExpress">
+  	<selectKey keyProperty="expreessId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	  </selectKey>
+  
+  
+    insert into ehy_express
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="expreessId != null">
+        EXPREESS_ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="url != null">
+        URL,
+      </if>
+      <if test="logo != null">
+        LOGO,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="expreessId != null">
+        #{expreessId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null">
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <!-- 删除方法 -->
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyExpress">
+    update ehy_express
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null">
+        LOGO = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where EXPREESS_ID = #{expreessId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 修改方法 -->
+   <update id="update" parameterType="cn.ehuoyuan.shop.domain.EhyExpress">
+    update ehy_express
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null">
+        LOGO = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where EXPREESS_ID = #{expreessId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  
+  
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyExpress">
+    update ehy_express
+    set NAME = #{name,jdbcType=VARCHAR},
+      CODE = #{code,jdbcType=VARCHAR},
+      URL = #{url,jdbcType=VARCHAR},
+      LOGO = #{logo,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER}
+    where EXPREESS_ID = #{expreessId,jdbcType=VARCHAR}
+  </update>
+</mapper>

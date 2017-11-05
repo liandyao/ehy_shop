@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyMemberLevelMapper">
+	<resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyMemberLevel">
+		<id column="LEVEL_ID" jdbcType="VARCHAR" property="levelId" />
+		<result column="LEVEL_NAME" jdbcType="VARCHAR" property="levelName" />
+		<result column="MONEY" jdbcType="DECIMAL" property="money" />
+		<result column="SCALE" jdbcType="DECIMAL" property="scale" />
+		<result column="OPER" jdbcType="VARCHAR" property="oper" />
+		<result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+		<result column="ISVA" jdbcType="INTEGER" property="isva" />
+		<result column="SORT" jdbcType="INTEGER" property="sort" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		LEVEL_ID, LEVEL_NAME, MONEY, SCALE, OPER, OPTIME, ISVA, SORT
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultType="map">
+		SELECT * FROM ehy_member_level eml ,ehy_datadic ed WHERE eml.LEVEL_ID=ed.DIC_CODE and eml.isva=1 and ed.isva=1  and eml.LEVEL_ID = #{levelId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		update ehy_member_level set isva=0 where LEVEL_ID = #{levelId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyMemberLevel">
+		insert into ehy_member_level (LEVEL_ID, LEVEL_NAME, MONEY,
+		SCALE, OPER, OPTIME,
+		ISVA, SORT)
+		values (#{levelId,jdbcType=VARCHAR}, #{levelName,jdbcType=VARCHAR},
+		#{money,jdbcType=DECIMAL},
+		#{scale,jdbcType=DECIMAL}, #{oper,jdbcType=VARCHAR}, #{optime,jdbcType=TIMESTAMP},
+		#{isva,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyMemberLevel" keyProperty="levelId">
+		<selectKey keyProperty="levelId" resultType="string" order="BEFORE">
+			SELECT REPLACE(UUID(),'-','') AS id;
+		</selectKey>
+		insert into ehy_member_level
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="levelId != null">
+				LEVEL_ID,
+			</if>
+			<if test="levelName != null">
+				LEVEL_NAME,
+			</if>
+			<if test="money != null">
+				MONEY,
+			</if>
+			<if test="scale != null">
+				SCALE,
+			</if>
+			<if test="oper != null">
+				OPER,
+			</if>
+			<if test="optime != null">
+				OPTIME,
+			</if>
+			<if test="isva != null">
+				ISVA,
+			</if>
+			<if test="sort != null">
+				SORT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="levelId != null">
+				#{levelId,jdbcType=VARCHAR},
+			</if>
+			<if test="levelName != null">
+				#{levelName,jdbcType=VARCHAR},
+			</if>
+			<if test="money != null">
+				#{money,jdbcType=DECIMAL},
+			</if>
+			<if test="scale != null">
+				#{scale,jdbcType=DECIMAL},
+			</if>
+			<if test="oper != null">
+				#{oper,jdbcType=VARCHAR},
+			</if>
+			<if test="optime != null">
+				#{optime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isva != null">
+				#{isva,jdbcType=INTEGER},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyMemberLevel">
+		update ehy_member_level
+		<set>
+			<if test="levelName != null">
+				LEVEL_NAME = #{levelName,jdbcType=VARCHAR},
+			</if>
+			<if test="money != null">
+				MONEY = #{money,jdbcType=DECIMAL},
+			</if>
+			<if test="scale != null">
+				SCALE = #{scale,jdbcType=DECIMAL},
+			</if>
+			<if test="oper != null">
+				OPER = #{oper,jdbcType=VARCHAR},
+			</if>
+			<if test="optime != null">
+				OPTIME = #{optime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isva != null">
+				ISVA = #{isva,jdbcType=INTEGER},
+			</if>
+			<if test="sort != null">
+				SORT = #{sort,jdbcType=INTEGER},
+			</if>
+			ORDER BY eml.sort, eml.optime 
+		</set>
+		where LEVEL_ID = #{levelId,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="sortMemberLevel" parameterType="int" >
+  <!-- 
+  	往上排：让开始行数等于结束行数，再把小于开始行数大于结束行数的全部+1 
+  	往下排：让结束行数等于开始行数，再把大于开始行数小于结束行数的全部-1 
+  -->
+  	
+  	<if test="endNum &gt; startNum">
+  		update ehy_member_level set SORT=SORT-1 where SORT &lt;= #{endNum } and SORT &gt;= #{startNum };
+  		update ehy_member_level set SORT=#{endNum } where LEVEL_ID=#{levelId};
+  	</if>
+  	<if test="endNum &lt; startNum">
+  		update ehy_member_level set SORT=SORT+1 where SORT &gt;= #{endNum } and SORT &lt; #{startNum };
+  		update ehy_member_level set SORT=#{endNum } where LEVEL_ID=#{levelId}; 
+  	</if>
+  	
+  </update>
+	<update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyMemberLevel">
+		update ehy_member_level
+		set LEVEL_NAME = #{levelName,jdbcType=VARCHAR},
+		MONEY = #{money,jdbcType=DECIMAL},
+		SCALE = #{scale,jdbcType=DECIMAL},
+		OPER = #{oper,jdbcType=VARCHAR},
+		OPTIME = #{optime,jdbcType=TIMESTAMP},
+		ISVA = #{isva,jdbcType=INTEGER},
+		SORT = #{sort,jdbcType=INTEGER}
+		where LEVEL_ID = #{levelId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="findAll" resultType="map" parameterType="map">
+		SELECT * FROM ehy_member_level eml ,ehy_datadic ed 
+		<where>
+			eml.LEVEL_ID = ed.DIC_CODE
+			<if test="levelName != null">
+				and eml.level_name like CONCAT('%','#{levelName}','%' )
+			</if>
+			<if test="dicRemark !=null">
+			    and ed.DIC_REMARK =#{dicRemark}
+			</if>
+			and eml.isva =1 and ed.isva=1
+		</where>
+		ORDER BY eml.sort, eml.optime limit #{firstRows} , #{maxResult}
+		
+	</select>
+
+	<select id="getTatolRows" resultType="int"
+		parameterType="map">
+		SELECT count(*) FROM ehy_member_level eml ,ehy_datadic ed 
+		<where>
+			eml.LEVEL_ID = ed.DIC_CODE
+			<if test="levelName != null">
+				and eml.level_name like CONCAT('%','#{levelName}','%' )
+			</if>
+			<if test="dicRemark !=null">
+			    and ed.DIC_REMARK =#{dicRemark}
+			</if>
+			and eml.isva =1 and ed.isva=1
+		</where>
+	</select>
+	
+	<select id="ehyMemberLevelFindAll" resultMap="BaseResultMap">
+		select * from ehy_member_level where isva=1
+	</select>
+	
+	<select id="isLevelName" parameterType="string" resultType="int">
+		SELECT COUNT(*) FROM  ehy_member_level eml WHERE eml.LEVEL_NAME=#{levelName} AND isva =1;
+	</select>
+	
+	<select id="maxSort" resultType="int">
+		SELECT MAX(sort) FROM ehy_member_level WHERE isva =1
+	</select>
+</mapper>

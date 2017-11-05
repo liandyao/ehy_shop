@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyAreaMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.domain.EhyArea">
+    <id column="AREA_ID" jdbcType="VARCHAR" property="areaId" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="AREA_NAME" jdbcType="VARCHAR" property="areaName" />
+    <result column="AREA_CODE" jdbcType="VARCHAR" property="areaCode" />
+    <result column="AREA_REMARK" jdbcType="VARCHAR" property="areaRemark" />
+    <result column="ISVA" jdbcType="INTEGER" property="isva" />
+    <result column="OPTIME" jdbcType="TIMESTAMP" property="optime" />
+    <result column="OPER" jdbcType="VARCHAR" property="oper" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    AREA_ID, PARENT_ID, AREA_NAME, AREA_CODE, AREA_REMARK, ISVA, OPTIME, OPER
+  </sql>
+  
+  <!-- 下拉框查询 -->
+  <select id="findshow" resultMap="BaseResultMap">
+  	SELECT * FROM ehy_area WHERE PARENT_ID=0 AND isva=1;
+  </select>
+  
+  
+  <!-- 查询所有 -->
+  <select id="findAll" parameterType="map" resultMap="BaseResultMap">
+  	select * from ehy_area
+  	<where>
+  		<if test="area != null">
+  		 AREA_NAME like CONCAT('%',#{area},'%' )
+  		</if>
+  		and ISVA=1
+  	</where>
+  	 limit #{page},#{limit}
+  </select>
+  
+  
+  <!-- <select id="findAll" parameterType="map" resultMap="BaseResultMap">
+  	 SELECT p.area_name as parentId,s.area_name as areaName FROM ehy_area p ,ehy_area s
+  	<where>
+  	p.area_id = s.parent_id
+  		<if test="area != null">
+  		 s.AREA_NAME like CONCAT('%',#{area},'%' )
+  		</if>
+  		and p.ISVA=1
+  	</where>
+  	 limit #{page},#{limit}
+  </select> -->
+  
+  <!-- 总行数 -->
+  <select id="findRowCount" parameterType="map" resultType="int">
+  	SELECT COUNT(*) FROM EHY_area
+  	<where>
+  		<if test="area != null">
+  		 AREA_NAME like CONCAT('%',#{area},'%' )
+  		</if>
+  		and ISVA=1
+  	</where>
+  </select>
+  
+  
+   <!-- 根据ID查询 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehy_area
+    where AREA_ID = #{areaId,jdbcType=VARCHAR}
+  </select>
+  
+ 
+ 
+  
+  <!-- 增加 -->
+  <insert id="insert" parameterType="cn.ehuoyuan.shop.domain.EhyArea">
+ 	
+ 	 <selectKey keyProperty="areaId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	  </selectKey>
+    insert into ehy_area (AREA_ID, PARENT_ID, AREA_NAME, 
+      AREA_CODE, AREA_REMARK, ISVA, 
+      OPTIME, OPER)
+    values (#{areaId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, 
+      #{areaCode,jdbcType=VARCHAR}, #{areaRemark,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, 
+      #{optime,jdbcType=TIMESTAMP}, #{oper,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <!-- 删除方法 -->
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyArea">
+    update ehy_area
+    <set>
+      <if test="parentId != null">
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaName != null">
+        AREA_NAME = #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaRemark != null">
+        AREA_REMARK = #{areaRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where AREA_ID = #{areaId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 修改方法 -->
+  <update id="update" parameterType="cn.ehuoyuan.shop.domain.EhyArea">
+    update ehy_area
+    <set>
+      <if test="parentId != null">
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaName != null">
+        AREA_NAME = #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaRemark != null">
+        AREA_REMARK = #{areaRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where AREA_ID = #{areaId,jdbcType=VARCHAR}
+  </update>
+  
+  <resultMap type="java.util.Map" id="ProvinceVo">
+  	<id column="provinceId" property="provinceId" jdbcType="VARCHAR"/>
+  	<result column="province" property="province" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <resultMap type="java.util.Map" id="AreaVo">
+  	<id column="areaId" property="areaId" jdbcType="VARCHAR"/>
+  	<result column="area" property="area" jdbcType="VARCHAR"/>
+  	<result column="cityId" property="cityId" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <resultMap type="java.util.Map" id="CityVo">
+  	<id column="cityId" property="cityId" jdbcType="VARCHAR"/>
+  	<result column="city" property="city" jdbcType="VARCHAR"/>
+  	<result column="provinceId" property="provinceId" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 查询省区 -->
+  <select id="findProvince" resultMap="ProvinceVo">
+  		select 
+  			AREA_ID AS provinceId,
+  			AREA_NAME AS province
+  		from 
+  			ehy_area 
+		where 
+			PARENT_ID=0;
+  </select>
+  
+  <!-- 查询城市 -->
+  <select id="findCity" parameterType="String" resultMap="CityVo">
+  		select 
+  			AREA_ID AS cityId,
+  			AREA_NAME AS city,
+  			PARENT_ID AS provinceId
+  		from 
+  			ehy_area 
+		where 
+			PARENT_ID=#{provinceId,jdbcType=VARCHAR}
+  </select>
+  
+ <!--  查询区县 -->
+  <select id="findArea" parameterType="String" resultMap="AreaVo">
+  		select 
+  			AREA_ID AS areaId,
+  			AREA_NAME AS area,
+  			PARENT_ID AS cityId
+  		from 
+  			ehy_area 
+		where 
+			PARENT_ID=#{cityId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectArea" parameterType="cn.ehuoyuan.shop.domain.EhyArea" resultMap="BaseResultMap">
+  		select 
+  	<include refid="Base_Column_List" />
+  		from ehy_area where PARENT_ID=0;
+  </select>
+  
+  <!-- 查询市区，县区 -->
+   <select id="selectAreaById" parameterType="java.lang.String" resultMap="BaseResultMap">
+  		select 
+  	<include refid="Base_Column_List" />
+  		from ehy_area where PARENT_ID=#{areaId,jdbcType=VARCHAR};
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ehy_area
+    where AREA_ID = #{areaId,jdbcType=VARCHAR}
+  </delete>
+  
+  
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyArea">
+    insert into ehy_area
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="areaId != null">
+        AREA_ID,
+      </if>
+      <if test="parentId != null">
+        PARENT_ID,
+      </if>
+      <if test="areaName != null">
+        AREA_NAME,
+      </if>
+      <if test="areaCode != null">
+        AREA_CODE,
+      </if>
+      <if test="areaRemark != null">
+        AREA_REMARK,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="areaId != null">
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaName != null">
+        #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaRemark != null">
+        #{areaRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyArea">
+    update ehy_area
+    set PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      AREA_NAME = #{areaName,jdbcType=VARCHAR},
+      AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+      AREA_REMARK = #{areaRemark,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR}
+    where AREA_ID = #{areaId,jdbcType=VARCHAR}
+  </update>
+  
+  
+ 
+  
+  
+  
+  
+  
+</mapper>

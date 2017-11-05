@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ehuoyuan.shop.dao.EhyCartMapper">
+  <resultMap id="BaseResultMap" type="cn.ehuoyuan.shop.action.cart.CartVo">
+    <id column="购物车ID" jdbcType="VARCHAR" property="cartId" />
+    <result column="站点" jdbcType="VARCHAR" property="stName" />
+    <result column="产品ID" jdbcType="VARCHAR" property="proId" />
+    <result column="加入时间" jdbcType="TIMESTAMP" property="cartDatetime" />
+    <result column="加入数量" jdbcType="INTEGER" property="cartNum" />
+    <result column="加入价格" jdbcType="VARCHAR" property="cartPrice" />
+    <result column="加入类型" jdbcType="INTEGER" property="cartType" />
+    <result column="产品规格描述" jdbcType="VARCHAR" property="spNames"/>
+    <result column="产品名称" jdbcType="VARCHAR" property="proName"/>
+    <result column="产品图片" jdbcType="VARCHAR" property="proImg"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    cart.ST_NAME AS 站点,
+	cart.CART_ID AS 购物车ID,
+	cart.PRO_ID AS 产品ID,
+	cart.PRO_NAME AS 产品名称,
+	cart.CART_PRICE AS 加入价格,
+	cart.SP_NAMES AS 产品规格描述,
+	cart.CART_NUM AS 加入数量,
+	cart.CART_DATETIME AS 加入时间,
+	cart.CART_TYPE AS 加入类型,
+	any_value(img.IMG_PATH) AS 产品图片
+  </sql>
+  
+  <!-- 查询购物车数量 -->
+  <select id="findCartNum" parameterType="java.lang.String" resultType="int">
+  	SELECT
+		count(*)
+	FROM
+		ehy_cart AS cart, 
+		ehy_member AS mem
+	WHERE 
+		cart.MB_ID=mem.MB_ID
+		AND
+		cart.ISVA=1 AND mem.ISVA=1
+		AND
+		mem.MB_ID=#{mbId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据会员ID查询购物车 -->
+  <select id="findByMbId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+		<include refid="Base_Column_List"></include>
+	FROM
+		ehy_cart AS cart,
+		ehy_product_img AS img, 
+		ehy_member AS mem
+	WHERE 
+		cart.MB_ID=mem.MB_ID
+		AND
+		img.IMG_TYPE=1
+		AND
+		cart.ISVA=1 AND mem.ISVA=1 AND img.ISVA=1
+		AND
+		mem.MB_ID=#{mbId,jdbcType=VARCHAR}
+	GROUP BY
+		cart.CART_ID
+  </select>
+  
+  
+  <!-- 根据购物车ID查询购物车 -->
+  <select id="findByCartId" parameterType="java.lang.String" resultMap="BaseResultMap">	
+	SELECT
+		<include refid="Base_Column_List"></include>
+	FROM
+		ehy_cart AS cart,
+		ehy_product_img AS img, 
+		ehy_member AS mem
+	WHERE 
+		cart.MB_ID=mem.MB_ID
+		AND
+		img.IMG_TYPE=1
+		AND
+		cart.ISVA=1 AND mem.ISVA=1 AND img.ISVA=1
+		AND
+		cart.CART_ID=#{cartId,jdbcType=VARCHAR}
+	ORDER BY 
+		cart.SORT
+  </select>
+  
+  <!-- 根据购物车ID删除购物车 -->
+  <delete id="delete" parameterType="java.lang.String">
+    delete from ehy_cart
+    where CART_ID = #{cartId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="add" parameterType="cn.ehuoyuan.shop.domain.EhyCart">
+  	<selectKey keyProperty="cartId" resultType="java.lang.String" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
+    insert into ehy_cart (
+    	CART_ID, MB_ID, PRO_ID, 
+		CART_DATETIME,CART_NUM, CART_PRICE, 
+		CART_TYPE, ST_NAME,
+		SP_NAMES, PRO_NAME
+      )
+    values (#{cartId,jdbcType=VARCHAR}, #{mbId,jdbcType=VARCHAR}, #{proId,jdbcType=VARCHAR}, 
+       #{cartDatetime,jdbcType=TIMESTAMP}, #{cartNum,jdbcType=INTEGER}, #{cartPrice,jdbcType=DECIMAL}, 
+       #{cartType,jdbcType=INTEGER}, #{stName,jdbcType=VARCHAR}, 
+       #{spNames,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.ehuoyuan.shop.domain.EhyCart">
+  	<selectKey keyProperty="cartId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
+    insert into ehy_cart
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cartId != null">
+        CART_ID,
+      </if>
+      <if test="mbId != null">
+        MB_ID,
+      </if>
+      <if test="proId != null">
+        PRO_ID,
+      </if>
+      <if test="cartDatetime != null">
+        CART_DATETIME,
+      </if>
+      <if test="cartNum != null">
+        CART_NUM,
+      </if>
+      <if test="cartPrice != null">
+        CART_PRICE,
+      </if>
+      <if test="cartType != null">
+        CART_TYPE,
+      </if>
+      <if test="stName != null">
+        ST_NAME,
+      </if>
+      <if test="isva != null">
+        ISVA,
+      </if>
+      <if test="optime != null">
+        OPTIME,
+      </if>
+      <if test="oper != null">
+        OPER,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+      <if test="spNames != null">
+        spNames,
+      </if>
+      <if test="proName != null">
+        proName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cartId != null">
+        #{cartId,jdbcType=VARCHAR},
+      </if>
+      <if test="mbId != null">
+        #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="cartDatetime != null">
+        #{cartDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cartNum != null">
+        #{cartNum,jdbcType=INTEGER},
+      </if>
+      <if test="cartPrice != null">
+        #{cartPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="cartType != null">
+        #{cartType,jdbcType=INTEGER},
+      </if>
+      <if test="stName != null">
+        #{stName,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="spNames != null">
+        #{spNames,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ehuoyuan.shop.domain.EhyCart">
+    update ehy_cart
+    <set>
+      <if test="mbId != null">
+        MB_ID = #{mbId,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null">
+        PRO_ID = #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="cartDatetime != null">
+        CART_DATETIME = #{cartDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cartNum != null">
+        CART_NUM = #{cartNum,jdbcType=INTEGER},
+      </if>
+      <if test="cartPrice != null">
+        CART_PRICE = #{cartPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="cartType != null">
+        CART_TYPE = #{cartType,jdbcType=INTEGER},
+      </if>
+      <if test="stName != null">
+        ST_NAME = #{stName,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null">
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="optime != null">
+        OPTIME = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oper != null">
+        OPER = #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="spNames != null">
+        #{spNames,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CART_ID = #{cartId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ehuoyuan.shop.domain.EhyCart">
+    update ehy_cart
+    set MB_ID = #{mbId,jdbcType=VARCHAR},
+      PRO_ID = #{proId,jdbcType=VARCHAR},
+      CART_DATETIME = #{cartDatetime,jdbcType=TIMESTAMP},
+      CART_NUM = #{cartNum,jdbcType=INTEGER},
+      CART_PRICE = #{cartPrice,jdbcType=DECIMAL},
+      CART_TYPE = #{cartType,jdbcType=INTEGER},
+      ST_NAME = #{stName,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      OPTIME = #{optime,jdbcType=TIMESTAMP},
+      OPER = #{oper,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=INTEGER},
+      SP_NAMES = #{spNames,jdbcType=VARCHAR},
+      PRO_NAME = #{proName,jdbcType=VARCHAR}
+    where CART_ID = #{cartId,jdbcType=VARCHAR}
+  </update>
+</mapper>
